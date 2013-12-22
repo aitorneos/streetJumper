@@ -74,7 +74,7 @@ public class ResourcesManager
 	public ITextureRegion player2;
 	public ITextureRegion player3;
 	public ITextureRegion player4;
-	public ITextureRegion playerSecondary;
+	public ITiledTextureRegion playerSecondary;
 	public ITextureRegion ARSel;
 	public ITextureRegion optionsBack;
 	public ITextureRegion menuBack;

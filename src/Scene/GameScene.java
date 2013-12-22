@@ -41,6 +41,7 @@ import Animated_Features.Switcher;
 import Enemies.Enemy;
 import Enemies.slimeEnemy;
 import Players.Player;
+import Players.PlayerSpecial;
 import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
 import ResourcesManagment.SceneManager.SceneType;
@@ -79,6 +80,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	//Player variables
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
 	public Player player;
+	public PlayerSpecial playerSpecial;
 	private Enemy enemy;
 	private Switcher switcher;
 	private SpringBoarder springboarder;
@@ -177,6 +179,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MUSHROOM = "mushroom";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_THIN_PLATFORM = "thinPlatform";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SMALL_PLATFORM = "smallPlatform";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_SPECIAL = "playerSpecial";
 	 
 	 Text nBombs = new Text(40, 300, resourcesManager.font, "+ 1", new TextOptions(HorizontalAlign.LEFT), vbom);
 	
@@ -300,6 +303,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 		 else if (ResourcesManager.getInstance().getLevelComplete() == 2)
 		 {
 			 player.setRunning();
+			 playerSpecial.setVisible(false);
 		 }
     }
 
@@ -720,6 +724,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                            	
 	                            	if (score <= 35 && score >= 30)
 	                            	{
+	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.ONE, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
 	   	                                ResourcesManager.getInstance().setLevelComplete(2);
@@ -736,7 +742,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	   	    	                            	
 	   	    	                            	// Load Level
 	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
-	   	    	                            	
 	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
 	   	        		                    }
 	   	        		                }));
@@ -744,6 +749,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                            	
 	                            	else if (score > 35 && score < 45)
 	                            	{
+	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.TWO, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
 	   	                                ResourcesManager.getInstance().setLevelComplete(2);
@@ -760,7 +767,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	   	    	                            	
 	   	    	                            	// Load Level
 	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
-	   	    	                            	
 	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
 	   	        		                    }
 	   	        		                }));
@@ -768,6 +774,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                            	
 	                            	else
 	                            	{
+	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.THREE, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
 	   	                                ResourcesManager.getInstance().setLevelComplete(2);
@@ -784,7 +792,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	   	    	                            	
 	   	    	                            	// Load Level
 	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
-	   	    	                            	
 	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
 	   	        		                    }
 	   	        		                }));
@@ -1033,6 +1040,18 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    levelObject = player;
 	                }
 	                
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_SPECIAL))
+	                {
+	                    playerSpecial = new PlayerSpecial(x, y, vbom, camera,  physicsWorld)
+	                    {
+	                        @Override
+	                        public void onDie()
+	                        {
+	                        }
+	                    };
+	                    levelObject = playerSpecial;
+	                }
+	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_WATER_SYNTHETIC))
 	                {
 	                	levelObject = new Sprite(x, y, 160, 130, resourcesManager.waterSynthetic, vbom);
@@ -1170,6 +1189,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                            {
 	                                this.setVisible(false);
 	                                this.setIgnoreUpdate(true);
+	                                
+	                                // Do player invisible
+	                        		player.setVisible(false);
+	                        		playerSpecial.setPosition(player.getX(), player.getY());
+	                        		playerSpecial.time = player.time;
+	                        		playerSpecial.setRunning();
+	                        		playerSpecial.setVisible(true);
 	                            }
 	                           
 	                        }
@@ -1755,12 +1781,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
             	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("waterSynthetic"))
             	{
             		displayGameOverText(1);
-            	}
-            	
-            	// ----------------------------- MUSHROOM-----------------------------------------------------------------------------
-            	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("mushroom"))
-            	{
-            		
             	}
 
 	        }

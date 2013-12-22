@@ -162,6 +162,11 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         	{
             	SceneManager.getInstance().getGameScene().player.body.setLinearVelocity((float) (pAccelerationData.getX()*1.5), SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
             	SceneManager.getInstance().getGameScene().player.setFlippedHorizontal(false);
+            	if (ResourcesManager.getInstance().getLevelComplete() == 2) 
+            	{
+            		SceneManager.getInstance().getGameScene().playerSpecial.body.setLinearVelocity((float) (pAccelerationData.getX()*1.5), SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
+                	SceneManager.getInstance().getGameScene().playerSpecial.setFlippedHorizontal(false);
+            	}
             	
         	}  
         	
@@ -169,6 +174,11 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         	{ 
         		SceneManager.getInstance().getGameScene().player.body.setLinearVelocity((float) (pAccelerationData.getX()*1.5), SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
             	SceneManager.getInstance().getGameScene().player.setFlippedHorizontal(true);
+            	if (ResourcesManager.getInstance().getLevelComplete() == 2) 
+            	{
+            		SceneManager.getInstance().getGameScene().playerSpecial.body.setLinearVelocity((float) (pAccelerationData.getX()*1.5), SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
+                	SceneManager.getInstance().getGameScene().playerSpecial.setFlippedHorizontal(true);
+            	}
             	
         	}    	
     	}

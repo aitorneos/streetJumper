@@ -2,6 +2,7 @@
 <level width="3000" height="480"> 
  	  
     <entity x="140" y="220" type="player"/>  
+    <entity x="2250" y="230" type="playerSpecial"/>  
     
     <entity x="65" y="60" type="rockBigPlatform"/>
     <entity x="160" y="30" type="sand"/>
