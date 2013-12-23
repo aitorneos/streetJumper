@@ -31,6 +31,7 @@ import org.andengine.util.level.EntityLoader;
 import org.andengine.util.level.constants.LevelConstants;
 import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
+import org.andengine.util.level.simple.SimpleLevelLoaderResult;
 import org.xml.sax.Attributes;
 
 import particleSystem.FireParticleSystem;
@@ -48,6 +49,7 @@ import ResourcesManagment.SceneManager.SceneType;
 import Scene.LevelCompleteWindow.StarsCount;
 import Shader.WaterMaskEffectShader;
 import Timers.playTimer;
+import android.widget.Toast;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -80,13 +82,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	//Player variables
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
 	public Player player;
-	public PlayerSpecial playerSpecial;
+	//public PlayerSpecial playerSpecial;
 	private Enemy enemy;
 	private Switcher switcher;
 	private SpringBoarder springboarder;
 	private SpringBoarder springboarder2;
 	private slimeEnemy slimeEnemy;
-	private slimeEnemy pinguinAttack;
 	waterParticleSystem ps;
 	waterParticleSystem ps2;
 	waterParticleSystem ps3;
@@ -98,6 +99,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	private static final String TAG_ENTITY = "entity";
 	private static final String TAG_ENTITY_ATTRIBUTE_X = "x";
 	private static final String TAG_ENTITY_ATTRIBUTE_Y = "y";
+	private static final String TAG_ENTITY_ATTRIBUTE_WIDTH = "width";
+	private static final String TAG_ENTITY_ATTRIBUTE_HEIGHT = "height";
 	private static final String TAG_ENTITY_ATTRIBUTE_TYPE = "type";
 	
 	//-------------------- LEVEL_1 VARIABLES -------------------------------------------------------------------
@@ -129,7 +132,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	// Enemies Types Definitions
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_FLY_ENEMY = "flyEnemy_region";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SLIME_ENEMY = "slimeEnemy_region";
-	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SLIME_ENEMY_ATTACK = "pinguinAttack";
 	
 	//Sprites
 	 Sprite hurt1;
@@ -179,7 +181,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MUSHROOM = "mushroom";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_THIN_PLATFORM = "thinPlatform";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SMALL_PLATFORM = "smallPlatform";
-	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_SPECIAL = "playerSpecial";
+	 //private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_SPECIAL = "playerSpecial";
 	 
 	 Text nBombs = new Text(40, 300, resourcesManager.font, "+ 1", new TextOptions(HorizontalAlign.LEFT), vbom);
 	
@@ -274,7 +276,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	         // Set enemy's movement 
 	         enemy.body.setLinearVelocity(0.5f, 0.0f);
 	         slimeEnemy.body.setLinearVelocity(1.0f, 0.0f);
-	         pinguinAttack.body.setLinearVelocity(1.0f, 0.0f);
  
 			// Put "font" snow raining
 			 ps = new waterParticleSystem();
@@ -303,7 +304,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 		 else if (ResourcesManager.getInstance().getLevelComplete() == 2)
 		 {
 			 player.setRunning();
-			 playerSpecial.setVisible(false);
+			 //playerSpecial.setVisible(false);
 		 }
     }
 
@@ -399,9 +400,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
         	 slimeEnemy.clearEntityModifiers();
         	 slimeEnemy.clearUpdateHandlers();
         	 slimeEnemy.removePhysics(physicsWorld, this);
-        	 pinguinAttack.clearEntityModifiers();
-        	 pinguinAttack.removePhysics(physicsWorld, this);
-        	 pinguinAttack.clearUpdateHandlers();
         	 hurt1.clearEntityModifiers();
         	 hurt1.detachSelf();
         	 hurt1.dispose();
@@ -514,24 +512,25 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
      **/
     private void loadLevel(int levelID)
     {
-    	final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
-        final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0, 0.01f, 0.5f);
-        levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(LevelConstants.TAG_LEVEL)
-	    {
-	        public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException 
-	        {
-	            final int width = SAXUtils.getIntAttributeOrThrow(pAttributes, LevelConstants.TAG_LEVEL_ATTRIBUTE_WIDTH);
-	            final int height = SAXUtils.getIntAttributeOrThrow(pAttributes, LevelConstants.TAG_LEVEL_ATTRIBUTE_HEIGHT);
-		        camera.setBounds(0, 0, width, height); // here we set camera bounds
-		        camera.setBoundsEnabled(true);
-		
-		        return GameScene.this;
-	        }
-        });
 
         // LOAD LEVEL 1 .......... (SNOW AND MOUNTAINS)
         if (levelID == 1)
         {
+        	final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
+            final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0, 0.01f, 0.5f);
+            levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(LevelConstants.TAG_LEVEL)
+    	    {
+    	        public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException 
+    	        {
+    	            final int width = SAXUtils.getIntAttributeOrThrow(pAttributes, LevelConstants.TAG_LEVEL_ATTRIBUTE_WIDTH);
+    	            final int height = SAXUtils.getIntAttributeOrThrow(pAttributes, LevelConstants.TAG_LEVEL_ATTRIBUTE_HEIGHT);
+    		        camera.setBounds(0, 0, width, height); // here we set camera bounds
+    		        camera.setBoundsEnabled(true);
+    		
+    		        return GameScene.this;
+    	        }
+            });
+            
         	levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(TAG_ENTITY)
 		    {
 		        public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException
@@ -691,15 +690,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    	
 	                    };
 	                    levelObject = slimeEnemy;
-	                }
-	                
-	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SLIME_ENEMY_ATTACK))
-	                {
-	                	pinguinAttack = new slimeEnemy(x, y, vbom, camera,  physicsWorld, ResourcesManager.getInstance().pinguinEnemyAttack)
-	                    {
-	                    };
-	                    pinguinAttack.setVisible(false);
-	                    levelObject = pinguinAttack;
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_LEVEL_COMPLETE))
@@ -935,21 +925,41 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                return levelObject;
 	            }
 	        });
+        	
+        	levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
         }
         
         // LOAD LEVEL 2 ......... (DESERT AND CACTUS)
         else if (levelID == 2)
         {
-        
+   
+        	final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
+            final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0, 0.01f, 0.5f);
+            levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(LevelConstants.TAG_LEVEL)
+    	    {
+    	        public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException 
+    	        {
+    	            final int width = SAXUtils.getIntAttributeOrThrow(pAttributes, LevelConstants.TAG_LEVEL_ATTRIBUTE_WIDTH);
+    	            final int height = SAXUtils.getIntAttributeOrThrow(pAttributes, LevelConstants.TAG_LEVEL_ATTRIBUTE_HEIGHT);
+    		        camera.setBounds(0, 0, width, height); // here we set camera bounds
+    		        camera.setBoundsEnabled(true);
+    		
+    		        return GameScene.this;
+    	        }
+            });
+            
         	levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(TAG_ENTITY)
 		    {
 		        public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException
 		        {
 		            final int x = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_X);
 		            final int y = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_Y);
+		            final int width = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_WIDTH);
+		            final int height = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_HEIGHT);
 		            final String type = SAXUtils.getAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_TYPE);
 		            
-		            Sprite levelObject;
+		            final Sprite levelObject;
+
 
 	                // --------------- PLATFORMS AND PLAYER ------------------------------------------------------------------------------------
 
@@ -959,6 +969,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("arrowLeft");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN))
@@ -980,6 +991,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                        }
 	                    };
 	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                    levelObject.setSize(width, height);
 	                } 
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN_GOLD))
@@ -1001,6 +1013,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                        }
 	                    };
 	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                    levelObject.setSize(width, height);
 	                } 
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN_BRONZE))
@@ -1022,6 +1035,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                        }
 	                    };
 	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                    levelObject.setSize(width, height);
 	                } 
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER))
@@ -1038,19 +1052,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                        }
 	                    };
 	                    levelObject = player;
+	                    levelObject.setSize(width, height);
 	                }
 	                
-	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_SPECIAL))
-	                {
-	                    playerSpecial = new PlayerSpecial(x, y, vbom, camera,  physicsWorld)
-	                    {
-	                        @Override
-	                        public void onDie()
-	                        {
-	                        }
-	                    };
-	                    levelObject = playerSpecial;
-	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_WATER_SYNTHETIC))
 	                {
@@ -1058,6 +1062,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("waterSynthetic");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BRIDGE))
@@ -1066,6 +1071,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("bridge");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CLIMBER))
@@ -1074,24 +1080,28 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("climber");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SWITCHER))
 	                {
 	                    switcher = new Switcher(x, y, vbom, camera,  physicsWorld);
 	                    levelObject = switcher;
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPRINGBOARDER))
 	                {
 	                    springboarder = new SpringBoarder(x, y, vbom, camera,  physicsWorld);
 	                    levelObject = springboarder;
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPRINGBOARDER2))
 	                {
 	                    springboarder2 = new SpringBoarder(x, y, vbom, camera,  physicsWorld);
 	                    levelObject = springboarder2;
+	                    levelObject.setSize(width, height);
 	                }
 	                       
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ARROW_RIGHT))
@@ -1100,6 +1110,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("arrowRight");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK))
@@ -1108,6 +1119,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("rock");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SAND))
@@ -1116,6 +1128,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("sand");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SAND_CENTER_ROUNDED))
@@ -1124,6 +1137,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("sandCenterRounded");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SAND_CENTER))
@@ -1132,6 +1146,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("sandCenter");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SAND_CLIFF_LEFT))
@@ -1140,6 +1155,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("sandCliffLeft");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SAND_CLIFF_LEFT_ALT))
@@ -1148,6 +1164,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("sandCliffLeftAlt");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SAND_HALF))
@@ -1156,6 +1173,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("sandHalf");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SHROOM))
@@ -1175,6 +1193,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                        }
 	                    };
 	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MUSHROOM))
@@ -1188,19 +1207,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                            if (player.collidesWith(this))
 	                            {
 	                                this.setVisible(false);
-	                                this.setIgnoreUpdate(true);
-	                                
-	                                // Do player invisible
-	                        		player.setVisible(false);
-	                        		playerSpecial.setPosition(player.getX(), player.getY());
-	                        		playerSpecial.time = player.time;
-	                        		playerSpecial.setRunning();
-	                        		playerSpecial.setVisible(true);
+	                                this.setIgnoreUpdate(true); 
 	                            }
 	                           
 	                        }
 	                    };
 	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_WALL))
@@ -1209,6 +1222,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("wall");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_HORSE))
@@ -1217,6 +1231,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("horse");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_THIN_PLATFORM))
@@ -1225,6 +1240,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("thinPlatform");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SMALL_PLATFORM))
@@ -1233,6 +1249,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("smallPlatform");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_BIG_PLATFORM))
@@ -1241,6 +1258,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("rockBigPlatform");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_HALF_BIG_PLATFORM))
@@ -1249,6 +1267,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("rockHalfBigPlatform");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_HALF_PLATFORM))
@@ -1257,6 +1276,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("rockHalfPlatform");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_VERTICAL_PLATFORM))
@@ -1265,6 +1285,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("rockVerticalPlatform");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_UP_LIMIT))
@@ -1273,6 +1294,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("upLimit");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRUDE))
@@ -1281,6 +1303,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("crude");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_OPAQUE))
@@ -1289,6 +1312,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("opaque");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COMPLEMENT))
@@ -1297,6 +1321,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("complement");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOMB))
@@ -1317,6 +1342,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                        }
 	                    };
 	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.1f)));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOX_EXPLOSIVE_ALT))
@@ -1325,6 +1351,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("boxExplosiveAlt");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOX_ITEM_ALT))
@@ -1333,6 +1360,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("boxItemAlt");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOX_WARNING))
@@ -1341,6 +1369,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("boxWarning");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CACTUS))
@@ -1349,6 +1378,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("cactus");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    levelObject.setSize(width, height);
 	                }
 
 	                else
@@ -1362,9 +1392,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	            }
 	        });
         	
+    		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
+        	
         }
         
-        levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
     }
     
 	@Override
@@ -1589,30 +1620,16 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	            	{
 	            		player.setSlimeColision(true);
 	            		ResourcesManager.getInstance().getPinguinSound().play();
-	            		
-	            		// Check enemys distance (Euclidian Distance) to player , and if is near do animation ...
-	            		float distance = player.body.getPosition().x - slimeEnemy.body.getPosition().x;
-	            		
-	            		// Distance must be positive value
-	            		if (distance < 0.0f) distance = -distance;
-	            		
-	            		if (distance < 7.5f)
-	            		{
-	            			slimeEnemy.setVisible(false);
-	            			pinguinAttack.setVisible(true);
-	            			pinguinAttack.setRunning();
-	            			
+
 	            			// Control Impulse and direction
 			            	if (player.body.getLinearVelocity().x > 0)
 			            	{
 			            		player.body.applyLinearImpulse(-50.0f, -20.0f, player.body.getPosition().x - 5, player.body.getPosition().y);
-			            		pinguinAttack.setFlippedHorizontal(true);
 			            	}
 			            	
 			            	else if (player.body.getLinearVelocity().x < 0)
 			            	{
 			            		player.body.applyLinearImpulse(50.0f, -20.0f, player.body.getPosition().x + 5, player.body.getPosition().y);
-			            		pinguinAttack.setFlippedHorizontal(false);
 
 			            	}
 			            	
@@ -1621,19 +1638,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 			            		
 			            		player.body.setLinearVelocity(player.body.getLinearVelocity().x, player.body.getLinearVelocity().y);
 			            	}
-	            			
-	            			engine.registerUpdateHandler(new TimerHandler(1.0f, new ITimerCallback()
-			                {                                    
-			                    public void onTimePassed(final TimerHandler pTimerHandler)
-			                    {
-			                        pTimerHandler.reset();
-			                        pinguinAttack.setVisible(false);
-			            			slimeEnemy.setVisible(true);
-			                        engine.unregisterUpdateHandler(pTimerHandler);
-			                    }
-			                }));
-
-	            		}
 	            		
 	            		player.life = player.life - 1;
                         if (player.life == 2) gameHUD.detachChild(hurt3);
@@ -1780,7 +1784,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
             	// ----------------------------- WATER-----------------------------------------------------------------------------
             	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("waterSynthetic"))
             	{
-            		displayGameOverText(1);
+            		displayGameOverText(2);
             	}
 
 	        }

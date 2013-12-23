@@ -6,7 +6,6 @@ import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
-import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import com.badlogic.gdx.physics.box2d.Body;
@@ -24,7 +23,7 @@ public abstract class PlayerSpecial extends AnimatedSprite
 	public Body body;
 	private boolean canRun = false;
 	public int impulse;
-	public int time;
+	public int time = 80;
 	public int life = 3;
 
 	
@@ -60,11 +59,6 @@ public abstract class PlayerSpecial extends AnimatedSprite
 	        {
 				super.onUpdate(pSecondsElapsed);
 				camera.onUpdate(0.1f);
-				
-				if (life == 0 || time <= 0 || getY() > 800 || getY() < 0)
-				{					
-					onDie();
-				}
 				
 	        }
 		});
