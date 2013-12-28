@@ -103,30 +103,19 @@ public class ResourcesManager
     public ITextureRegion arrowRight;
     public ITextureRegion rock;
     public ITextureRegion sand;
-    public ITextureRegion sandCenter_rounded;
-    public ITextureRegion sandCenter;
-    public ITextureRegion sandCliffLeft;
-    public ITextureRegion sandCliffLeftAlt;
     public ITextureRegion sandHalf;
     public ITextureRegion shroom;
     public ITextureRegion doorF;
     public ITextureRegion horse;
-    public ITextureRegion wall;
-    public ITextureRegion rockBigPlatform;
     public ITextureRegion rockHalfBigPlatform;
-    public ITextureRegion rockHalfPlatform;
-    public ITextureRegion rockVerticalPlatform;
-    public ITextureRegion techo;
     public ITextureRegion crudePlatform;
     public ITextureRegion opaquePlatform;
     public ITextureRegion complement;
-    public ITextureRegion climber;
-    public ITextureRegion bridge;
-    public ITextureRegion mushroom;
     public ITextureRegion thinPlatform;
     public ITextureRegion smallPlatform;
     public ITextureRegion greenPlatform;
     public ITextureRegion block;
+    public ITextureRegion tree;
     
     // --------------------------------------- COINS ---------------------------------------------------------------
     public ITextureRegion coin_silver;
@@ -383,23 +372,16 @@ public class ResourcesManager
      // --------------------------- PLATFORM/S LOADING-------------------------------------------------------------------------------------------------------
 
         sand = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "sand.png");
-        sandCenter_rounded = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "sandCenter_rounded.png");
-        sandCenter = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "sandCenter.png");
-        sandCliffLeft = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "sandCliffLeft.png");
-        sandCliffLeftAlt = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "sandCliffLeftAlt.png");
         sandHalf = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "sandHalf.png");
         horse = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "horse.png");
-        rockBigPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "rockBigPlatform.png");
         rockHalfBigPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "rockHalfBigPlatform.png");
-        rockHalfPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "rockHalfPlatform.png");
-        rockVerticalPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "rockVerticalPlatform.png");
-        techo = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "sost.png");
         crudePlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "crudePlatform.png");
         opaquePlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "opaquePlatform.png");
         thinPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "thinPlatform.png");
         smallPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "smallPlatform.png");
         greenPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "plat.png");
         block = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "block.png");
+        tree = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "tree.png");
         
      // --------------------------- BOXES AND OTHERS LOADING-------------------------------------------------------------------------------------------------------
         bomb = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bomb.png");
@@ -409,16 +391,12 @@ public class ResourcesManager
         cactus = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "cactus.png");
         complement = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "complement.png");
         shroom = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "shroom.png");
-        wall = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "wall.png");
         arrowLeft = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "arrow_left.png");
         arrowRight = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "arrow_right.png");
         rock = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "rock.png");
         switcher = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "switcher.png", 3, 1);
         springboarder = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "springboarder.png", 3, 1);
         waterSynthetic = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "water.png", 3, 1);
-        climber = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "climber.png");
-        bridge = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bridge.png");
-        mushroom = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "mushroom.png");
         
      // --------------------------- SHADERS TEXTURES-------------------------------------------------------------------------------------------------------
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/Shading_Textures/");
@@ -712,20 +690,10 @@ public class ResourcesManager
 	        arrowRight = null;
 	        rock = null;
 	        sand = null;
-	        sandCenter_rounded = null;
-	        sandCenter = null;
-	        sandCliffLeft = null;
-	        sandCliffLeftAlt = null;
 	        sandHalf = null;
 	        shroom = null;
-	        doorF = null;
 	        horse = null;
-	        wall = null;
-	        rockBigPlatform = null;
 	        rockHalfBigPlatform = null;
-	        rockHalfPlatform = null;
-	        rockVerticalPlatform = null;
-	        techo = null;
 	        crudePlatform = null;
 	        opaquePlatform = null;
 	        complement = null;
