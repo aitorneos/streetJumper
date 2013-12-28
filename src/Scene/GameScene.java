@@ -71,6 +71,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	private Text lifeText;
 	private Text timeText;
 	private int score = 0;
+	private boolean firstTouch = false;
 	private PhysicsWorld physicsWorld;
 	private boolean gameOverDisplayed = false;
 	private playTimer playT;
@@ -288,9 +289,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	         water.setVisible(true);
 	         water.setFlippedVertical(true);
 	         attachChild(water);
-	         
-	         // Activate Movement
-	         ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
 		 }
 		 
 		 else if (ResourcesManager.getInstance().getLevelComplete() == 2)
@@ -298,9 +296,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 			 player.setRunning();
 			 playerSpecial.setRunning();
 			 playerSpecial.body.setLinearVelocity(2.0f, 0.0f);
-			 
-			// Activate Movement
-	         ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
 		 }
     }
 
@@ -782,6 +777,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	   	        		                    }
 	   	        		                }));
 	                            	}
+	                            	
+	                            	firstTouch = false;
 	                            }
 	                        }
 	                    };
@@ -1076,6 +1073,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    body.setUserData("waterSynthetic");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
 	                    levelObject.setSize(width, height);
+	                    levelObject.setAlpha(0.6f);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TREE))
@@ -1321,6 +1319,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	@Override
 	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent)
 	{
+		if (firstTouch == false)
+		{
+			firstTouch = true;
+			ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
+		}
 		if (pSceneTouchEvent.isActionDown())
 	    {
 			player.jump();        
