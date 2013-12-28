@@ -125,6 +125,8 @@ public class ResourcesManager
     public ITextureRegion mushroom;
     public ITextureRegion thinPlatform;
     public ITextureRegion smallPlatform;
+    public ITextureRegion greenPlatform;
+    public ITextureRegion block;
     
     // --------------------------------------- COINS ---------------------------------------------------------------
     public ITextureRegion coin_silver;
@@ -396,6 +398,8 @@ public class ResourcesManager
         opaquePlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "opaquePlatform.png");
         thinPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "thinPlatform.png");
         smallPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "smallPlatform.png");
+        greenPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "plat.png");
+        block = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "block.png");
         
      // --------------------------- BOXES AND OTHERS LOADING-------------------------------------------------------------------------------------------------------
         bomb = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bomb.png");

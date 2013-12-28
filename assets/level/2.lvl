@@ -1,84 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <level width="3000" height="480">
 
-	<entity x="0" y="0" width="60" height="50" type="sand"/>
-	<entity x="60" y="0" width="60" height="50" type="sand"/>
-	<entity x="120" y="0" width="60" height="50" type="sand"/>
-	<entity x="180" y="0" width="60" height="50" type="sand"/>
-	<entity x="0" y="60" width="45" height="45" type="player"/>
-	<entity x="370" y="0" width="300" height="40" type="waterSynthetic"/>
-	<entity x="540" y="0" width="60" height="40" type="sand"/>
-	<entity x="300" y="130" width="50" height="50" type="smallPlatform"/>
-	<entity x="350" y="130" width="50" height="50" type="smallPlatform"/>
-	<entity x="400" y="130" width="50" height="50" type="smallPlatform"/>
-	<entity x="450" y="130" width="50" height="50" type="smallPlatform"/>
-	<entity x="530" y="150" width="160" height="160" type="crude"/>
-	<entity x="50" y="300" width="100" height="80" type="sandHalf"/>
-	<entity x="130" y="300" width="80" height="80" type="sandHalf"/>
-	<entity x="210" y="300" width="80" height="80" type="sandHalf"/>
-	<entity x="20" y="380" width="60" height="80" type="cactus"/>
-	<entity x="100" y="370" width="80" height="60" type="horse"/>
-	<entity x="210" y="380" width="60" height="60" type="coin_gold"/>
-	<entity x="270" y="380" width="60" height="60" type="coin_bronze"/>
-	<entity x="470" y="290" width="60" height="60" type="coin_gold"/>
-	<entity x="540" y="290" width="60" height="60" type="coin_bronze"/>
-	<entity x="610" y="290" width="60" height="60" type="coin"/>
-	<entity x="750" y="0" width="360" height="120" type="waterSynthetic"/>
-	<entity x="600" y="230" width="60" height="80" type="springboarder"/>
-	<entity x="950" y="220" width="60" height="150" type="thinPlatform"/>
-	<entity x="950" y="290" width="60" height="40" type="smallPlatform"/>
-	<entity x="660" y="400" width="60" height="40" type="smallPlatform"/>
-	<entity x="720" y="400" width="60" height="40" type="smallPlatform"/>
-	<entity x="780" y="400" width="60" height="40" type="smallPlatform"/>
-	<entity x="840" y="400" width="60" height="40" type="smallPlatform"/>
-	<entity x="900" y="400" width="60" height="40" type="smallPlatform"/>
-	<entity x="1300" y="260" width="80" height="60" type="sandCliffLeftAlt"/>
-	<entity x="1360" y="260" width="60" height="60" type="sand"/>
-	<entity x="1420" y="260" width="60" height="60" type="sand"/>
-	<entity x="1480" y="260" width="60" height="60" type="sand"/>
-	<entity x="1540" y="260" width="60" height="60" type="sand"/>
-	<entity x="1600" y="260" width="60" height="60" type="sand"/>
-	<entity x="1660" y="260" width="60" height="60" type="sand"/>
-	<entity x="1720" y="260" width="60" height="60" type="sand"/>
-	<entity x="1780" y="260" width="60" height="60" type="sand"/>
-	<entity x="1840" y="260" width="60" height="60" type="sand"/>
-	<entity x="1900" y="260" width="60" height="60" type="sand"/>
-	<entity x="1110" y="0" width="360" height="120" type="waterSynthetic"/>
-	<entity x="1460" y="0" width="340" height="120" type="waterSynthetic"/>
-	<entity x="1790" y="0" width="320" height="120" type="waterSynthetic"/>
-	<entity x="950" y="350" width="60" height="60" type="bomb"/>
-	<entity x="1280" y="320" width="60" height="60" type="coin_bronze"/>
-	<entity x="1340" y="320" width="60" height="60" type="coin_bronze"/>
-	<entity x="1400" y="320" width="60" height="60" type="coin_bronze"/>
-	<entity x="1460" y="320" width="60" height="60" type="coin_bronze"/>
-	<entity x="1520" y="345" width="60" height="100" type="cactus"/>
-	<entity x="1580" y="320" width="60" height="60" type="coin_bronze"/>
-	<entity x="1640" y="320" width="60" height="60" type="coin_bronze"/>
-	<entity x="1700" y="320" width="60" height="60" type="coin_bronze"/>
-	<entity x="1760" y="320" width="60" height="60" type="coin_gold"/>
-	<entity x="1820" y="320" width="60" height="60" type="coin_bronze"/>
-	<entity x="1880" y="320" width="60" height="60" type="coin_bronze"/>
-	<entity x="680" y="200" width="40" height="40" type="smallPlatform"/>
-	<entity x="720" y="200" width="40" height="40" type="smallPlatform"/>
-	<entity x="760" y="200" width="40" height="40" type="smallPlatform"/>
-	<entity x="800" y="200" width="40" height="40" type="smallPlatform"/>
-	<entity x="780" y="230" width="60" height="40" type="springboarder2"/>
-	<entity x="2100" y="260" width="120" height="140" type="opaque"/>
-	<entity x="2220" y="360" width="60" height="40" type="smallPlatform"/>
-	<entity x="2280" y="360" width="60" height="40" type="smallPlatform"/>
-	<entity x="2340" y="360" width="60" height="40" type="smallPlatform"/>
-	<entity x="2400" y="360" width="60" height="40" type="smallPlatform"/>
-	<entity x="2460" y="360" width="60" height="40" type="smallPlatform"/>
-	<entity x="2520" y="360" width="60" height="40" type="smallPlatform"/>
-	<entity x="2600" y="180" width="120" height="140" type="crude"/>
-	<entity x="2680" y="260" width="60" height="40" type="smallPlatform"/>
-	<entity x="2740" y="260" width="60" height="40" type="smallPlatform"/>
-	<entity x="2800" y="260" width="60" height="40" type="smallPlatform"/>
-	<entity x="2920" y="320" width="40" height="120" type="thinPlatform"/>
-	<entity x="2110" y="0" width="460" height="120" type="waterSynthetic"/>
-	<entity x="2500" y="0" width="400" height="120" type="waterSynthetic"/>
-	<entity x="2800" y="0" width="400" height="120" type="waterSynthetic"/>
-	<entity x="2300" y="420" width="40" height="80" type="cactus"/>
-	<entity x="2750" y="320" width="40" height="80" type="cactus"/>
+	<entity x="50" y="150" width="55" height="40" type="player"/>
+	<entity x="750" y="300" width="60" height="50" type="playerSpecial"/>
+	
+	<entity x="30" y="80" width="60" height="50" type="greenPlatform"/>
+	<entity x="110" y="80" width="60" height="50" type="greenPlatform"/>
+	<entity x="210" y="80" width="60" height="50" type="greenPlatform"/>
+	<entity x="310" y="80" width="60" height="50" type="greenPlatform"/>
+	
+	<entity x="30" y="10" width="60" height="50" type="block"/>
+	<entity x="110" y="10" width="60" height="50" type="block"/>
+	<entity x="210" y="10" width="60" height="50" type="block"/>
+	<entity x="310" y="10" width="60" height="50" type="block"/>
+	<entity x="30" y="35" width="60" height="50" type="block"/>
+	<entity x="110" y="35" width="60" height="50" type="block"/>
+	<entity x="210" y="35" width="60" height="50" type="block"/>
+	<entity x="310" y="35" width="60" height="50" type="block"/>
+	<entity x="30" y="60" width="60" height="50" type="block"/>
+	<entity x="110" y="60" width="60" height="50" type="block"/>
+	<entity x="210" y="60" width="60" height="50" type="block"/>
+	<entity x="310" y="60" width="60" height="50" type="block"/>
+	
+	<entity x="410" y="150" width="60" height="50" type="greenPlatform"/>
+	<entity x="510" y="150" width="60" height="50" type="greenPlatform"/>
+	<entity x="610" y="150" width="60" height="50" type="greenPlatform"/>
+	
+	<entity x="410" y="10" width="60" height="50" type="block"/>
+	<entity x="510" y="10" width="60" height="50" type="block"/>
+	<entity x="610" y="10" width="60" height="50" type="block"/>
+	<entity x="410" y="35" width="60" height="50" type="block"/>
+	<entity x="510" y="35" width="60" height="50" type="block"/>
+	<entity x="610" y="35" width="60" height="50" type="block"/>
+	<entity x="410" y="60" width="60" height="50" type="block"/>
+	<entity x="510" y="60" width="60" height="50" type="block"/>
+	<entity x="610" y="60" width="60" height="50" type="block"/>
+	<entity x="410" y="85" width="60" height="50" type="block"/>
+	<entity x="510" y="85" width="60" height="50" type="block"/>
+	<entity x="610" y="85" width="60" height="50" type="block"/>
+	<entity x="410" y="110" width="60" height="50" type="block"/>
+	<entity x="510" y="110" width="60" height="50" type="block"/>
+	<entity x="610" y="110" width="60" height="50" type="block"/>
+	<entity x="410" y="135" width="60" height="50" type="block"/>
+	<entity x="510" y="135" width="60" height="50" type="block"/>
+	<entity x="610" y="135" width="60" height="50" type="block"/>
+	
+	<entity x="750" y="50" width="60" height="50" type="sand"/>
+	<entity x="940" y="50" width="60" height="50" type="sand"/>
+	<entity x="1125" y="50" width="60" height="50" type="sand"/>
+	
+	<entity x="610" y="180" width="60" height="50" type="springboarder"/>
+	
+	<entity x="850" y="300" width="60" height="50" type="boxExposiveAlt"/>
+	<entity x="940" y="300" width="60" height="50" type="boxExposiveAlt"/>
+	<entity x="1050" y="300" width="60" height="50" type="boxExposiveAlt"/>
+	
+	<entity x="850" y="360" width="60" height="50" type="coin_gold"/>
+	<entity x="950" y="360" width="60" height="50" type="coin"/>
+	<entity x="1060" y="360" width="60" height="50" type="coin_gold"/>
+	
+	
 	
 </level>

@@ -60,6 +60,18 @@ public abstract class PlayerSpecial extends AnimatedSprite
 				super.onUpdate(pSecondsElapsed);
 				camera.onUpdate(0.1f);
 				
+				// Update enemy's movement
+				if (getX() >= 1125 && body.getLinearVelocity().x > 0)
+				{
+					setFlippedHorizontal(true);
+					body.setLinearVelocity(-2.0f, 0.0f);
+				}
+				
+				if (getX() <= 750 && body.getLinearVelocity().x < 0)
+				{
+					setFlippedHorizontal(false);
+					body.setLinearVelocity(2.0f, 0.0f);
+				}		
 	        }
 		});
 	}

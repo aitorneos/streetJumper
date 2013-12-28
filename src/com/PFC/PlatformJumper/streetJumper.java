@@ -82,7 +82,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
     	
     	 ResourcesManager.prepareManager(mEngine, this, camera, getVertexBufferObjectManager());
     	 resourcesManager = ResourcesManager.getInstance();
-    	 this.enableAccelerationSensor(this);
+    	 //this.enableAccelerationSensor(this);
     	 pOnCreateResourcesCallback.onCreateResourcesFinished();
         
     }
