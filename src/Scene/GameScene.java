@@ -310,6 +310,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 		 {
 			 player.setRunning();
 			 playerSpecial.setRunning();
+			 playerSpecial.body.setLinearVelocity(2.0f, 0.0f);
 			 
 			// Activate Movement
 	         ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
@@ -1087,7 +1088,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("waterSynthetic");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
-	                    //levelObject.setSize(width, height);
+	                    levelObject.setSize(width, height);
+	                    levelObject.setAlpha(0.4f);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BRIDGE))
@@ -1818,7 +1820,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
             	{
             		// Animate SpringBoarder texture
             		springboarder.setRunning();
-            		//springboarder2.setRunning();
+            		springboarder2.setRunning();
             		
             		// Apply a liniear (Y-axis) impulse to player (like jumping)
             		player.body.applyLinearImpulse(0.0f, 27.0f, player.body.getPosition().x, player.body.getPosition().y);
