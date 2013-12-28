@@ -152,6 +152,9 @@
 	<entity x="2500" y="150" width="60" height="50" type="greenPlatform"/>
 	<entity x="2600" y="150" width="60" height="50" type="greenPlatform"/>
 	<entity x="2700" y="150" width="60" height="50" type="greenPlatform"/>
+	<entity x="2800" y="150" width="60" height="50" type="greenPlatform"/>
+	<entity x="2900" y="150" width="60" height="50" type="greenPlatform"/>
+	<entity x="3000" y="150" width="60" height="50" type="greenPlatform"/>
 	
 	<entity x="2500" y="10" width="60" height="50" type="block"/>
 	<entity x="2600" y="10" width="60" height="50" type="block"/>
@@ -171,6 +174,23 @@
 	<entity x="2500" y="135" width="60" height="50" type="block"/>
 	<entity x="2600" y="135" width="60" height="50" type="block"/>
 	<entity x="2700" y="135" width="60" height="50" type="block"/>
-	
+	<entity x="2800" y="10" width="60" height="50" type="block"/>
+	<entity x="2800" y="35" width="60" height="50" type="block"/>
+	<entity x="2800" y="60" width="60" height="50" type="block"/>
+	<entity x="2800" y="85" width="60" height="50" type="block"/>
+	<entity x="2800" y="110" width="60" height="50" type="block"/>
+	<entity x="2800" y="135" width="60" height="50" type="block"/>
+	<entity x="2900" y="10" width="60" height="50" type="block"/>
+	<entity x="2900" y="35" width="60" height="50" type="block"/>
+	<entity x="2900" y="60" width="60" height="50" type="block"/>
+	<entity x="2900" y="85" width="60" height="50" type="block"/>
+	<entity x="2900" y="110" width="60" height="50" type="block"/>
+	<entity x="2900" y="135" width="60" height="50" type="block"/>
+	<entity x="3000" y="10" width="60" height="50" type="block"/>
+	<entity x="3000" y="35" width="60" height="50" type="block"/>
+	<entity x="3000" y="60" width="60" height="50" type="block"/>
+	<entity x="3000" y="85" width="60" height="50" type="block"/>
+	<entity x="3000" y="110" width="60" height="50" type="block"/>
+	<entity x="3000" y="135" width="60" height="50" type="block"/>
 	
 </level>
