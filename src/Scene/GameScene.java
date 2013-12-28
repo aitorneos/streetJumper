@@ -262,10 +262,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 		 {
 			 player.setRunning();
 			 enemy.setRunning();
-	         slimeEnemy.setRunning();
+	         //slimeEnemy.setRunning();
 	         // Set enemy's movement 
 	         enemy.body.setLinearVelocity(0.5f, 0.0f);
-	         slimeEnemy.body.setLinearVelocity(1.0f, 0.0f);
+	         //slimeEnemy.body.setLinearVelocity(1.0f, 0.0f);
  
 			// Put "font" snow raining
 			 ps = new waterParticleSystem();
@@ -305,16 +305,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
     @Override
     public void onBackKeyPressed()
     {
-    	if (ResourcesManager.getInstance().getLevelComplete() == 1) 
+    	if (ResourcesManager.getInstance().loading == false)
     	{
-    		disposeScene(1);
+    		if (ResourcesManager.getInstance().getLevelComplete() == 1) 
+        	{
+        		disposeScene(1);
+        	}
+        	else if (ResourcesManager.getInstance().getLevelComplete() == 2)
+        	{
+        		disposeScene(2);
+        	}
+        	SceneManager.getInstance().loadMenuScene(engine);
+        	ResourcesManager.getInstance().setLevelComplete(1);
     	}
-    	else if (ResourcesManager.getInstance().getLevelComplete() == 2)
-    	{
-    		disposeScene(2);
-    	}
-    	SceneManager.getInstance().loadMenuScene(engine);
-    	ResourcesManager.getInstance().setLevelComplete(1);
     }
 
     /**
@@ -388,9 +391,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
         	 enemy.clearEntityModifiers();
         	 enemy.clearUpdateHandlers();
         	 enemy.removePhysics(physicsWorld, this);
-        	 slimeEnemy.clearEntityModifiers();
-        	 slimeEnemy.clearUpdateHandlers();
-        	 slimeEnemy.removePhysics(physicsWorld, this);
         	 hurt1.clearEntityModifiers();
         	 hurt1.detachSelf();
         	 hurt1.dispose();

@@ -110,7 +110,7 @@
 	<entity x="1630" y="275" width="60" height="50" type="coin_gold"/>
 	<entity x="1680" y="275" width="60" height="50" type="coin_gold"/>
 	
-	<entity x="1700" y="50" width="590" height="300" type="waterSynthetic"/>
+	<entity x="1725" y="50" width="590" height="300" type="waterSynthetic"/>
 	<entity x="2250" y="50" width="590" height="300" type="waterSynthetic"/>
 	
 	

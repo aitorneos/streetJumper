@@ -52,6 +52,7 @@ public class ResourcesManager
     public IFont font;
     public IFont fontText;
     private int level = 1;
+    public boolean loading= false;
     
     //---------------------------------------------
     // TEXTURES & TEXTURE REGIONS
