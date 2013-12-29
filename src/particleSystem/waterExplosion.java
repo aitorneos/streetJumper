@@ -41,7 +41,7 @@ public class waterExplosion implements ParticleSystemFactory
 	    final float minRate = 80;
 
 	    //This variable determines the maximum particles in the particle system.
-	    final int maxParticles = 100;
+	    final int maxParticles = 30;
 
 	    //Particle emitter which will set all of the particles at a ertain point when they are initialized.
 	    final PointParticleEmitter pointParticleEmtitter = new PointParticleEmitter(particlesXSpawn, particlesYSpawn);
@@ -51,7 +51,7 @@ public class waterExplosion implements ParticleSystemFactory
 
 	    //And now, lets create the initiallizers and modifiers.
 	    //Velocity initiallizer - will pick a random velocity from -20 to 20 on the x & y axes. Play around with this value.
-	    particleSystem.addParticleInitializer(new VelocityParticleInitializer<Sprite>(-75, 75, -100, 100));
+	    particleSystem.addParticleInitializer(new VelocityParticleInitializer<Sprite>(-25, 25, 0, 150));
 
 	    //Acceleration initializer - gives all the particles the earth gravity (so they accelerate down).
 	    particleSystem.addParticleInitializer(new GravityParticleInitializer<Sprite>());

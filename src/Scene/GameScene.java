@@ -300,7 +300,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 			 playerSpecial.setRunning();
 			 playerSpecial.body.setLinearVelocity(2.0f, 0.0f);
 			 wp = new waterExplosion();
-			 waterEx = wp.build(engine, 1800 , 180);
+			 waterEx = wp.build(engine, 1800 , 150);
 		 }
     }
 
