@@ -12,6 +12,7 @@ import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.modifier.LoopEntityModifier;
 import org.andengine.entity.modifier.ScaleModifier;
+import org.andengine.entity.particle.SpriteParticleSystem;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
@@ -92,6 +93,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	waterParticleSystem ps3;
 	waterParticleSystem ps4;
 	FireParticleSystem explosion;
+	waterExplosion wp;
+	SpriteParticleSystem waterEx;
 	waterExplosion drop;
 	//private float playerVelocity = 0f;
 	
@@ -296,6 +299,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 			 player.setRunning();
 			 playerSpecial.setRunning();
 			 playerSpecial.body.setLinearVelocity(2.0f, 0.0f);
+			 wp = new waterExplosion();
+			 waterEx = wp.build(engine, 1800 , 180);
 		 }
     }
 
@@ -1709,7 +1714,38 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
             	{
             		displayGameOverText(2);
             	}
-
+            	
+            	// ----------------------------- BOXES -----------------------------------------------------------------------------
+            	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("boxWarning"))
+            	{
+            		engine.registerUpdateHandler(new TimerHandler(0.5f, new ITimerCallback()
+      		        {                                    
+							public void onTimePassed(final TimerHandler pTimerHandler)
+							{
+							    pTimerHandler.reset();
+							    engine.unregisterUpdateHandler(pTimerHandler);
+							    x2.getBody().setType(BodyType.DynamicBody);
+							}
+      		      }));
+            	}
+            	
+            	// ----------------------------- CHAPUZÓN (BOX - WATER) -----------------------------------------------------------------------------
+            	if ((x1.getBody().getUserData().equals("boxWarning") && x2.getBody().getUserData().equals("waterSynthetic")) || (x1.getBody().getUserData().equals("waterSynthetic") && x2.getBody().getUserData().equals("boxWarning")) )
+            	{
+            		//float fontX = x2.getBody().getPosition().x;
+            		//float fontY = x2.getBody().getPosition().y;
+            		attachChild (waterEx);
+            		engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+      		        {                                    
+							public void onTimePassed(final TimerHandler pTimerHandler)
+							{
+							    pTimerHandler.reset();
+							    engine.unregisterUpdateHandler(pTimerHandler);
+							    detachChild(waterEx);
+							}
+      		      }));
+            	}
+            	
 	        }
 
 	        // END CONTACT COLISION BETWEEN PLAYER AND ANY OF PHYSICS SCENE OBJECT
@@ -1811,7 +1847,23 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    }
 	                }));
 	            }
+	            
+	            // ------------------------------ LEVEL 2 ------------------------------------------------------------------------
+	            // ------------------------------ BOXES --------------------------------------------------------------------------
+	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("rockHalfBigPlatform"))
+            	{
+            		  engine.registerUpdateHandler(new TimerHandler(0.5f, new ITimerCallback()
+        		      {                                    
+							public void onTimePassed(final TimerHandler pTimerHandler)
+							{
+							    pTimerHandler.reset();
+							    engine.unregisterUpdateHandler(pTimerHandler);
+							    x2.getBody().setType(BodyType.DynamicBody);
+							}
+        		    }));
+            	}
 	        }
+	        
 
 			
 	        public void preSolve(Contact contact, Manifold oldManifold)

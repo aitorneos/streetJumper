@@ -10,7 +10,7 @@ public interface ParticleSystemFactory
 {
         public void load(Context context, Engine engine);
         
-        public ParticleSystem<Sprite> build(Engine engine, int fontX, int fontY);
+        public ParticleSystem<Sprite> build(Engine engine, float fontX, float fontY);
         
         public String getTitle();
 }

@@ -29,12 +29,12 @@ public class waterExplosion implements ParticleSystemFactory
     }
     
     @Override
-    public SpriteParticleSystem build(Engine engine, int fontX, int fontY)
+    public SpriteParticleSystem build(Engine engine, float fontX, float fontY)
     {
 
         //X & Y for the particles to spawn at.
-	    final int particlesXSpawn = fontX;
-	    final int particlesYSpawn = fontY;
+	    final float particlesXSpawn = fontX;
+	    final float particlesYSpawn = fontY;
 
 	    //Max & min rate are the maximum particles per second and the minimum particles per second.
 	    final float maxRate = 100;
@@ -51,7 +51,7 @@ public class waterExplosion implements ParticleSystemFactory
 
 	    //And now, lets create the initiallizers and modifiers.
 	    //Velocity initiallizer - will pick a random velocity from -20 to 20 on the x & y axes. Play around with this value.
-	    particleSystem.addParticleInitializer(new VelocityParticleInitializer<Sprite>(-80, 80, -80, 80));
+	    particleSystem.addParticleInitializer(new VelocityParticleInitializer<Sprite>(-75, 75, -100, 100));
 
 	    //Acceleration initializer - gives all the particles the earth gravity (so they accelerate down).
 	    particleSystem.addParticleInitializer(new GravityParticleInitializer<Sprite>());
@@ -60,7 +60,7 @@ public class waterExplosion implements ParticleSystemFactory
 	    particleSystem.addParticleModifier(new AlphaParticleModifier<Sprite>(1, 0, 0, 0));
 
 	    //Lastly, expire modifier. Make particles die after 3 seconds - their alpha reached 0.
-	    particleSystem.addParticleInitializer(new ExpireParticleInitializer<Sprite>(2));  
+	    particleSystem.addParticleInitializer(new ExpireParticleInitializer<Sprite>(3));  
 
 	    return particleSystem;
 }

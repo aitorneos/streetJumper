@@ -27,7 +27,7 @@ public class waterParticleSystem implements ParticleSystemFactory
     }
     
     @Override
-    public SpriteParticleSystem build(Engine engine, int fontX, int fontY)
+    public SpriteParticleSystem build(Engine engine, float fontX, float fontY)
     {
 
         //X & Y for the particles to spawn at.
