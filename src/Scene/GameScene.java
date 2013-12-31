@@ -392,10 +392,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
         	 // ---------------------------------------------- SPRITES -------------------------------------------------------------------
         	 player.clearEntityModifiers();
         	 player.clearUpdateHandlers();
-        	 player.removePhysics(physicsWorld, this);
+        	 //player.removePhysics(physicsWorld, this);
         	 enemy.clearEntityModifiers();
         	 enemy.clearUpdateHandlers();
-        	 enemy.removePhysics(physicsWorld, this);
+        	 //enemy.removePhysics(physicsWorld, this);
         	 hurt1.clearEntityModifiers();
         	 hurt1.detachSelf();
         	 hurt1.dispose();
@@ -1351,7 +1351,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 		 gameHUD.clearEntityModifiers();
 		 gameHUD.clearTouchAreas();
 		 gameHUD.clearUpdateHandlers();
-		 ResourcesManager.getInstance().getDieSound().play();
 		 disposeScene(levelID);
 		 
 		 // Write the message
