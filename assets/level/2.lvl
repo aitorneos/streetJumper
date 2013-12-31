@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <level width="3000" height="480">
 
-	<entity x="50" y="150" width="55" height="40" type="player"/>
-	<entity x="750" y="300" width="60" height="50" type="playerSpecial"/>
+	<entity x="50" y="150" width="75" height="75" type="player"/>
+	<entity x="750" y="300" width="75" height="75" type="playerSpecial"/>
 	
 	<entity x="30" y="80" width="60" height="50" type="greenPlatform"/>
 	<entity x="110" y="80" width="60" height="50" type="greenPlatform"/>

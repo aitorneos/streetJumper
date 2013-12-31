@@ -1430,13 +1430,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 		            	if (player.body.getLinearVelocity().x > 0)
 		            	{
 		            		player.body.setLinearVelocity(-20, 0);
-		            		player.body.applyLinearImpulse(-20.0f, 20.0f, player.body.getPosition().x - 5, player.body.getPosition().y);
+		            		player.body.applyLinearImpulse(-30.0f, 10.0f, player.body.getPosition().x - 20, player.body.getPosition().y);
 		            	}
 		            	
 		            	else if (player.body.getLinearVelocity().x < 0)
 		            	{
 		            		player.body.setLinearVelocity(20, 0);
-		            		player.body.applyLinearImpulse(20.0f, 20.0f, player.body.getPosition().x + 5, player.body.getPosition().y);
+		            		player.body.applyLinearImpulse(30.0f, 10.0f, player.body.getPosition().x + 20, player.body.getPosition().y);
 
 		            	}
 		            	
@@ -1730,7 +1730,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
             	}
             	
             	// ----------------------------- CHAPUZÓN (BOX - WATER) -----------------------------------------------------------------------------
-            	if ((x1.getBody().getUserData().equals("boxWarning") && x2.getBody().getUserData().equals("waterSynthetic")) || (x1.getBody().getUserData().equals("waterSynthetic") && x2.getBody().getUserData().equals("boxWarning")) )
+            	if (x1.getBody().getUserData().equals("waterSynthetic") && x2.getBody().getUserData().equals("boxWarning"))
             	{
             		//float fontX = x2.getBody().getPosition().x;
             		//float fontY = x2.getBody().getPosition().y;

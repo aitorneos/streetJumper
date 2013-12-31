@@ -52,7 +52,7 @@ public class FireParticleSystem implements ParticleSystemFactory
 	    particleSystem.addParticleInitializer(new GravityParticleInitializer<Sprite>());
 
 	    //And now, adding an alpha modifier, so particles slowly fade out. This makes a particle go from alpha = 1 to alpha = 0 in 3 seconds, starting exactly when the particle is spawned.
-	    particleSystem.addParticleModifier(new AlphaParticleModifier<Sprite>(1, 0, 0, 0));
+	    //particleSystem.addParticleModifier(new AlphaParticleModifier<Sprite>(1, 0, 0, 0));
 
 	    //Lastly, expire modifier. Make particles die after 3 seconds - their alpha reached 0.
 	    particleSystem.addParticleInitializer(new ExpireParticleInitializer<Sprite>(1.5f));  
