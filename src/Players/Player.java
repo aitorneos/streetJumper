@@ -36,6 +36,7 @@ public abstract class Player extends AnimatedSprite
 	private boolean stopAccelerometer;
 	private boolean colideAscensor;
 	private boolean waterColision;
+	private boolean boxTouched;
 
 	
 	// ---------------------------------------------
@@ -53,6 +54,7 @@ public abstract class Player extends AnimatedSprite
 		stopAccelerometer = false;
 		colideAscensor = false;
 		waterColision = false;
+		boxTouched = false;
 		footContacts = 0;
 		impulse = 0;
 		createPhysics(camera, physicsWorld);
@@ -221,6 +223,16 @@ public abstract class Player extends AnimatedSprite
 	public void setWaterColision(boolean col)
 	{
 		this.waterColision = col;
+	}
+	
+	public boolean getBoxColision()
+	{
+		return (this.boxTouched);
+	}
+	
+	public void setBoxColision(boolean box)
+	{
+		this.boxTouched = box;
 	}
 	
 	

@@ -558,6 +558,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                        }
 	                    };
 	                    levelObject = player;
+	                    levelObject.setSize(60, 60);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SNOW_HILL))
@@ -1733,16 +1734,20 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
             	{
             		//float fontX = x2.getBody().getPosition().x;
             		//float fontY = x2.getBody().getPosition().y;
-            		attachChild (waterEx);
-            		engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
-      		        {                                    
-							public void onTimePassed(final TimerHandler pTimerHandler)
-							{
-							    pTimerHandler.reset();
-							    engine.unregisterUpdateHandler(pTimerHandler);
-							    detachChild(waterEx);
-							}
-      		      }));
+            		if (player.getBoxColision() == false)
+            		{
+            			player.setBoxColision(true);
+            			attachChild (waterEx);
+                		engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+          		        {                                    
+    							public void onTimePassed(final TimerHandler pTimerHandler)
+    							{
+    							    pTimerHandler.reset();
+    							    engine.unregisterUpdateHandler(pTimerHandler);
+    							    detachChild(waterEx);
+    							}
+          		      }));
+            		}
             	}
             	
 	        }

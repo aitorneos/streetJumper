@@ -17,14 +17,14 @@
     <entity x="1050" y="430" type="doorClosedMid"/>
     <entity x="1200" y="100" type="doorClosedGreen"/>
     <entity x="910" y="120" type="platform2"/>
-    <entity x="305" y="182" type="stalactitaLeft"/>
-    <entity x="315" y="190" type="stalactitaRight"/>
-    <entity x="325" y="182" type="stalactitaLeft"/>
-    <entity x="335" y="190" type="stalactitaRight"/>
-    <entity x="345" y="182" type="stalactitaLeft"/>
-    <entity x="355" y="190" type="stalactitaRight"/>
-    <entity x="365" y="182" type="stalactitaLeft"/>
-    <entity x="375" y="190" type="stalactitaRight"/>
+    <entity x="305" y="192" type="stalactitaLeft"/>
+    <entity x="315" y="200" type="stalactitaRight"/>
+    <entity x="325" y="192" type="stalactitaLeft"/>
+    <entity x="335" y="200" type="stalactitaRight"/>
+    <entity x="345" y="192" type="stalactitaLeft"/>
+    <entity x="355" y="200" type="stalactitaRight"/>
+    <entity x="365" y="192" type="stalactitaLeft"/>
+    <entity x="375" y="200" type="stalactitaRight"/>
     <entity x="20" y="40" type="castleHalf"/>
     <entity x="90" y="40" type="castleHalf"/>
     <entity x="160" y="40" type="castleHalf"/>
