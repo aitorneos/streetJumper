@@ -64,7 +64,7 @@ public class Switcher extends AnimatedSprite
 	{
 		canRun = true;
 	    final long[] ENEMY_ANIMATE = new long[] { 150, 150, 150 };       
-	    animate(ENEMY_ANIMATE, 0, 2, true);
+	    animate(ENEMY_ANIMATE, 0, 2, false);
 	}
 	
 

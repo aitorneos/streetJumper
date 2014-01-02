@@ -47,7 +47,6 @@ import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
 import ResourcesManagment.SceneManager.SceneType;
 import Scene.LevelCompleteWindow.StarsCount;
-import Shader.RadialBlur;
 import Shader.WaterMaskEffectShader;
 import Timers.playTimer;
 
@@ -236,6 +235,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 		 createHUD();
 		 createPhysics();
 		 levelCompleteWindow = new LevelCompleteWindow(vbom);
+		 if (ResourcesManager.getInstance().getLevelComplete() == 2) switcher = new Switcher(2900, 200, vbom, camera,  physicsWorld);
 		 loadLevel(ResourcesManager.getInstance().getLevelComplete());
 		 setOnSceneTouchListener(this);
 		 ResourcesManager.getInstance().getSceneMusic().play();
@@ -259,10 +259,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 		 {
 			 player.setRunning();
 			 enemy.setRunning();
-	         //slimeEnemy.setRunning();
-	         // Set enemy's movement 
 	         enemy.body.setLinearVelocity(0.5f, 0.0f);
-	         //slimeEnemy.body.setLinearVelocity(1.0f, 0.0f);
  
 			// Put "font" snow raining
 			 ps = new waterParticleSystem();
@@ -295,12 +292,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 			 playerSpecial.body.setLinearVelocity(2.0f, 0.0f);
 			 wp = new waterExplosion();
 			 waterEx = wp.build(engine, 1800 , 150);
-			 
-			 // create Cartoon Shader
-			 /*cartoon = new Sprite(75, 400, ResourcesManager.getInstance().sun, vbom);
-			 engine.getShaderProgramManager().loadShaderProgram(RadialBlur.getShaderProgram());
-	         cartoon.setShaderProgram(RadialBlur.getShaderProgram());
-	         attachChild(cartoon);*/
 		 }
     }
 
@@ -1125,8 +1116,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SWITCHER))
 	                {
-	                    switcher = new Switcher(x, y, vbom, camera,  physicsWorld);
 	                    levelObject = switcher;
+	                    levelObject.setVisible(false);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("switcher");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
 	                    //levelObject.setSize(width, height);
 	                }
 	                
@@ -1660,6 +1654,17 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 							    x2.getBody().setType(BodyType.DynamicBody);
 							}
       		      }));
+            	}
+            	
+            	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("boxItemAlt"))
+            	{
+            		switcher.setVisible(true);
+            	}
+            	
+            	// ----------------------------- SWITCHER -----------------------------------------------------------------------------
+            	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("switcher"))
+            	{
+            		switcher.setRunning();
             	}
             	
             	// ----------------------------- CHAPUZÓN (BOX - WATER) -----------------------------------------------------------------------------

@@ -3,6 +3,7 @@
 
 	<entity x="50" y="150" width="75" height="75" type="player"/>
 	<entity x="750" y="300" width="75" height="75" type="playerSpecial"/>
+	<entity x="3000" y="200" width="75" height="75" type="switcher"/>
 	
 	<entity x="30" y="80" width="60" height="50" type="greenPlatform"/>
 	<entity x="110" y="80" width="60" height="50" type="greenPlatform"/>
@@ -209,5 +210,12 @@
 	<entity x="3000" y="85" width="60" height="50" type="block"/>
 	<entity x="3000" y="110" width="60" height="50" type="block"/>
 	<entity x="3000" y="135" width="60" height="50" type="block"/>
+	
+	<entity x="210" y="105" width="60" height="50" type="rock"/>
+	<entity x="280" y="105" width="60" height="50" type="rock"/>
+	<entity x="510" y="175" width="60" height="50" type="rock"/>
+	<entity x="2350" y="360" width="60" height="50" type="rock"/>
+	
+	<entity x="2800" y="350" width="60" height="50" type="boxItemAlt"/>
 	
 </level>
