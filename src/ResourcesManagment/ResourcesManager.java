@@ -101,22 +101,14 @@ public class ResourcesManager
     public ITextureRegion platform_dirtRight_region;
     public ITextureRegion platform_dirtHalf_region;
     public ITextureRegion arrowLeft;
-    public ITextureRegion arrowRight;
     public ITextureRegion rock;
     public ITextureRegion sand;
-    public ITextureRegion sandHalf;
-    public ITextureRegion shroom;
     public ITextureRegion doorF;
-    public ITextureRegion horse;
-    public ITextureRegion rockHalfBigPlatform;
-    public ITextureRegion crudePlatform;
-    public ITextureRegion opaquePlatform;
-    public ITextureRegion complement;
-    public ITextureRegion thinPlatform;
-    public ITextureRegion smallPlatform;
     public ITextureRegion greenPlatform;
+    public ITextureRegion rockHalfBigPlatform;
     public ITextureRegion block;
     public ITextureRegion tree;
+    public ITextureRegion sun;
     
     // --------------------------------------- COINS ---------------------------------------------------------------
     public ITextureRegion coin_silver;
@@ -371,15 +363,6 @@ public class ResourcesManager
         
         
      // --------------------------- PLATFORM/S LOADING-------------------------------------------------------------------------------------------------------
-
-        sand = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "sand.png");
-        sandHalf = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "sandHalf.png");
-        horse = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "horse.png");
-        rockHalfBigPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "rockHalfBigPlatform.png");
-        crudePlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "crudePlatform.png");
-        opaquePlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "opaquePlatform.png");
-        thinPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "thinPlatform.png");
-        smallPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "smallPlatform.png");
         greenPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "plat.png");
         block = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "block.png");
         tree = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "tree.png");
@@ -390,29 +373,25 @@ public class ResourcesManager
         boxItemAlt = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "boxItemAlt.png");
         boxWarning = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "boxWarning.png");
         cactus = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "cactus.png");
-        complement = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "complement.png");
-        shroom = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "shroom.png");
         arrowLeft = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "arrow_left.png");
-        arrowRight = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "arrow_right.png");
         rock = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "rock.png");
         switcher = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "switcher.png", 3, 1);
         springboarder = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "springboarder.png", 3, 1);
         waterSynthetic = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "water.png", 3, 1);
         waterDrop = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "waterDropTexture.png");
+        sun = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "sun.png");
+        sand = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "sand.png");
+        rockHalfBigPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "rockHalfBigPlatform.png");
         
-     // --------------------------- SHADERS TEXTURES-------------------------------------------------------------------------------------------------------
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/Shading_Textures/");
-        waterShader = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "water4.png");
         
      // --------------------------- LEVEL 1 HUD LOADING-------------------------------------------------------------------------------------------------------
         
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level1/");
-        keyHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyYellow.png");
-        keyGreenHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyGreen.png");
-        hurtHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "heart.png");
         coin_silver = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin_silver.png");
         coin_gold = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin_gold.png");
         coin_bronze = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin_bronze.png");
+        keyHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyYellow.png");
+        keyGreenHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyGreen.png");
         
         // --------------------------- PLAYER SELECTION LOADING-------------------------------------------------------------------------------------------------------
         
@@ -685,25 +664,26 @@ public class ResourcesManager
     		gameTextureAtlas.unload();
         	gameTextureAtlas.clearTextureAtlasSources();
         	player_region = null;
+        	playerSecondary = null;
         	coin_silver = null;
         	coin_bronze = null;
         	coin_gold = null;
 	    	arrowLeft = null;
-	        arrowRight = null;
 	        rock = null;
 	        sand = null;
-	        sandHalf = null;
-	        shroom = null;
-	        horse = null;
 	        rockHalfBigPlatform = null;
-	        crudePlatform = null;
-	        opaquePlatform = null;
-	        complement = null;
 	        bomb = null;
 	        boxExplosiveAlt = null;
 	        boxItemAlt = null;
 	        boxWarning = null;
 	        cactus = null;
+	        block = null;
+	        greenPlatform = null;
+	        rockHalfBigPlatform = null;
+	        sun = null;
+	        tree = null;
+	        waterSynthetic = null;
+	        starHUD = null;
     	}
     	
     }

@@ -47,6 +47,7 @@ import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
 import ResourcesManagment.SceneManager.SceneType;
 import Scene.LevelCompleteWindow.StarsCount;
+import Shader.RadialBlur;
 import Shader.WaterMaskEffectShader;
 import Timers.playTimer;
 
@@ -142,6 +143,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	 final Sprite keyG = new Sprite(65, 340, resourcesManager.keyGreenHUD, vbom);
 	 final Sprite key = new Sprite(30, 340, resourcesManager.keyHUD, vbom);
 	 Sprite water;
+	 Sprite cartoon;
 	 Sprite kY;
 	 Sprite kG;
 	 private boolean playSound = false;
@@ -150,16 +152,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	 
 	 // ---------------------------- LEVEL_2 VARIABLES ---------------------------------------------------------------
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ARROW_LEFT = "arrowLeft";
-	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ARROW_RIGHT = "arrowRight";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK = "rock";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SAND = "sand";
-	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SAND_HALF = "sandHalf";
-	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SHROOM = "shroom";
-	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_HORSE = "horse";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_HALF_BIG_PLATFORM = "rockHalfBigPlatform";
-	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRUDE = "crude";
-	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_OPAQUE = "opaque";
-	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COMPLEMENT = "complement";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOMB = "bomb";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOX_EXPLOSIVE_ALT = "boxExposiveAlt";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOX_ITEM_ALT = "boxItemAlt";
@@ -169,12 +164,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPRINGBOARDER = "springboarder";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPRINGBOARDER2 = "springboarder2";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_WATER_SYNTHETIC = "waterSynthetic";
-	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_THIN_PLATFORM = "thinPlatform";
-	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SMALL_PLATFORM = "smallPlatform";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GREEN_PLATFORM = "greenPlatform";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BLOCK = "block";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TREE = "tree";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_SPECIAL = "playerSpecial";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SUN = "sun";
 	 
 	 Text nBombs = new Text(40, 300, resourcesManager.font, "+ 1", new TextOptions(HorizontalAlign.LEFT), vbom);
 	
@@ -301,6 +295,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 			 playerSpecial.body.setLinearVelocity(2.0f, 0.0f);
 			 wp = new waterExplosion();
 			 waterEx = wp.build(engine, 1800 , 150);
+			 
+			 // create Cartoon Shader
+			 /*cartoon = new Sprite(75, 400, ResourcesManager.getInstance().sun, vbom);
+			 engine.getShaderProgramManager().loadShaderProgram(RadialBlur.getShaderProgram());
+	         cartoon.setShaderProgram(RadialBlur.getShaderProgram());
+	         attachChild(cartoon);*/
 		 }
     }
 
@@ -392,7 +392,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
         	 // ---------------------------------------------- SPRITES -------------------------------------------------------------------
         	 player.clearEntityModifiers();
         	 player.clearUpdateHandlers();
-        	 //player.removePhysics(physicsWorld, this);
+        	 player.removePhysics(physicsWorld, this);
         	 enemy.clearEntityModifiers();
         	 enemy.clearUpdateHandlers();
         	 //enemy.removePhysics(physicsWorld, this);
@@ -445,6 +445,23 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
         	 gameHUD.detachChildren();
         	 gameHUD.detachSelf();
         	 gameHUD.dispose(); 
+        	 
+        	 hurt1.clearEntityModifiers();
+        	 hurt1.detachSelf();
+        	 hurt1.dispose();
+        	 hurt2.clearEntityModifiers();
+        	 hurt2.detachSelf();
+        	 hurt2.dispose();
+        	 hurt3.clearEntityModifiers();
+        	 hurt3.detachSelf();
+        	 hurt3.dispose();
+        	 
+        	// ------------------------------------------ PLAYERS -----------------------------------------------------------------------
+        	 player.clearEntityModifiers();
+        	 player.clearUpdateHandlers();
+        	 player.removePhysics(physicsWorld, this);
+        	 playerSpecial.clearEntityModifiers();
+        	 playerSpecial.clearUpdateHandlers();
         	 
         	// ------------------------------------------ TEXT ---------------------------------------------------------------------
         	 scoreText.clearEntityModifiers();
@@ -1090,6 +1107,22 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
 	                }
 	                
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SAND))
+	                {
+	                	levelObject = new Sprite(x, y, resourcesManager.sand, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("sand");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                }
+	                
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_HALF_BIG_PLATFORM))
+	                {
+	                	levelObject = new Sprite(x, y, resourcesManager.rockHalfBigPlatform, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("rockHalfBigPlatform");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                }
+	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SWITCHER))
 	                {
 	                    switcher = new Switcher(x, y, vbom, camera,  physicsWorld);
@@ -1111,14 +1144,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    //levelObject.setSize(width, height);
 	                }
 	                       
-	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ARROW_RIGHT))
-	                {
-	                    levelObject = new Sprite(x, y, resourcesManager.arrowRight, vbom);
-	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
-	                    body.setUserData("arrowRight");
-	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
-	                    //levelObject.setSize(width, height);
-	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK))
 	                {
@@ -1129,96 +1154,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    //levelObject.setSize(width, height);
 	                }
 	                
-	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SAND))
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SUN))
 	                {
-	                    levelObject = new Sprite(x, y, resourcesManager.sand, vbom);
+	                    levelObject = new Sprite(x, y, resourcesManager.sun, vbom);
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
-	                    body.setUserData("sand");
+	                    body.setUserData("sun");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
-	                    //levelObject.setSize(width, height);
-	                }
-	                
-	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SAND_HALF))
-	                {
-	                    levelObject = new Sprite(x, y, resourcesManager.sandHalf, vbom);
-	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
-	                    body.setUserData("sandHalf");
-	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
-	                    //levelObject.setSize(width, height);
-	                }
-	                
-	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SHROOM))
-	                {
-	                	levelObject = new Sprite(x, y, resourcesManager.shroom, vbom)
-	                    {
-	                        @Override
-	                        protected void onManagedUpdate(float pSecondsElapsed) 
-	                        {
-	                            super.onManagedUpdate(pSecondsElapsed);
-	                            if (player.collidesWith(this))
-	                            {
-	                                this.setVisible(false);
-	                                this.setIgnoreUpdate(true);
-	                            }
-	                           
-	                        }
-	                    };
-	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
-	                    //levelObject.setSize(width, height);
-	                }
-	                
-	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_HORSE))
-	                {
-	                    levelObject = new Sprite(x, y, resourcesManager.horse, vbom);
-	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
-	                    body.setUserData("horse");
-	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
-	                    //levelObject.setSize(width, height);
-	                }
-	                
-	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_THIN_PLATFORM))
-	                {
-	                    levelObject = new Sprite(x, y, resourcesManager.thinPlatform, vbom);
-	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
-	                    body.setUserData("thinPlatform");
-	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
-	                    //levelObject.setSize(width, height);
-	                }
-	                
-	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SMALL_PLATFORM))
-	                {
-	                    levelObject = new Sprite(x, y, resourcesManager.smallPlatform, vbom);
-	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
-	                    body.setUserData("smallPlatform");
-	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
-	                    //levelObject.setSize(width, height);
-	                }
-	                
-	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_HALF_BIG_PLATFORM))
-	                {
-	                    levelObject = new Sprite(x, y, resourcesManager.rockHalfBigPlatform, vbom);
-	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
-	                    body.setUserData("rockHalfBigPlatform");
-	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
-	                    //levelObject.setSize(width, height);
-	                }
-	                
-	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRUDE))
-	                {
-	                    levelObject = new Sprite(x, y, resourcesManager.crudePlatform, vbom);
-	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
-	                    body.setUserData("crude");
-	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
-	                    //levelObject.setSize(width, height);
-	                }
-
-	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_OPAQUE))
-	                {
-	                    levelObject = new Sprite(x, y, resourcesManager.opaquePlatform, vbom);
-	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
-	                    body.setUserData("opaque");
-	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
-	                    //levelObject.setSize(width, height);
+	                    levelObject.setSize(100, 100);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GREEN_PLATFORM))
@@ -1235,15 +1177,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    levelObject = new Sprite(x, y, resourcesManager.block, vbom);
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("block");
-	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
-	                    //levelObject.setSize(width, height);
-	                }
-
-	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COMPLEMENT))
-	                {
-	                    levelObject = new Sprite(x, y, resourcesManager.complement, vbom);
-	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
-	                    body.setUserData("complement");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
 	                    //levelObject.setSize(width, height);
 	                }
