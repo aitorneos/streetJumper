@@ -43,7 +43,7 @@ public class Switcher extends AnimatedSprite
 	private void createPhysics(final Camera camera, final PhysicsWorld physicsWorld)
 	{		
 		
-		body = PhysicsFactory.createBoxBody(physicsWorld, this, BodyType.DynamicBody, PhysicsFactory.createFixtureDef(0, 0, 0));
+		body = PhysicsFactory.createBoxBody(physicsWorld, this, BodyType.KinematicBody, PhysicsFactory.createFixtureDef(0, 0, 0));
 
 		body.setUserData("switcher");
 		body.setFixedRotation(true);

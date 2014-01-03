@@ -85,6 +85,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	public PlayerSpecial playerSpecial;
 	private Enemy enemy;
 	private Switcher switcher;
+	private Switcher switcher2;
 	private SpringBoarder springboarder;
 	private SpringBoarder springboarder2;
 	private slimeEnemy slimeEnemy;
@@ -160,6 +161,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOX_WARNING = "boxWarning";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CACTUS = "cactus";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SWITCHER = "switcher";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SWITCHER2 = "switcher2";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPRINGBOARDER = "springboarder";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPRINGBOARDER2 = "springboarder2";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_WATER_SYNTHETIC = "waterSynthetic";
@@ -235,7 +237,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 		 createHUD();
 		 createPhysics();
 		 levelCompleteWindow = new LevelCompleteWindow(vbom);
-		 if (ResourcesManager.getInstance().getLevelComplete() == 2) switcher = new Switcher(2900, 200, vbom, camera,  physicsWorld);
 		 loadLevel(ResourcesManager.getInstance().getLevelComplete());
 		 setOnSceneTouchListener(this);
 		 ResourcesManager.getInstance().getSceneMusic().play();
@@ -1080,6 +1081,108 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                }
 	                
 	                
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_LEVEL_COMPLETE))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.doorF, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.switch1Touched == true && player.switch2Touched == true) 
+	                            {
+	                            	this.setVisible(true);
+	                            }
+	                            else
+	                            {
+	                            	this.setVisible(false);
+	                            }
+	                            
+	                            if (player.collidesWith(this) && player.switch1Touched && player.switch2Touched)
+	                            {
+	                            	
+	                            	if (score <= 35 && score >= 30)
+	                            	{
+	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+	                            		player.body.setLinearVelocity(0, 0);
+	                            		levelCompleteWindow.display(StarsCount.ONE, GameScene.this, camera);
+	   	                                this.setIgnoreUpdate(true);
+	   	                                ResourcesManager.getInstance().setLevelComplete(2);
+	   	                                
+	   	                                // Clear Scenary 1 Graphics ...
+	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+	   	        		                {                                    
+	   	        		                    public void onTimePassed(final TimerHandler pTimerHandler)
+	   	        		                    {
+	   	        		                        pTimerHandler.reset();
+	   	        		                        
+	   	        		                        detachChild(levelCompleteWindow);
+	   	    	                            	disposeScene(2);
+	   	    	                            	
+	   	    	                            	// Load Level
+	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
+	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
+	   	        		                    }
+	   	        		                }));
+	                            	}
+	                            	
+	                            	else if (score > 35 && score < 45)
+	                            	{
+	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+	                            		player.body.setLinearVelocity(0, 0);
+	                            		levelCompleteWindow.display(StarsCount.TWO, GameScene.this, camera);
+	   	                                this.setIgnoreUpdate(true);
+	   	                                ResourcesManager.getInstance().setLevelComplete(2);
+	   	                                
+	   	                                // Clear Scenary 1 Graphics ...
+	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+	   	        		                {                                    
+	   	        		                    public void onTimePassed(final TimerHandler pTimerHandler)
+	   	        		                    {
+	   	        		                        pTimerHandler.reset();
+	   	        		                        
+	   	        		                        detachChild(levelCompleteWindow);
+	   	    	                            	disposeScene(2);
+	   	    	                            	
+	   	    	                            	// Load Level
+	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
+	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
+	   	        		                    }
+	   	        		                }));
+	                            	}
+	                            	
+	                            	else
+	                            	{
+	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+	                            		player.body.setLinearVelocity(0, 0);
+	                            		levelCompleteWindow.display(StarsCount.THREE, GameScene.this, camera);
+	   	                                this.setIgnoreUpdate(true);
+	   	                                ResourcesManager.getInstance().setLevelComplete(2);
+	   	                                
+	   	                                // Clear Scenary 1 Graphics ...
+	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+	   	        		                {                                    
+	   	        		                    public void onTimePassed(final TimerHandler pTimerHandler)
+	   	        		                    {
+	   	        		                        pTimerHandler.reset();
+	   	        		                        
+	   	        		                        detachChild(levelCompleteWindow);
+	   	    	                            	disposeScene(2);
+	   	    	                            	
+	   	    	                            	// Load Level
+	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
+	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
+	   	        		                    }
+	   	        		                }));
+	                            	}
+	                            	
+	                            	firstTouch = false;
+	                            }
+	                        }
+	                    };
+	                }
+	                
+	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_WATER_SYNTHETIC))
 	                {
 	                	levelObject = new Sprite(x, y, 160, 130, resourcesManager.waterSynthetic, vbom);
@@ -1116,12 +1219,40 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SWITCHER))
 	                {
-	                    levelObject = switcher;
-	                    levelObject.setVisible(false);
-	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
-	                    body.setUserData("switcher");
-	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
-	                    //levelObject.setSize(width, height);
+	                	switcher = new Switcher(x, y, vbom, camera,  physicsWorld)
+		       			 {
+		       				 @Override
+		                        protected void onManagedUpdate(float pSecondsElapsed) 
+		                        {
+		                            super.onManagedUpdate(pSecondsElapsed);
+		                            if (player.collidesWith(this))
+		                            {
+		                                player.switch1Touched = true;
+		                            }
+		                           
+		                        }
+		       			 };
+		       			 levelObject = switcher;
+	                     levelObject.setVisible(false);
+	                }
+	                
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SWITCHER2))
+	                {
+	                	switcher2 = new Switcher(x, y, vbom, camera,  physicsWorld)
+		       			 {
+		       				 @Override
+		                        protected void onManagedUpdate(float pSecondsElapsed) 
+		                        {
+		                            super.onManagedUpdate(pSecondsElapsed);
+		                            if (player.collidesWith(this))
+		                            {
+		                                player.switch2Touched = true;
+		                            }
+		                           
+		                        }
+		       			 };
+		       			 levelObject = switcher2;
+	                     levelObject.setVisible(false);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SPRINGBOARDER))
@@ -1659,12 +1790,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
             	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("boxItemAlt"))
             	{
             		switcher.setVisible(true);
+            		switcher2.setVisible(true);
             	}
             	
             	// ----------------------------- SWITCHER -----------------------------------------------------------------------------
-            	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("switcher"))
+            	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("switcher") || x1.getBody().getUserData().equals("switcher") && x2.getBody().getUserData().equals("player"))
             	{
             		switcher.setRunning();
+            		switcher2.setRunning();
             	}
             	
             	// ----------------------------- CHAPUZÓN (BOX - WATER) -----------------------------------------------------------------------------
@@ -1792,7 +1925,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	            
 	            // ------------------------------ LEVEL 2 ------------------------------------------------------------------------
 	            // ------------------------------ BOXES --------------------------------------------------------------------------
-	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("rockHalfBigPlatform"))
+	            /*if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("rockHalfBigPlatform"))
             	{
             		  engine.registerUpdateHandler(new TimerHandler(0.5f, new ITimerCallback()
         		      {                                    
@@ -1803,7 +1936,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 							    x2.getBody().setType(BodyType.DynamicBody);
 							}
         		    }));
-            	}
+            	}*/
 	        }
 	        
 

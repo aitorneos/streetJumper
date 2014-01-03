@@ -3,7 +3,9 @@
 
 	<entity x="50" y="150" width="75" height="75" type="player"/>
 	<entity x="750" y="300" width="75" height="75" type="playerSpecial"/>
-	<entity x="3000" y="200" width="75" height="75" type="switcher"/>
+	
+	<entity x="2900" y="200" width="75" height="75" type="switcher"/>
+	<entity x="20" y="125" width="75" height="75" type="levelComplete"/>
 	
 	<entity x="30" y="80" width="60" height="50" type="greenPlatform"/>
 	<entity x="110" y="80" width="60" height="50" type="greenPlatform"/>
@@ -13,6 +15,20 @@
 	<entity x="110" y="140" width="60" height="50" type="coin_bronze"/>
 	<entity x="210" y="140" width="60" height="50" type="coin_bronze"/>
 	<entity x="310" y="140" width="60" height="50" type="coin"/>
+	
+	<entity x="300" y="400" width="60" height="50" type="boxWarning"/>
+	<entity x="375" y="400" width="60" height="50" type="boxWarning"/>
+	<entity x="450" y="400" width="60" height="50" type="boxWarning"/>
+	
+	<entity x="320" y="450" width="60" height="50" type="coin_bronze"/>
+	<entity x="395" y="450" width="60" height="50" type="coin_bronze"/>
+	<entity x="470" y="450" width="60" height="50" type="coin_bronze"/>
+	
+	<entity x="50" y="400" width="60" height="50" type="boxItemAlt"/>
+	<entity x="125" y="400" width="60" height="50" type="boxItemAlt"/>
+	<entity x="200" y="400" width="60" height="50" type="boxItemAlt"/>
+	<entity x="75" y="475" width="60" height="50" type="switcher2"/>
+	
 	
 	<entity x="30" y="10" width="60" height="50" type="block"/>
 	<entity x="110" y="10" width="60" height="50" type="block"/>
@@ -216,6 +232,6 @@
 	<entity x="510" y="175" width="60" height="50" type="rock"/>
 	<entity x="2350" y="360" width="60" height="50" type="rock"/>
 	
-	<entity x="2800" y="350" width="60" height="50" type="boxItemAlt"/>
+	<entity x="2800" y="375" width="60" height="50" type="boxItemAlt"/>
 	
 </level>

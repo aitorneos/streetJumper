@@ -37,6 +37,8 @@ public abstract class Player extends AnimatedSprite
 	private boolean colideAscensor;
 	private boolean waterColision;
 	private boolean boxTouched;
+	public boolean switch1Touched;
+	public boolean switch2Touched;
 
 	
 	// ---------------------------------------------
@@ -55,6 +57,8 @@ public abstract class Player extends AnimatedSprite
 		colideAscensor = false;
 		waterColision = false;
 		boxTouched = false;
+		switch1Touched = false;
+		switch2Touched = false;
 		footContacts = 0;
 		impulse = 0;
 		createPhysics(camera, physicsWorld);
