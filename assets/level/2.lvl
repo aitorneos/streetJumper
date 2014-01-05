@@ -176,7 +176,7 @@
 	<entity x="2280" y="190" width="60" height="50" type="coin_bronze"/>
 	<entity x="2320" y="190" width="60" height="50" type="coin_bronze"/>
 	<entity x="2360" y="190" width="60" height="50" type="coin_bronze"/>
-	<entity x="2600" y="200" width="60" height="50" type="buttonYellow"/>
+	<entity x="2600" y="195" width="60" height="50" type="buttonYellow"/>
 	
 	<entity x="2500" y="150" width="60" height="50" type="greenPlatform"/>
 	<entity x="2600" y="150" width="60" height="50" type="greenPlatform"/>

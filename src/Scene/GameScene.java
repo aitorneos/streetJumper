@@ -1823,7 +1823,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	            		explosion2 = new FireParticleSystem();
 	            		ResourcesManager.getInstance().getExplosionSound().play();
 		            	attachChild (explosion.build(engine, 510, 190));
-		            	attachChild (explosion2.build(engine, 2200, 200));
+		            	attachChild (explosion2.build(engine, 2600, 200));
 		            	player.setMineColision(true);
 
 		            	// Control Impulse and direction
