@@ -228,7 +228,6 @@
 	
 	<entity x="210" y="105" width="60" height="50" type="rock"/>
 	<entity x="280" y="105" width="60" height="50" type="rock"/>
-	<entity x="510" y="175" width="60" height="50" type="rock"/>
 	<entity x="2350" y="360" width="60" height="50" type="rock"/>
 	
 	<entity x="2800" y="375" width="60" height="50" type="boxItemAlt"/>

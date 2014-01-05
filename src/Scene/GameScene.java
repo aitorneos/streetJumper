@@ -1756,15 +1756,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
             	}
             	
             	// ------------------------------------- LEVEL 2 --------------------------------------------------------------------------
+            	
             	// ----------------------------- SPRINGBOARDER-----------------------------------------------------------------------------
-            	if ((x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("springboarder")) || (x1.getBody().getUserData().equals("springboarder") && x2.getBody().getUserData().equals("player")))
+            	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("springboarder"))
             	{
-            		// Animate SpringBoarder texture
-            		springboarder.setRunning();
-            		springboarder2.setRunning();
-            		
-            		// Apply a liniear (Y-axis) impulse to player (like jumping)
-            		player.body.applyLinearImpulse(0.0f, 27.0f, player.body.getPosition().x, player.body.getPosition().y);
+            		if (player.getY() > springboarder.getY() + 15)
+            		{
+            			// Animate SpringBoarder texture
+                		springboarder.setRunning();
+                		springboarder2.setRunning();
+                		
+                		// Apply a liniear (Y-axis) impulse to player (like jumping)
+                		player.body.applyLinearImpulse(0.0f, 27.0f, player.body.getPosition().x, player.body.getPosition().y);
+            		}
             	}
             	
             	// ----------------------------- WATER-----------------------------------------------------------------------------

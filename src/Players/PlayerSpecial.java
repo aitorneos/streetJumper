@@ -86,7 +86,7 @@ public abstract class PlayerSpecial extends AnimatedSprite
 					attachChild(sps);
 				}
 				
-				else if (SceneManager.getInstance().getGameScene().player.getX() < 725 || SceneManager.getInstance().getGameScene().player.getX() > 1050)
+				else if (SceneManager.getInstance().getGameScene().player.getX() < 670 || SceneManager.getInstance().getGameScene().player.getX() > 1110)
 				{
 					detachChild(sps);
 					oneTime = false;
