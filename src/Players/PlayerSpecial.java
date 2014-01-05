@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import ResourcesManagment.ResourcesManager;
+import ResourcesManagment.SceneManager;
 
 
 public abstract class PlayerSpecial extends AnimatedSprite
@@ -61,17 +62,23 @@ public abstract class PlayerSpecial extends AnimatedSprite
 				camera.onUpdate(0.1f);
 				
 				// Update enemy's movement
-				if (getX() >= 1125 && body.getLinearVelocity().x > 0)
+				if (getX() >= 1100 && body.getLinearVelocity().x > 0)
 				{
 					setFlippedHorizontal(true);
 					body.setLinearVelocity(-2.0f, 0.0f);
 				}
 				
-				if (getX() <= 750 && body.getLinearVelocity().x < 0)
+				if (getX() <= 730 && body.getLinearVelocity().x < 0)
 				{
 					setFlippedHorizontal(false);
 					body.setLinearVelocity(2.0f, 0.0f);
-				}		
+				}
+				
+				// Look if can shoot to player ... limitated range
+				if (SceneManager.getInstance().getGameScene().player.body.getPosition().x > 725 && SceneManager.getInstance().getGameScene().player.body.getPosition().x < 1050)
+				{
+					
+				}
 	        }
 		});
 	}

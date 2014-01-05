@@ -2,7 +2,7 @@
 <level width="3000" height="480">
 
 	<entity x="50" y="150" width="75" height="75" type="player"/>
-	<entity x="750" y="300" width="75" height="75" type="playerSpecial"/>
+	<entity x="740" y="310" width="75" height="75" type="playerSpecial"/>
 	
 	<entity x="2900" y="200" width="75" height="75" type="switcher"/>
 	<entity x="20" y="125" width="75" height="75" type="levelComplete"/>
@@ -20,9 +20,9 @@
 	<entity x="375" y="400" width="60" height="50" type="boxWarning"/>
 	<entity x="450" y="400" width="60" height="50" type="boxWarning"/>
 	
-	<entity x="320" y="450" width="60" height="50" type="coin_bronze"/>
-	<entity x="395" y="450" width="60" height="50" type="coin_bronze"/>
-	<entity x="470" y="450" width="60" height="50" type="coin_bronze"/>
+	<entity x="300" y="460" width="60" height="50" type="coin_bronze"/>
+	<entity x="375" y="460" width="60" height="50" type="coin_bronze"/>
+	<entity x="450" y="460" width="60" height="50" type="coin_bronze"/>
 	
 	<entity x="50" y="400" width="60" height="50" type="boxItemAlt"/>
 	<entity x="125" y="400" width="60" height="50" type="boxItemAlt"/>
@@ -69,7 +69,6 @@
 	<entity x="750" y="50" width="60" height="50" type="sand"/>
 	<entity x="940" y="50" width="60" height="50" type="sand"/>
 	<entity x="1125" y="50" width="60" height="50" type="sand"/>
-	<entity x="740" y="135" width="60" height="50" type="cactus"/>
 	
 	<entity x="610" y="180" width="60" height="50" type="springboarder"/>
 	
