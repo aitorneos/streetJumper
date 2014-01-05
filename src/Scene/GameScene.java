@@ -94,6 +94,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	waterParticleSystem ps3;
 	waterParticleSystem ps4;
 	FireParticleSystem explosion;
+	FireParticleSystem explosion2;
 	waterExplosion wp;
 	SpriteParticleSystem waterEx;
 	waterExplosion drop;
@@ -1819,9 +1820,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
             		if (player.getMineColision() == false)
 	            	{
 	            		explosion = new FireParticleSystem();
+	            		explosion2 = new FireParticleSystem();
 	            		ResourcesManager.getInstance().getExplosionSound().play();
 		            	attachChild (explosion.build(engine, 510, 190));
-		            	attachChild (explosion.build(engine, 2200, 200));
+		            	attachChild (explosion2.build(engine, 2200, 200));
 		            	player.setMineColision(true);
 
 		            	// Control Impulse and direction
@@ -1872,6 +1874,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 		                        engine.unregisterUpdateHandler(pTimerHandler);
 		                        engine.unregisterUpdateHandler(flicker);
 		                        detachChild(explosion.getParticleSystem());
+		                        detachChild(explosion2.getParticleSystem());
 		                        
 		                    }
 		                }));
