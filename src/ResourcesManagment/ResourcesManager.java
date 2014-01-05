@@ -110,6 +110,7 @@ public class ResourcesManager
     public ITextureRegion tree;
     public ITextureRegion sun;
     public ITextureRegion bullet;
+    public ITextureRegion buttonYellow;
     
     // --------------------------------------- COINS ---------------------------------------------------------------
     public ITextureRegion coin_silver;
@@ -368,6 +369,7 @@ public class ResourcesManager
         block = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "block.png");
         tree = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "tree.png");
         bullet = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bullet.png");
+        buttonYellow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "buttonYellow.png");
         
      // --------------------------- BOXES AND OTHERS LOADING-------------------------------------------------------------------------------------------------------
         bomb = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bomb.png");
@@ -397,6 +399,7 @@ public class ResourcesManager
         doorF = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "doorFinal.png");
         complete_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "levelCompleteWindow.png");
         complete_stars_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "star.png", 2, 1);
+        fireDrop = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "dot.png");
         
         // --------------------------- PLAYER SELECTION LOADING-------------------------------------------------------------------------------------------------------
         

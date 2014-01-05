@@ -170,6 +170,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TREE = "tree";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_SPECIAL = "playerSpecial";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SUN = "sun";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BUTTON_YELLOW = "buttonYellow";
 	 
 	 Text nBombs = new Text(40, 300, resourcesManager.font, "+ 1", new TextOptions(HorizontalAlign.LEFT), vbom);
 	
@@ -1201,6 +1202,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
 	                }
 	                
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BUTTON_YELLOW))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.buttonYellow, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("buttonYellow");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                }
+	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SAND))
 	                {
 	                	levelObject = new Sprite(x, y, resourcesManager.sand, vbom);
@@ -1804,6 +1813,72 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
             		switcher2.setRunning();
             	}
             	
+            	// ----------------------------- DESERT MINE -----------------------------------------------------------------------------
+            	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("buttonYellow"))
+            	{
+            		if (player.getMineColision() == false)
+	            	{
+	            		explosion = new FireParticleSystem();
+	            		ResourcesManager.getInstance().getExplosionSound().play();
+		            	attachChild (explosion.build(engine, 510, 190));
+		            	attachChild (explosion.build(engine, 2200, 200));
+		            	player.setMineColision(true);
+
+		            	// Control Impulse and direction
+		            	if (player.body.getLinearVelocity().x > 0)
+		            	{
+		            		player.body.applyLinearImpulse(-50.0f, 10.0f, player.body.getPosition().x - 5, player.body.getPosition().y);
+		            	}
+		            	
+		            	else if (player.body.getLinearVelocity().x < 0)
+		            	{
+		            		player.body.applyLinearImpulse(50.0f, 10.0f, player.body.getPosition().x + 5, player.body.getPosition().y);
+
+		            	}
+		            	
+		            	else
+		            	{
+		            		
+		            		player.body.setLinearVelocity(player.body.getLinearVelocity().x, player.body.getLinearVelocity().y);
+		            	}
+		            	
+		            	player.life = player.life - 1;
+                        if (player.life == 2) gameHUD.detachChild(hurt3);
+                        if (player.life == 1) gameHUD.detachChild(hurt2);
+                        if (player.life == 0) gameHUD.detachChild(hurt1);
+
+		            	// DO flickering while period of time after touching the spikes 
+			       		flicker = new playTimer(0.1f , new playTimer.ITimerCallback()
+			       	    {
+			            	boolean visible = false;
+			       	        @Override
+			       	        public void onTick()
+			       	        {
+			       	            player.setVisible(visible);
+			       	            visible = !visible;
+			       	        }
+			       	      }
+			       	    );
+			       		engine.registerUpdateHandler(flicker);
+			       		
+		                engine.registerUpdateHandler(new TimerHandler(1.0f, new ITimerCallback()
+		                {                                    
+		                    public void onTimePassed(final TimerHandler pTimerHandler)
+		                    {
+		                        pTimerHandler.reset();
+		                        flicker.pause();
+		                        flicker.reset();
+		                        if (player.isVisible() == false) player.setVisible(true);
+		                        engine.unregisterUpdateHandler(pTimerHandler);
+		                        engine.unregisterUpdateHandler(flicker);
+		                        detachChild(explosion.getParticleSystem());
+		                        
+		                    }
+		                }));
+
+	            	}
+            	}
+            	
             	// ----------------------------- CHAPUZÓN (BOX - WATER) -----------------------------------------------------------------------------
             	if (x1.getBody().getUserData().equals("waterSynthetic") && x2.getBody().getUserData().equals("boxWarning"))
             	{
@@ -1941,6 +2016,20 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 							}
         		    }));
             	}*/
+	            
+	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("buttonYellow"))
+	            {
+	            	engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+	                {                                    
+	                    public void onTimePassed(final TimerHandler pTimerHandler)
+	                    {
+	                        pTimerHandler.reset();
+	                        player.setMineColision(false);
+	                        engine.unregisterUpdateHandler(pTimerHandler); 
+	                    }
+	                }));
+
+	            }
 	        }
 	        
 
