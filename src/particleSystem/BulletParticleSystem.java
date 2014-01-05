@@ -31,11 +31,11 @@ public class BulletParticleSystem implements ParticleSystemFactory
 	    final float particlesYSpawn = fontY;
 
 	    //Max & min rate are the maximum particles per second and the minimum particles per second.
-	    final float maxRate = 15;
+	    final float maxRate = 10;
 	    final float minRate = 5;
 
 	    //This variable determines the maximum particles in the particle system.
-	    final int maxParticles = 40;
+	    final int maxParticles = 10;
 
 	    //Particle emitter which will set all of the particles at a ertain point when they are initialized.
 	    final CircleParticleEmitter circleParticleEmtitter = new CircleParticleEmitter(particlesXSpawn, particlesYSpawn, 1.0f);

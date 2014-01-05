@@ -1,6 +1,7 @@
 package Players;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.particle.SpriteParticleSystem;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
@@ -28,6 +29,7 @@ public abstract class PlayerSpecial extends AnimatedSprite
 	public int time = 80;
 	public int life = 3;
 	private BulletParticleSystem bps = new BulletParticleSystem();
+	SpriteParticleSystem sps;
 
 	
 	// ---------------------------------------------
@@ -39,6 +41,7 @@ public abstract class PlayerSpecial extends AnimatedSprite
 		super(pX, pY, ResourcesManager.getInstance().playerSecondary, vbo);
 		canRun = false;
 		impulse = 0;
+		sps = bps.build(ResourcesManager.getInstance().engine, 75, 20);
 		createPhysics(camera, physicsWorld);
 	}
 	
@@ -80,7 +83,13 @@ public abstract class PlayerSpecial extends AnimatedSprite
 				if (SceneManager.getInstance().getGameScene().player.getX() > 725 && SceneManager.getInstance().getGameScene().player.getX() < 1050 && oneTime == false)
 				{
 					oneTime = true;
-					attachChild(bps.build(ResourcesManager.getInstance().engine, 75, 20));
+					attachChild(sps);
+				}
+				
+				else if (SceneManager.getInstance().getGameScene().player.getX() < 725 || SceneManager.getInstance().getGameScene().player.getX() > 1050)
+				{
+					detachChild(sps);
+					oneTime = false;
 				}
 	        }
 		});
