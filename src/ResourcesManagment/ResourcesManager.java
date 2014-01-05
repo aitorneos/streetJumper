@@ -109,6 +109,7 @@ public class ResourcesManager
     public ITextureRegion block;
     public ITextureRegion tree;
     public ITextureRegion sun;
+    public ITextureRegion bullet;
     
     // --------------------------------------- COINS ---------------------------------------------------------------
     public ITextureRegion coin_silver;
@@ -366,6 +367,7 @@ public class ResourcesManager
         greenPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "plat.png");
         block = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "block.png");
         tree = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "tree.png");
+        bullet = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bullet.png");
         
      // --------------------------- BOXES AND OTHERS LOADING-------------------------------------------------------------------------------------------------------
         bomb = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bomb.png");

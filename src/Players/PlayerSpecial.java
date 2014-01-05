@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
-
+import particleSystem.BulletParticleSystem;
 
 public abstract class PlayerSpecial extends AnimatedSprite
 {
@@ -23,9 +23,11 @@ public abstract class PlayerSpecial extends AnimatedSprite
 	
 	public Body body;
 	private boolean canRun = false;
+	private boolean oneTime = false;
 	public int impulse;
 	public int time = 80;
 	public int life = 3;
+	private BulletParticleSystem bps = new BulletParticleSystem();
 
 	
 	// ---------------------------------------------
@@ -75,9 +77,10 @@ public abstract class PlayerSpecial extends AnimatedSprite
 				}
 				
 				// Look if can shoot to player ... limitated range
-				if (SceneManager.getInstance().getGameScene().player.body.getPosition().x > 725 && SceneManager.getInstance().getGameScene().player.body.getPosition().x < 1050)
+				if (SceneManager.getInstance().getGameScene().player.getX() > 725 && SceneManager.getInstance().getGameScene().player.getX() < 1050 && oneTime == false)
 				{
-					
+					oneTime = true;
+					attachChild(bps.build(ResourcesManager.getInstance().engine, 75, 20));
 				}
 	        }
 		});

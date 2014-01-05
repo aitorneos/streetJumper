@@ -5,7 +5,6 @@ import org.andengine.entity.particle.emitter.CircleParticleEmitter;
 import org.andengine.entity.particle.ParticleSystem;
 import org.andengine.entity.particle.SpriteParticleSystem;
 import org.andengine.entity.particle.initializer.*;
-import org.andengine.entity.particle.modifier.*;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
