@@ -433,8 +433,20 @@ public class ResourcesManager
     private void loadGameGraphics_Level3()
     {
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level3/");
-    	gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 3048, 2048, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+    	gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
         scene_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "level3_background.png");
+        
+     // --------------------------- HUD LOADING-------------------------------------------------------------------------------------------------------
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level2/");   
+        starHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "star.png");
+        
+        // --------------------------- PLAYER SELECTION LOADING-------------------------------------------------------------------------------------------------------
+        
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/Players/");
+        if (playerSelected == 0) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player.png", 3, 1);
+        if (playerSelected == 1) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player2.png", 3, 1);
+        if (playerSelected == 2) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player3.png", 3, 1);
+        if (playerSelected == 3) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player4.png", 3, 1);
         
      // --------------------------- LOAD TEXTURE ATLAS AND TEXTURE REGIONS -------------------------------------------------------------------------------------
         try 
@@ -736,11 +748,17 @@ public class ResourcesManager
 	        starHUD = null;
     	}
     	
+    	else if (levelID == 3)
+    	{
+    		gameTextureAtlas.unload();
+        	gameTextureAtlas.clearTextureAtlasSources();
+    	}
+    	
     }
     
     public void unloadGameSounds()
     {
-    	this.backgroundMusic.pause();
+    	this.backgroundMusic.stop();
     	this.coin.stop();
     	this.die.stop();
     	this.explosion.stop();

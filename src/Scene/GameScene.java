@@ -77,6 +77,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	private boolean gameOverDisplayed = false;
 	private playTimer playT;
 	private playTimer flicker;
+	public int controlAc = 0;
 
 	
 	//Player variables
@@ -226,6 +227,26 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 		    gameHUD.attachChild(hurt3);
 	    }
 
+	    else if (ResourcesManager.getInstance().getLevelComplete() == 3)
+	    {
+	    	// CREATE SCORE TEXT
+		    scoreText = new Text(155, 450, resourcesManager.font, "Score: 0", new TextOptions(HorizontalAlign.LEFT), vbom);
+		    lifeText = new Text(70, 390, resourcesManager.font, "Life:", new TextOptions(HorizontalAlign.LEFT), vbom);
+		    timeText = new Text(660, 40, resourcesManager.font, "TIME:80", new TextOptions(HorizontalAlign.LEFT), vbom);
+		    scoreText.setSkewCenter(0, 0);    
+		    gameHUD.attachChild(scoreText);
+		    gameHUD.attachChild(lifeText);
+		    gameHUD.attachChild(timeText);
+		    
+		    // Put Initial Life (hurts)
+		    hurt1 = new Sprite(165, 380, resourcesManager.starHUD, vbom);
+			hurt2 = new Sprite(205, 380, resourcesManager.starHUD, vbom);
+			hurt3 = new Sprite(245, 380, resourcesManager.starHUD, vbom);
+		    gameHUD.attachChild(hurt1);
+		    gameHUD.attachChild(hurt2);
+		    gameHUD.attachChild(hurt3);
+	    }
+	    
 	    camera.setHUD(gameHUD);
 	}
 	
@@ -259,7 +280,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	       }
 	     );
 		 engine.registerUpdateHandler(playT);
-		 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);	 
+		 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);	
+		 controlAc = 0;
 		 ResourcesManager.getInstance().loadTextFont();
 		
 		 if (ResourcesManager.getInstance().getLevelComplete() == 1)
@@ -299,6 +321,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 			 playerSpecial.body.setLinearVelocity(2.0f, 0.0f);
 			 wp = new waterExplosion();
 			 waterEx = wp.build(engine, 1800 , 150);
+		 }
+		 
+		 else if (ResourcesManager.getInstance().getLevelComplete() == 3)
+		 {
+			 
 		 }
     }
 
@@ -430,6 +457,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
     	 
     	 else if (levelID == 2)
     	 {
+    		 ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
     		 ResourcesManager.getInstance().unloadGameTextures(levelID);
         	 ResourcesManager.getInstance().unloadGameSounds();
 
@@ -461,6 +489,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
         	 gameHUD.detachSelf();
         	 gameHUD.dispose(); 
         	 
+        	// --------------------------------------------- TIMERS -------------------------------------------------------------------
+        	 engine.unregisterUpdateHandler(playT);
+        	 engine.unregisterUpdateHandler(flicker);
+        	 ResourcesManager.getInstance().font.unload();
+        	 
         	 hurt1.clearEntityModifiers();
         	 hurt1.detachSelf();
         	 hurt1.dispose();
@@ -486,9 +519,44 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
         	 timeText.clearEntityModifiers();
         	 timeText.clearUpdateHandlers();
         	 
-        	 ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
-        	 
         	 System.gc();
+    	 }
+    	 
+    	 else if (levelID == 3)
+    	 {
+    		 ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+    		 ResourcesManager.getInstance().unloadGameTextures(levelID);
+        	 ResourcesManager.getInstance().unloadGameSounds();
+
+        	 // code responsible for disposing scene
+        	 // removing all game scene objects.
+        	 
+        	// --------------------------------------- SCENE SPRITES ---------------------------------------------------------------
+
+        	this.clearTouchAreas();
+         	this.clearUpdateHandlers();
+         	this.clearChildScene();
+         	this.detachSelf();
+         	this.dispose();
+    		 
+    		// ------------------------------------------ HUD -----------------------------------------------------------------------
+        	 gameHUD.clearChildScene();
+        	 gameHUD.clearEntityModifiers();
+        	 gameHUD.clearTouchAreas();
+        	 gameHUD.clearUpdateHandlers();
+        	 gameHUD.detachChild(hurt1);
+        	 gameHUD.detachChild(hurt2);
+        	 gameHUD.detachChild(hurt3);
+        	 gameHUD.detachChild(scoreText);
+        	 gameHUD.detachChild(lifeText);
+        	 gameHUD.detachChild(timeText);
+        	 gameHUD.detachChild(player);
+        	 gameHUD.detachChild(enemy);
+        	 gameHUD.detachChildren();
+        	 gameHUD.detachSelf();
+        	 gameHUD.dispose(); 
+        	 
+    		 System.gc();
     	 }
     }
     
@@ -1132,10 +1200,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                            
 	                            if (player.collidesWith(this) && player.switch1Touched && player.switch2Touched)
 	                            {
-	                            	
+	                            	controlAc = 1;
 	                            	if (score <= 35 && score >= 30)
 	                            	{
-	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
 	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.ONE, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
@@ -1158,9 +1225,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	   	        		                }));
 	                            	}
 	                            	
-	                            	else if (score > 35 && score < 45)
+	                            	else if (score > 50 && score < 65)
 	                            	{
-	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
 	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.TWO, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
@@ -1185,7 +1251,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                            	
 	                            	else
 	                            	{
-	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
 	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.THREE, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
@@ -1418,10 +1483,66 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
         	
         }
         
-        // LEVEL 3 -----> MOUNTAN 
+        // LEVEL 3 -----> MOUNTAIN 
         else if (levelID == 3)
         {
-        	// TODO ......
+        	final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
+            final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0, 0.01f, 0.5f);
+            levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(LevelConstants.TAG_LEVEL)
+    	    {
+    	        public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException 
+    	        {
+    	            final int width = SAXUtils.getIntAttributeOrThrow(pAttributes, LevelConstants.TAG_LEVEL_ATTRIBUTE_WIDTH);
+    	            final int height = SAXUtils.getIntAttributeOrThrow(pAttributes, LevelConstants.TAG_LEVEL_ATTRIBUTE_HEIGHT);
+    		        camera.setBounds(0, 0, width, height); // here we set camera bounds
+    		        camera.setBoundsEnabled(true);
+    		
+    		        return GameScene.this;
+    	        }
+            });
+            
+        	levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(TAG_ENTITY)
+		    {
+		        public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException
+		        {
+		            final int x = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_X);
+		            final int y = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_Y);
+		            final int width = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_WIDTH);
+		            final int height = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_HEIGHT);
+		            final String type = SAXUtils.getAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_TYPE);
+		            
+		            final Sprite levelObject;
+
+
+	                // --------------- PLATFORMS AND PLAYER ------------------------------------------------------------------------------------
+		            if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER))
+	                {
+	                    player = new Player(x, y, vbom, camera,  physicsWorld)
+	                    {
+	                        @Override
+	                        public void onDie()
+	                        {
+	                            if (!gameOverDisplayed)
+	                    	    {
+	                    	        displayGameOverText(3);
+	                    	    }
+	                        }
+	                    };
+	                    levelObject = player;
+	                    levelObject.setSize(width, height);
+	                }
+		            else
+	                {
+	                    throw new IllegalArgumentException();
+	                }
+
+	                levelObject.setCullingEnabled(true);
+
+	                return levelObject;
+	            }
+	        });
+        	
+    		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
         }
         
     }
