@@ -93,6 +93,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	waterParticleSystem ps2;
 	waterParticleSystem ps3;
 	waterParticleSystem ps4;
+	SpriteParticleSystem sps;
+	SpriteParticleSystem sps2;
+	SpriteParticleSystem sps3;
+	SpriteParticleSystem sps4;
 	FireParticleSystem explosion;
 	FireParticleSystem explosion2;
 	waterExplosion wp;
@@ -266,16 +270,16 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
  
 			// Put "font" snow raining
 			 ps = new waterParticleSystem();
-			 attachChild (ps.build(engine, 400, 485));
+			 attachChild (sps = ps.build(engine, 400, 485));
 
 			 ps2 = new waterParticleSystem();
-			 attachChild (ps2.build(engine, 150, 485));
+			 attachChild (sps2 = ps2.build(engine, 150, 485));
 			 
 			 ps3 = new waterParticleSystem();
-			 attachChild (ps3.build(engine, 800, 485));
+			 attachChild (sps3 = ps3.build(engine, 800, 485));
 			 
 			 ps4 = new waterParticleSystem();
-			 attachChild (ps3.build(engine, 1240, 485));
+			 attachChild (sps4 = ps3.build(engine, 1240, 485));
 			 
 			 // create WATER SHADER !
 			 water = new Sprite(0, 120, 2048, -240, ResourcesManager.getInstance().waterShader, vbom);
@@ -404,6 +408,23 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
         	 water.clearEntityModifiers();
         	 water.clearUpdateHandlers();
         	 
+        	// ------------------------------------------------ PARTICLE SYSTEM/S --------------------------------------------------------------------
+        	 sps.clearUpdateHandlers();
+        	 sps.getParticleEmitter().reset();
+        	 sps.reset();
+        	 
+        	 sps2.clearUpdateHandlers();
+        	 sps2.getParticleEmitter().reset();
+        	 sps2.reset();
+        	 
+        	 sps3.clearUpdateHandlers();
+        	 sps3.getParticleEmitter().reset();
+        	 sps3.reset();
+        	 
+        	 sps4.clearUpdateHandlers();
+        	 sps4.getParticleEmitter().reset();
+        	 sps4.reset();
+        	 
         	 System.gc();
     	 }
     	 
@@ -466,6 +487,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
         	 timeText.clearUpdateHandlers();
         	 
         	 ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+        	 
+        	 System.gc();
     	 }
     }
     
@@ -481,7 +504,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
     	{
     		xPos = 650;
     	}
-    	else xPos = 1500;
+    	else if (ResourcesManager.getInstance().getLevelComplete() == 2)
+    	{
+    		xPos = 1500;
+    	}
+    	else
+    	{
+    		xPos = 1000;
+    	}
     	
     	final Sprite sceneSprite = new Sprite(xPos, 240, resourcesManager.scene_background_region, vbom)
 	     {
@@ -1109,7 +1139,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.ONE, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
-	   	                                ResourcesManager.getInstance().setLevelComplete(2);
+	   	                                ResourcesManager.getInstance().setLevelComplete(3);
 	   	                                
 	   	                                // Clear Scenary 1 Graphics ...
 	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
@@ -1122,7 +1152,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	   	    	                            	disposeScene(2);
 	   	    	                            	
 	   	    	                            	// Load Level
-	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
+	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 3);
 	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
 	   	        		                    }
 	   	        		                }));
@@ -1134,7 +1164,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.TWO, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
-	   	                                ResourcesManager.getInstance().setLevelComplete(2);
+	   	                                ResourcesManager.getInstance().setLevelComplete(3);
 	   	                                
 	   	                                // Clear Scenary 1 Graphics ...
 	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
@@ -1147,7 +1177,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	   	    	                            	disposeScene(2);
 	   	    	                            	
 	   	    	                            	// Load Level
-	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
+	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 3);
 	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
 	   	        		                    }
 	   	        		                }));
@@ -1159,7 +1189,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.THREE, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
-	   	                                ResourcesManager.getInstance().setLevelComplete(2);
+	   	                                ResourcesManager.getInstance().setLevelComplete(3);
 	   	                                
 	   	                                // Clear Scenary 1 Graphics ...
 	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
@@ -1172,7 +1202,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	   	    	                            	disposeScene(2);
 	   	    	                            	
 	   	    	                            	// Load Level
-	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
+	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 3);
 	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
 	   	        		                    }
 	   	        		                }));
@@ -1386,6 +1416,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
         	
     		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
         	
+        }
+        
+        // LEVEL 3 -----> MOUNTAN 
+        else if (levelID == 3)
+        {
+        	// TODO ......
         }
         
     }

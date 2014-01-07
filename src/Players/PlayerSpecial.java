@@ -95,7 +95,6 @@ public abstract class PlayerSpecial extends AnimatedSprite
 					ResourcesManager.getInstance().getMachineSound().stop();
 					oneTime = false;
 				}
-				
 	        }
 		});
 	}

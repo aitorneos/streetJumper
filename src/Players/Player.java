@@ -104,7 +104,15 @@ public abstract class Player extends AnimatedSprite
 				else
 				{
 					setAc(false);
-				}	
+				}
+				
+				if (levelID == 2)
+				{
+					if (SceneManager.getInstance().getGameScene().playerSpecial.sps.getY() >= getY())
+					{
+						
+					}
+				}
 			}
 		});
 	}

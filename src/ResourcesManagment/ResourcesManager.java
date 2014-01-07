@@ -207,6 +207,13 @@ public class ResourcesManager
             loadGameFonts();
             loadGameAudio();
     	}
+    	
+    	else if (resourceLevel == 3)
+    	{
+    		loadGameGraphics_Level3();
+            loadGameFonts();
+            loadGameAudio();
+    	}
     }
     
     
@@ -412,6 +419,24 @@ public class ResourcesManager
         playerSecondary = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player5.png", 3, 1);
         
         // --------------------------- LOAD TEXTURE ATLAS AND TEXTURE REGIONS -------------------------------------------------------------------------------------
+        try 
+        {
+            this.gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+            this.gameTextureAtlas.load();
+        } 
+        catch (final TextureAtlasBuilderException e)
+        {
+            Debug.e(e);
+        }        
+    }
+    
+    private void loadGameGraphics_Level3()
+    {
+    	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level3/");
+    	gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 3048, 2048, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        scene_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "level3_background.png");
+        
+     // --------------------------- LOAD TEXTURE ATLAS AND TEXTURE REGIONS -------------------------------------------------------------------------------------
         try 
         {
             this.gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
