@@ -1,6 +1,7 @@
 package Players;
 
 import org.andengine.engine.camera.Camera;
+import org.andengine.entity.particle.SpriteParticleSystem;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
@@ -8,11 +9,13 @@ import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import particleSystem.BulletParticleSystem;
+import ResourcesManagment.ResourcesManager;
+import ResourcesManagment.SceneManager;
+
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-
-import ResourcesManagment.ResourcesManager;
 
 
 public abstract class Player extends AnimatedSprite
@@ -25,6 +28,7 @@ public abstract class Player extends AnimatedSprite
 	private boolean canRun = false;
 	private int footContacts = 0;
 	public int impulse;
+	private int levelID;
 	public boolean hasKey;
 	public boolean hasGreenKey;
 	public int life = 3;
@@ -59,6 +63,7 @@ public abstract class Player extends AnimatedSprite
 		boxTouched = false;
 		switch1Touched = false;
 		switch2Touched = false;
+		levelID = ResourcesManager.getInstance().getLevelComplete();
 		footContacts = 0;
 		impulse = 0;
 		createPhysics(camera, physicsWorld);
@@ -99,8 +104,8 @@ public abstract class Player extends AnimatedSprite
 				else
 				{
 					setAc(false);
-				}
-	        }
+				}	
+			}
 		});
 	}
 	
@@ -237,7 +242,5 @@ public abstract class Player extends AnimatedSprite
 	public void setBoxColision(boolean box)
 	{
 		this.boxTouched = box;
-	}
-	
-	
+	}	
 }

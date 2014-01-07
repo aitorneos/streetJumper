@@ -24,10 +24,10 @@
 	<entity x="375" y="460" width="60" height="50" type="coin_bronze"/>
 	<entity x="450" y="460" width="60" height="50" type="coin_bronze"/>
 	
-	<entity x="50" y="400" width="60" height="50" type="boxItemAlt"/>
-	<entity x="125" y="400" width="60" height="50" type="boxItemAlt"/>
-	<entity x="200" y="400" width="60" height="50" type="boxItemAlt"/>
-	<entity x="75" y="475" width="60" height="50" type="switcher2"/>
+	<entity x="50" y="325" width="60" height="50" type="boxItemAlt"/>
+	<entity x="125" y="325" width="60" height="50" type="boxItemAlt"/>
+	<entity x="200" y="325" width="60" height="50" type="boxItemAlt"/>
+	<entity x="75" y="400" width="60" height="50" type="switcher2"/>
 	
 	
 	<entity x="30" y="10" width="60" height="50" type="block"/>
@@ -71,14 +71,13 @@
 	<entity x="1125" y="50" width="60" height="50" type="sand"/>
 	
 	<entity x="610" y="180" width="60" height="50" type="springboarder"/>
-	<entity x="510" y="190" width="60" height="50" type="buttonYellow"/>
 	
 	<entity x="850" y="300" width="60" height="50" type="boxExposiveAlt"/>
 	<entity x="940" y="300" width="60" height="50" type="boxExposiveAlt"/>
 	<entity x="1050" y="300" width="60" height="50" type="boxExposiveAlt"/>
 	
 	<entity x="850" y="360" width="60" height="50" type="coin_gold"/>
-	<entity x="950" y="360" width="60" height="50" type="coin"/>
+	<entity x="940" y="365" width="60" height="50" type="buttonYellow"/>
 	<entity x="1060" y="360" width="60" height="50" type="coin_gold"/>
 	<entity x="750" y="110" width="60" height="50" type="coin_bronze"/>
 	<entity x="810" y="110" width="60" height="50" type="coin_bronze"/>

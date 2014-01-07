@@ -157,6 +157,7 @@ public class ResourcesManager
     //Sound and effects
     private Sound explosion;
     private Sound coin;
+    private Sound machine;
     private Sound spikeS;
     private Sound flySound;
     private Sound slimeSound;
@@ -605,6 +606,22 @@ public class ResourcesManager
     	{
     	    e.printStackTrace();
     	}
+    	
+    	// LOAD MACHINE GUN SOUND
+    	try 
+    	{    
+    		this.machine = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "machineGun.ogg");
+    		this.machine.setLooping(true);
+    		this.machine.setVolume(0.3f, 0.5f);
+    	} 
+    	catch (IllegalStateException e) 
+    	{   
+    		e.printStackTrace();
+    	} 
+    	catch (IOException e) 
+    	{   
+    		e.printStackTrace();
+    	}
         
     }
     
@@ -793,5 +810,10 @@ public class ResourcesManager
 	public void setLevelComplete(int complete)
 	{
 		this.level = complete;
+	}
+	
+	public Sound getMachineSound()
+	{
+		return (this.machine);
 	}
 }

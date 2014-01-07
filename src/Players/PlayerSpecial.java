@@ -9,12 +9,12 @@ import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-
+import particleSystem.BulletParticleSystem;
 import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
-import particleSystem.BulletParticleSystem;
+
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
 public abstract class PlayerSpecial extends AnimatedSprite
 {
@@ -24,12 +24,12 @@ public abstract class PlayerSpecial extends AnimatedSprite
 	
 	public Body body;
 	private boolean canRun = false;
-	private boolean oneTime = false;
+	private boolean oneTime;
 	public int impulse;
 	public int time = 80;
 	public int life = 3;
-	private BulletParticleSystem bps = new BulletParticleSystem();
-	SpriteParticleSystem sps;
+	private BulletParticleSystem bps;
+	public SpriteParticleSystem sps;
 
 	
 	// ---------------------------------------------
@@ -40,7 +40,9 @@ public abstract class PlayerSpecial extends AnimatedSprite
 	{
 		super(pX, pY, ResourcesManager.getInstance().playerSecondary, vbo);
 		canRun = false;
+		oneTime = false;
 		impulse = 0;
+		bps = new BulletParticleSystem();
 		sps = bps.build(ResourcesManager.getInstance().engine, 75, 20);
 		createPhysics(camera, physicsWorld);
 	}
@@ -84,13 +86,16 @@ public abstract class PlayerSpecial extends AnimatedSprite
 				{
 					oneTime = true;
 					attachChild(sps);
+					ResourcesManager.getInstance().getMachineSound().play();
 				}
 				
 				else if (SceneManager.getInstance().getGameScene().player.getX() < 670 || SceneManager.getInstance().getGameScene().player.getX() > 1110)
 				{
 					detachChild(sps);
+					ResourcesManager.getInstance().getMachineSound().stop();
 					oneTime = false;
 				}
+				
 	        }
 		});
 	}

@@ -1731,7 +1731,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 		                        
 		                    }
 		                }));
-
 	            	}
 	            }           	
 		            
@@ -1822,7 +1821,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	            		explosion = new FireParticleSystem();
 	            		explosion2 = new FireParticleSystem();
 	            		ResourcesManager.getInstance().getExplosionSound().play();
-		            	attachChild (explosion.build(engine, 510, 190));
+		            	attachChild (explosion.build(engine, 940, 365));
 		            	attachChild (explosion2.build(engine, 2600, 200));
 		            	player.setMineColision(true);
 
@@ -2101,5 +2100,40 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 				System.gc();
 			}
 		});
+	}
+	
+	public void touchParticleCollision()
+	{	
+    	player.life = player.life - 1;
+        if (player.life == 2) gameHUD.detachChild(hurt3);
+        if (player.life == 1) gameHUD.detachChild(hurt2);
+        if (player.life == 0) gameHUD.detachChild(hurt1);
+
+    	// DO flickering while period of time after touching the spikes 
+   		flicker = new playTimer(0.1f , new playTimer.ITimerCallback()
+   	    {
+        	boolean visible = false;
+   	        @Override
+   	        public void onTick()
+   	        {
+   	            player.setVisible(visible);
+   	            visible = !visible;
+   	        }
+   	      }
+   	    );
+   		engine.registerUpdateHandler(flicker);
+   		
+        engine.registerUpdateHandler(new TimerHandler(1.0f, new ITimerCallback()
+        {                                    
+            public void onTimePassed(final TimerHandler pTimerHandler)
+            {
+                pTimerHandler.reset();
+                flicker.pause();
+                flicker.reset();
+                if (player.isVisible() == false) player.setVisible(true);
+                engine.unregisterUpdateHandler(pTimerHandler);
+                engine.unregisterUpdateHandler(flicker);            
+            }
+        }));
 	}
 }
