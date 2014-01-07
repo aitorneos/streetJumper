@@ -478,6 +478,10 @@ public class ResourcesManager
 	  {
 		  this.loadBurnstowFont();
 	  }
+	  else if (this.getLevelComplete() == 3)
+	  {
+		  this.loadCheapsteFont();
+	  }
     }
     
     private void loadToonFont()

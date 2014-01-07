@@ -345,6 +345,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
         	{
         		disposeScene(2);
         	}
+        	else if (ResourcesManager.getInstance().getLevelComplete() == 3)
+        	{
+        		disposeScene(3);
+        	}
         	SceneManager.getInstance().loadMenuScene(engine);
         	ResourcesManager.getInstance().setLevelComplete(1);
     	}
