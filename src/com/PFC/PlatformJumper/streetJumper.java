@@ -5,6 +5,10 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
+
+
+
+
 //---------- ANDENGINE KERNEL IMPORTS -------------------------------------------------------------- //
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
@@ -40,10 +44,12 @@ import org.andengine.extension.multiplayer.server.connector.ClientConnector;
 import org.andengine.extension.multiplayer.shared.BluetoothSocketConnection;
 import org.andengine.extension.multiplayer.util.MessagePool;
 
+
+
+
+
 //---------- NETWORK IMPORTS  -------------------------------------------------------------- //
 import Network.ConnectionCloseServerMessage;
-import Network.BluetoothListDevicesActivity;
-
 //---------- OTHERS -------------------------------------------------------------- //
 import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
@@ -177,15 +183,17 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                              .setIcon(android.R.drawable.ic_dialog_info)
                              .setTitle("Be Server or Client ...")
                              .setCancelable(false)
+                             // CLIENT ----> RUNS
                              .setPositiveButton("Client", new OnClickListener() 
                              {
                                  @Override
                                  public void onClick(final DialogInterface pDialog, final int pWhich) 
                                  {
-                                         final Intent intent = new Intent(streetJumper.this, BluetoothListDevicesActivity.class);
-                                         streetJumper.this.startActivityForResult(intent, REQUESTCODE_BLUETOOTH_CONNECT);
+                                	 Intent result = new Intent(streetJumper.this, BluetoothDeviceDetection.class);
+                                     streetJumper.this.startActivityForResult(result, REQUESTCODE_BLUETOOTH_CONNECT);
                                  }
                              })
+                             // SERVER -----> RUNS
                              .setNeutralButton("Server", new OnClickListener()
                              {
                                  @Override
@@ -196,6 +204,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                                 	 streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
                                  }
                              })
+                             // CLIENT && SERVER -------> RUNS
                              .setNegativeButton("Both", new OnClickListener() 
                              {
                                  @Override
@@ -341,7 +350,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                     
             case REQUESTCODE_BLUETOOTH_CONNECT:
             	
-                this.mServerMACAddress = pData.getExtras().getString(BluetoothListDevicesActivity.EXTRA_DEVICE_ADDRESS);
+                this.mServerMACAddress = pData.getExtras().getString(BluetoothDeviceDetection.EXTRA_DEVICE_ADDRESS);
                 this.initClient();
                 break;
                     
