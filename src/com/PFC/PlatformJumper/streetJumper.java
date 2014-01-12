@@ -4,19 +4,16 @@ package com.PFC.PlatformJumper;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-
-
-
-
+import java.net.Socket;
 
 //---------- ANDENGINE KERNEL IMPORTS -------------------------------------------------------------- //
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
-import org.andengine.engine.options.ConfigChooserOptions;
-import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
+import org.andengine.engine.options.ConfigChooserOptions;
+import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
@@ -25,87 +22,91 @@ import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.augmentedreality.BaseAugmentedRealityGameActivity;
 import org.andengine.input.sensor.acceleration.AccelerationData;
 import org.andengine.input.sensor.acceleration.IAccelerationListener;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.util.WifiUtils;
+import org.andengine.util.WifiUtils.WifiUtilsException;
 import org.andengine.util.debug.Debug;
 
 //---------- ANDENGINE MULTIPLAYER EXTENSION IMPORTS -------------------------------------------------------------- //
-import org.andengine.util.exception.BluetoothException;
-import org.andengine.extension.multiplayer.adt.message.IMessage;
-import org.andengine.extension.multiplayer.adt.message.server.IServerMessage;
 import org.andengine.extension.multiplayer.adt.message.server.ServerMessage;
+import org.andengine.extension.multiplayer.adt.message.server.IServerMessage;
+import org.andengine.extension.multiplayer.adt.message.IMessage;
 import org.andengine.extension.multiplayer.client.IServerMessageHandler;
-import org.andengine.extension.multiplayer.client.connector.BluetoothSocketConnectionServerConnector;
-import org.andengine.extension.multiplayer.client.connector.BluetoothSocketConnectionServerConnector.IBluetoothSocketConnectionServerConnectorListener;
 import org.andengine.extension.multiplayer.client.connector.ServerConnector;
-import org.andengine.extension.multiplayer.server.BluetoothSocketServer;
-import org.andengine.extension.multiplayer.server.BluetoothSocketServer.IBluetoothSocketServerListener;
-import org.andengine.extension.multiplayer.server.connector.BluetoothSocketConnectionClientConnector;
-import org.andengine.extension.multiplayer.server.connector.BluetoothSocketConnectionClientConnector.IBluetoothSocketConnectionClientConnectorListener;
+import org.andengine.extension.multiplayer.client.connector.SocketConnectionServerConnector;
+import org.andengine.extension.multiplayer.client.connector.SocketConnectionServerConnector.ISocketConnectionServerConnectorListener;
+import org.andengine.extension.multiplayer.server.SocketServer;
+import org.andengine.extension.multiplayer.server.SocketServer.ISocketServerListener;
 import org.andengine.extension.multiplayer.server.connector.ClientConnector;
-import org.andengine.extension.multiplayer.shared.BluetoothSocketConnection;
+import org.andengine.extension.multiplayer.server.connector.SocketConnectionClientConnector;
+import org.andengine.extension.multiplayer.server.connector.SocketConnectionClientConnector.ISocketConnectionClientConnectorListener;
+import org.andengine.extension.multiplayer.shared.SocketConnection;
 import org.andengine.extension.multiplayer.util.MessagePool;
-
-
-
-
 
 //---------- NETWORK IMPORTS  -------------------------------------------------------------- //
 import Network.ConnectionCloseServerMessage;
+import Network.ServerMessageFlags;
+import Network.ClientMessageFlags;
+
 //---------- OTHERS -------------------------------------------------------------- //
 import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
-import android.view.Display;
-import android.view.KeyEvent;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.bluetooth.BluetoothAdapter;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
-import android.content.Intent;
-import android.os.Bundle;
 import android.util.SparseArray;
+import android.view.Display;
+import android.view.KeyEvent;
+import android.widget.EditText;
 import android.widget.Toast;
 
 
 /**
  *
  * @author Aitor Arque Arnaiz (1194443)
+ * @Date : 12 / 01 / 2014
  */
 
-public class streetJumper extends BaseAugmentedRealityGameActivity implements IAccelerationListener
+public class streetJumper extends BaseAugmentedRealityGameActivity implements IAccelerationListener, ServerMessageFlags, ClientMessageFlags
 {
 	
 	 // ===========================================================
     // Constants
     // ===========================================================
 
-    /** Create your own unique UUID at: http://www.uuidgenerator.com/ */
-    private static final String UUID = "9c4a7a70-788f-11e3-981f-0800200c9a66";
-    
-    private static final short FLAG_MESSAGE_SERVER_ADD_SPRITE = 1;
-    private static final short FLAG_MESSAGE_SERVER_MOVE_SPRITE = FLAG_MESSAGE_SERVER_ADD_SPRITE + 1;
+	 private static final String LOCALHOST_IP = "127.0.0.1";
 
-    private static final int DIALOG_CHOOSE_SERVER_OR_CLIENT_ID = 0;
-    private static final int DIALOG_SHOW_SERVER_IP_ID = DIALOG_CHOOSE_SERVER_OR_CLIENT_ID + 1;
+     //private static final int CAMERA_WIDTH = 720;
+     //private static final int CAMERA_HEIGHT = 480;
 
-    private static final int REQUESTCODE_BLUETOOTH_ENABLE = 0;
-    private static final int REQUESTCODE_BLUETOOTH_CONNECT = REQUESTCODE_BLUETOOTH_ENABLE + 1;
-	
+     private static final int SERVER_PORT = 4444;
+
+     private static final short FLAG_MESSAGE_SERVER_ADD_FACE = 1;
+     private static final short FLAG_MESSAGE_SERVER_MOVE_FACE = FLAG_MESSAGE_SERVER_ADD_FACE + 1;
+
+     private static final int DIALOG_CHOOSE_SERVER_OR_CLIENT_ID = 0;
+     private static final int DIALOG_ENTER_SERVER_IP_ID = DIALOG_CHOOSE_SERVER_OR_CLIENT_ID + 1;
+     private static final int DIALOG_SHOW_SERVER_IP_ID = DIALOG_ENTER_SERVER_IP_ID + 1;
+     
 	//------------------ Class Variables --------------------------------------
 	
 	private BoundCamera camera;
 	private ResourcesManager resourcesManager;
 	private boolean activated = false;
 	
-	 private int mSpriteIDCounter;
-     private final SparseArray<Sprite> mSprites = new SparseArray<Sprite>();
+	 private BitmapTextureAtlas mBitmapTextureAtlas;
+     private ITextureRegion mFaceTextureRegion;
 
-     private String mServerMACAddress;
-     private BluetoothSocketServer<BluetoothSocketConnectionClientConnector> mBluetoothSocketServer;
-     private ServerConnector<BluetoothSocketConnection> mServerConnector;
+    private int mFaceIDCounter;
+    private final SparseArray<Sprite> mFaces = new SparseArray<Sprite>();
 
-     private final MessagePool<IMessage> mMessagePool = new MessagePool<IMessage>();
+    private String mServerIP = LOCALHOST_IP;
+    private SocketServer<SocketConnectionClientConnector> mSocketServer;
+    private ServerConnector<SocketConnection> mServerConnector;
 
-     private BluetoothAdapter mBluetoothAdapter;
+    private final MessagePool<IMessage> mMessagePool = new MessagePool<IMessage>();
    
 	//------------------------------------------------------------------------
      
@@ -113,16 +114,16 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
      // Constructors
      // ===========================================================
 
-     public streetJumper() 
-     {
-             this.initMessagePool();
-     }
+    public streetJumper() 
+    {
+        this.initMessagePool();
+    }
 
-     private void initMessagePool() 
-     {
-             this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_ADD_SPRITE, AddSpriteServerMessage.class);
-             this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_MOVE_SPRITE, MoveSpriteServerMessage.class);
-     }
+	private void initMessagePool()
+	{
+	        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_ADD_FACE, AddFaceServerMessage.class);
+	        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_MOVE_FACE, MoveFaceServerMessage.class);
+	}
 
 	
 	 // ----------------------- Methods ---------------------------------------
@@ -131,98 +132,6 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
      // Methods for/from SuperClass/Interfaces
      // ===========================================================
      
-     @SuppressWarnings("deprecation")
-	 @Override
-     protected void onCreate(final Bundle pSavedInstanceState)
-     {
-             super.onCreate(pSavedInstanceState);
-
-             this.mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-             if (this.mBluetoothAdapter == null) 
-             {
-                 Toast.makeText(this, "Bluetooth is not available!", Toast.LENGTH_LONG).show();
-                 this.finish();
-                 return;
-                     
-             } 
-             else 
-             {
-                 this.mServerMACAddress = this.mBluetoothAdapter.getAddress();
-
-                 if (this.mBluetoothAdapter.isEnabled()) 
-                 {
-                         this.showDialog(DIALOG_CHOOSE_SERVER_OR_CLIENT_ID);
-                 } 
-                 else 
-                 {
-                     final Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-                     this.startActivityForResult(enableIntent, REQUESTCODE_BLUETOOTH_ENABLE);
-                 }
-             }
-     }
-     
-    @SuppressWarnings("deprecation")
-	@Override
-     protected Dialog onCreateDialog(final int pID) 
-     {
-             switch(pID) 
-             {
-                     case DIALOG_SHOW_SERVER_IP_ID:
-                    	 
-                         return new AlertDialog.Builder(this)
-                         .setIcon(android.R.drawable.ic_dialog_info)
-                         .setTitle("Server-Details")
-                         .setCancelable(false)
-                         .setMessage("The Name of your Server is:\n" + BluetoothAdapter.getDefaultAdapter().getName() + "\n" + "The MACAddress of your Server is:\n" + this.mServerMACAddress)
-                         .setPositiveButton(android.R.string.ok, null)
-                         .create();
-                             
-                     case DIALOG_CHOOSE_SERVER_OR_CLIENT_ID:
-                    	 
-                             return new AlertDialog.Builder(this)
-                             .setIcon(android.R.drawable.ic_dialog_info)
-                             .setTitle("Be Server or Client ...")
-                             .setCancelable(false)
-                             // CLIENT ----> RUNS
-                             .setPositiveButton("Client", new OnClickListener() 
-                             {
-                                 @Override
-                                 public void onClick(final DialogInterface pDialog, final int pWhich) 
-                                 {
-                                	 Intent result = new Intent(streetJumper.this, BluetoothDeviceDetection.class);
-                                     streetJumper.this.startActivityForResult(result, REQUESTCODE_BLUETOOTH_CONNECT);
-                                 }
-                             })
-                             // SERVER -----> RUNS
-                             .setNeutralButton("Server", new OnClickListener()
-                             {
-                                 @Override
-                                 public void onClick(final DialogInterface pDialog, final int pWhich)
-                                 {
-                                	 streetJumper.this.toast("You can add and move sprites, which are only shown on the clients.");
-                                	 streetJumper.this.initServer();
-                                	 streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
-                                 }
-                             })
-                             // CLIENT && SERVER -------> RUNS
-                             .setNegativeButton("Both", new OnClickListener() 
-                             {
-                                 @Override
-                                 public void onClick(final DialogInterface pDialog, final int pWhich) 
-                                 {
-                                	 streetJumper.this.toast("You can add sprites and move them, by dragging them.");
-                                	 streetJumper.this.initServerAndClient();
-                                	 streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
-                                 }
-                             })
-                             .create();
-                     default:
-                           return super.onCreateDialog(pID);
-             }
-     }
-
-	
-	
 	/**
 	 Initialize screen options 
 	 **/
@@ -246,11 +155,15 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 		configChooserOptions.setRequestedBlueSize(8);
 		configChooserOptions.setRequestedAlphaSize(8);
 		configChooserOptions.setRequestedDepthSize(16);
+		this.showDialog(DIALOG_CHOOSE_SERVER_OR_CLIENT_ID);
 	    return engineOptions;
+    	
+        /*final Camera camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
+        return new EngineOptions(true, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), camera);*/
     }
 	
 	
-	/*
+	/**
 	 Method that limits the FPS (frames per second) to 60 Herz due to 
 	 the diferent frame rate technology
 	 */
@@ -266,16 +179,71 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
     	
     	 ResourcesManager.prepareManager(mEngine, this, camera, getVertexBufferObjectManager());
     	 resourcesManager = ResourcesManager.getInstance();
-    	 //this.enableAccelerationSensor(this);
     	 pOnCreateResourcesCallback.onCreateResourcesFinished();
+		
+		/*BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+
+        this.mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 32, 32, TextureOptions.BILINEAR);
+        this.mFaceTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "face_box.png", 0, 0);
+
+        this.mBitmapTextureAtlas.load();*/
         
     }
 
 	@Override
-    public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) throws IOException
+    public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
     {
     	
     	SceneManager.getInstance().createSplashScene(pOnCreateSceneCallback);
+		
+		/*this.mEngine.registerUpdateHandler(new FPSLogger());
+
+        final Scene scene = new Scene();
+        scene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
+
+                scene.setOnSceneTouchListener(new IOnSceneTouchListener() {
+                        @SuppressWarnings("deprecation")
+						@Override
+                        public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent) {
+                                if(pSceneTouchEvent.isActionDown()) {
+                                        final AddFaceServerMessage addFaceServerMessage = (AddFaceServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_ADD_FACE);
+										addFaceServerMessage.set(streetJumper.this.mFaceIDCounter++, pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
+
+										streetJumper.this.mSocketServer.sendBroadcastServerMessage(addFaceServerMessage);
+
+										streetJumper.this.mMessagePool.recycleMessage(addFaceServerMessage);
+                                        return true;
+                                } 
+                                else
+                                {
+                                	
+                                        return true;
+                                }
+                        }
+                });
+
+                scene.setOnAreaTouchListener(new IOnAreaTouchListener() {
+                        @SuppressWarnings("deprecation")
+						@Override
+                        public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final ITouchArea pTouchArea, final float pTouchAreaLocalX, final float pTouchAreaLocalY) {
+                                final Sprite face = (Sprite)pTouchArea;
+								final Integer faceID = (Integer)face.getUserData();
+
+								final MoveFaceServerMessage moveFaceServerMessage = (MoveFaceServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_FACE);
+								moveFaceServerMessage.set(faceID, pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
+
+								streetJumper.this.mSocketServer.sendBroadcastServerMessage(moveFaceServerMessage);
+
+								streetJumper.this.mMessagePool.recycleMessage(moveFaceServerMessage);
+                                return true;
+                        }
+                });
+
+                scene.setTouchAreaBindingOnActionDownEnabled(true);
+                scene.setTouchAreaBindingOnActionMoveEnabled(true);
+
+        return scene;*/
+		
     }
 
 	@Override
@@ -292,25 +260,6 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
     
-    @SuppressWarnings("deprecation")
-	@Override
-    protected void onDestroy()
-    {
-    	if(this.mBluetoothSocketServer != null) 
-    	{
-            this.mBluetoothSocketServer.sendBroadcastServerMessage(new ConnectionCloseServerMessage());
-            this.mBluetoothSocketServer.terminate();
-	    }
-	
-	    if(this.mServerConnector != null) 
-	    {
-	            this.mServerConnector.terminate();
-	    }
-
-    	super.onDestroy();
-    	this.disableAccelerationSensor();
-        System.exit(0);	
-    }
     
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) 
@@ -336,134 +285,212 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         }
         return false; 
     }
-    
-    @SuppressWarnings("deprecation")
+	
+	@SuppressWarnings("deprecation")
 	@Override
-    protected void onActivityResult(final int pRequestCode, final int pResultCode, final Intent pData) 
-    {
-        switch(pRequestCode) 
-        {
-            case REQUESTCODE_BLUETOOTH_ENABLE:
-            	
-                this.showDialog(DIALOG_CHOOSE_SERVER_OR_CLIENT_ID);
-                break;
-                    
-            case REQUESTCODE_BLUETOOTH_CONNECT:
-            	
-                this.mServerMACAddress = pData.getExtras().getString(BluetoothDeviceDetection.EXTRA_DEVICE_ADDRESS);
-                this.initClient();
-                break;
-                    
-            default:
-                super.onActivityResult(pRequestCode, pResultCode, pData);
-        }
+    protected Dialog onCreateDialog(final int pID) {
+            switch(pID) {
+                    case DIALOG_SHOW_SERVER_IP_ID:
+				try {
+					return new AlertDialog.Builder(this)
+					.setIcon(android.R.drawable.ic_dialog_info)
+					.setTitle("Your Server-IP ...")
+					.setCancelable(false)
+					.setMessage("The IP of your Server is:\n" + WifiUtils.getWifiIPv4Address(this))
+					.setPositiveButton(android.R.string.ok, null)
+					.create();
+				} catch (WifiUtilsException e) {
+					return new AlertDialog.Builder(this)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setTitle("Your Server-IP ...")
+                    .setCancelable(false)
+                    .setMessage("Error retrieving IP of your Server: " + e)
+                    .setPositiveButton(android.R.string.ok, new OnClickListener() {
+                            @Override
+                            public void onClick(final DialogInterface pDialog, final int pWhich) {
+                                    streetJumper.this.finish();
+                            }
+                    })
+                    .create();
+				}
+                    case DIALOG_ENTER_SERVER_IP_ID:
+                            final EditText ipEditText = new EditText(this);
+                            return new AlertDialog.Builder(this)
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setTitle("Enter Server-IP ...")
+                            .setCancelable(false)
+                            .setView(ipEditText)
+                            .setPositiveButton("Connect", new OnClickListener() {
+                                    public void onClick(final DialogInterface pDialog, final int pWhich) {
+                                            streetJumper.this.mServerIP = ipEditText.getText().toString();
+                                            streetJumper.this.initClient();
+                                    }
+                            })
+                            .setNegativeButton(android.R.string.cancel, new OnClickListener() {
+                                    @Override
+                                    public void onClick(final DialogInterface pDialog, final int pWhich) {
+                                    	streetJumper.this.finish();
+                                    }
+                            })
+                            .create();
+                    case DIALOG_CHOOSE_SERVER_OR_CLIENT_ID:
+                            return new AlertDialog.Builder(this)
+                            .setIcon(android.R.drawable.ic_dialog_info)
+                            .setTitle("Be Server or Client ...")
+                            .setCancelable(false)
+                            .setPositiveButton("Client", new OnClickListener() {
+                                    @SuppressWarnings("deprecation")
+									@Override
+                                    public void onClick(final DialogInterface pDialog, final int pWhich) {
+                                    	streetJumper.this.showDialog(DIALOG_ENTER_SERVER_IP_ID);
+                                    }
+                            })
+                            .setNeutralButton("Server", new OnClickListener() {
+                                    @SuppressWarnings("deprecation")
+									@Override
+                                    public void onClick(final DialogInterface pDialog, final int pWhich) {
+                                    	streetJumper.this.toast("You can add and move sprites, which are only shown on the clients.");
+                                    	streetJumper.this.initServer();
+                                            streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
+                                    }
+                            })
+                            .setNegativeButton("Both", new OnClickListener() {
+                                    @SuppressWarnings("deprecation")
+									@Override
+                                    public void onClick(final DialogInterface pDialog, final int pWhich) {
+                                    	streetJumper.this.toast("You can add sprites and move them, by dragging them.");
+                                    	streetJumper.this.initServerAndClient();
+                                    	streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
+                                    }
+                            })
+                            .create();
+                    default:
+                            return super.onCreateDialog(pID);
+            }
     }
+
+	@SuppressWarnings("deprecation")
+	@Override
+    protected void onDestroy() {
+            if(this.mSocketServer != null) {
+                    this.mSocketServer.sendBroadcastServerMessage(new ConnectionCloseServerMessage());
+                    this.mSocketServer.terminate();
+            }
+
+            if(this.mServerConnector != null) {
+                    this.mServerConnector.terminate();
+            }
+
+            super.onDestroy();
+    }
+
+    
+    /*@Override
+    public boolean onKeyUp(final int pKeyCode, final KeyEvent pEvent) {
+            switch(pKeyCode) {
+                    case KeyEvent.KEYCODE_BACK:
+                            this.finish();
+                            return true;
+            }
+            return super.onKeyUp(pKeyCode, pEvent);
+    }*/
+
+
+    
     
  // ===========================================================
     // Methods
     // ===========================================================
 
-    public void addSprite(final int pID, final float pX, final float pY) 
-    {
+    public void addFace(final int pID, final float pX, final float pY) {
+        final Scene scene = this.mEngine.getScene();
+        /* Create the face and add it to the scene. */
+        final Sprite face = new Sprite(0, 0, this.mFaceTextureRegion, this.getVertexBufferObjectManager());
+        face.setPosition(pX - face.getWidth() * 0.5f, pY - face.getHeight() * 0.5f);
+        face.setUserData(pID);
+        this.mFaces.put(pID, face);
+        scene.registerTouchArea(face);
+        scene.attachChild(face);
+	}
+	
+	public void moveFace(final int pID, final float pX, final float pY) {
+	        /* Find and move the face. */
+	        final Sprite face = this.mFaces.get(pID);
+	        face.setPosition(pX - face.getWidth() * 0.5f, pY - face.getHeight() * 0.5f);
+	}
 
-    }
 
-    public void moveSprite(final int pID, final float pX, final float pY) 
-    {
-        /* Find and move the sprite. */
-        final Sprite sprite = this.mSprites.get(pID);
-        sprite.setPosition(pX, pY);
-    }
-
-    private void initServerAndClient() 
-    {
+	private void initServer() {
+    this.mSocketServer = new SocketServer<SocketConnectionClientConnector>(SERVER_PORT, new ExampleClientConnectorListener(), new ExampleServerStateListener()) {
+            @Override
+            protected SocketConnectionClientConnector newClientConnector(final SocketConnection pSocketConnection) throws IOException {
+                    return new SocketConnectionClientConnector(pSocketConnection);
+            }
+	    };
+	
+	    this.mSocketServer.start();
+	}
+	
+	private void initServerAndClient() {
         this.initServer();
 
         /* Wait some time after the server has been started, so it actually can start up. */
-        try 
-        {
-            Thread.sleep(500);
-        }
-        catch (final Throwable t) 
-        {
-            Debug.e(t);
+        try {
+                Thread.sleep(250);
+        } catch (final Throwable t) {
+                Debug.e(t);
         }
 
         this.initClient();
-    }
+	}
 
-    private void initServer() 
-    {
-        this.mServerMACAddress = BluetoothAdapter.getDefaultAdapter().getAddress();
-        try 
-        {
-            this.mBluetoothSocketServer = new BluetoothSocketServer<BluetoothSocketConnectionClientConnector>(UUID, new ExampleClientConnectorListener(), new ExampleServerStateListener()) 
-            {
-                @Override
-                protected BluetoothSocketConnectionClientConnector newClientConnector(final BluetoothSocketConnection pBluetoothSocketConnection) throws IOException
-                {
-                    try 
-                    {
-                        return new BluetoothSocketConnectionClientConnector(pBluetoothSocketConnection);
-                    } 
-                    catch (final BluetoothException e) 
-                    {
-                        Debug.e(e);
-                        /* Actually cannot happen. */
-                        return null;
-                    }
-                }
-            };
-        } 
-        catch (final BluetoothException e) 
-        {
-            Debug.e(e);
-        }
 
-        this.mBluetoothSocketServer.start();
-    }
+	private void initClient() {
+	    try {
+	            this.mServerConnector = new SocketConnectionServerConnector(new SocketConnection(new Socket(this.mServerIP, SERVER_PORT)), new ExampleServerConnectorListener());
+	
+	            this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_CONNECTION_CLOSE, ConnectionCloseServerMessage.class, new IServerMessageHandler<SocketConnection>() {
+	                    @Override
+	                    public void onHandleMessage(final ServerConnector<SocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException {
+	                    	streetJumper.this.finish();
+	                    }
+	            });
+	
+	            this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_ADD_FACE, AddFaceServerMessage.class, new IServerMessageHandler<SocketConnection>() {
+	                    @Override
+	                    public void onHandleMessage(final ServerConnector<SocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException {
+	                            final AddFaceServerMessage addFaceServerMessage = (AddFaceServerMessage)pServerMessage;
+	                            streetJumper.this.addFace(addFaceServerMessage.mID, addFaceServerMessage.mX, addFaceServerMessage.mY);
+	                    }
+	            });
+	
+	            this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_MOVE_FACE, MoveFaceServerMessage.class, new IServerMessageHandler<SocketConnection>() {
+	                    @Override
+	                    public void onHandleMessage(final ServerConnector<SocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException {
+	                            final MoveFaceServerMessage moveFaceServerMessage = (MoveFaceServerMessage)pServerMessage;
+	                            streetJumper.this.moveFace(moveFaceServerMessage.mID, moveFaceServerMessage.mX, moveFaceServerMessage.mY);
+	                    }
+	            });
+	
+	            this.mServerConnector.getConnection().start();
+		    } catch (final Throwable t) {
+		            Debug.e(t);
+		}
+	}
 
-    private void initClient() 
-    {
-        try 
-        {
-            this.mServerConnector = new BluetoothSocketConnectionServerConnector(new BluetoothSocketConnection(this.mBluetoothAdapter, this.mServerMACAddress, UUID), new ExampleServerConnectorListener());
-
-            /*this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_CONNECTION_CLOSE, ConnectionCloseServerMessage.class, new IServerMessageHandler<BluetoothSocketConnection>() {
-                @Override
-                public void onHandleMessage(final ServerConnector<BluetoothSocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException {
-                        streetJumper.this.finish();
-                }
-        });*/
-            
-            this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_ADD_SPRITE, AddSpriteServerMessage.class, new IServerMessageHandler<BluetoothSocketConnection>() 
-            {
-                @Override
-                public void onHandleMessage(final ServerConnector<BluetoothSocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException 
-                {
-                    final AddSpriteServerMessage addSpriteServerMessage = (AddSpriteServerMessage)pServerMessage;
-                    streetJumper.this.addSprite(addSpriteServerMessage.mID, addSpriteServerMessage.mX, addSpriteServerMessage.mY);
-                }
-            });
-
-            this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_MOVE_SPRITE, MoveSpriteServerMessage.class, new IServerMessageHandler<BluetoothSocketConnection>()
-        	{
-                @Override
-                public void onHandleMessage(final ServerConnector<BluetoothSocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException
-                {
-                    final MoveSpriteServerMessage moveSpriteServerMessage = (MoveSpriteServerMessage)pServerMessage;
-                    streetJumper.this.moveSprite(moveSpriteServerMessage.mID, moveSpriteServerMessage.mX, moveSpriteServerMessage.mY);
-                }
-            });
-
-            this.mServerConnector.getConnection().start();
-        } 
-        catch (final Throwable t) 
-        {
-            Debug.e(t);
-        }
-    }
-
+	private void log(final String pMessage) {
+	    Debug.d(pMessage);
+	}
+	
+	private void toast(final String pMessage) {
+	    this.log(pMessage);
+	    this.runOnUiThread(new Runnable() {
+	            @Override
+	            public void run() {
+	                    Toast.makeText(streetJumper.this, pMessage, Toast.LENGTH_SHORT).show();
+	            }
+	    });
+	}
 
     @Override
     protected void onPause()
@@ -525,168 +552,132 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
     	}
     }
     
-    private void log(final String pMessage) 
-    {
-        Debug.d(pMessage);
-    }
-    
-    private void toast(final String pMessage)
-    {
-        this.log(pMessage);
-        this.toastOnUiThread(pMessage);
-    }
-    
     // ===========================================================
     // Inner and Anonymous Classes
     // ===========================================================
 
-    public static class AddSpriteServerMessage extends ServerMessage 
-    {
+    public static class AddFaceServerMessage extends ServerMessage {
         private int mID;
         private float mX;
         private float mY;
 
-        public AddSpriteServerMessage() 
-        {
+        public AddFaceServerMessage() {
 
         }
 
-        public AddSpriteServerMessage(final int pID, final float pX, final float pY) 
-        {
+        public AddFaceServerMessage(final int pID, final float pX, final float pY) {
                 this.mID = pID;
                 this.mX = pX;
                 this.mY = pY;
         }
 
-        public void set(final int pID, final float pX, final float pY)
-        {
+        public void set(final int pID, final float pX, final float pY) {
                 this.mID = pID;
                 this.mX = pX;
                 this.mY = pY;
         }
 
         @Override
-        public short getFlag() 
-        {
-                return FLAG_MESSAGE_SERVER_ADD_SPRITE;
+        public short getFlag() {
+                return FLAG_MESSAGE_SERVER_ADD_FACE;
         }
 
         @Override
-        protected void onReadTransmissionData(final DataInputStream pDataInputStream) throws IOException 
-        {
+        protected void onReadTransmissionData(final DataInputStream pDataInputStream) throws IOException {
                 this.mID = pDataInputStream.readInt();
                 this.mX = pDataInputStream.readFloat();
                 this.mY = pDataInputStream.readFloat();
         }
 
         @Override
-        protected void onWriteTransmissionData(final DataOutputStream pDataOutputStream) throws IOException 
-        {
+        protected void onWriteTransmissionData(final DataOutputStream pDataOutputStream) throws IOException {
                 pDataOutputStream.writeInt(this.mID);
                 pDataOutputStream.writeFloat(this.mX);
                 pDataOutputStream.writeFloat(this.mY);
         }
-    }
+}
 
-    public static class MoveSpriteServerMessage extends ServerMessage 
-    {
+public static class MoveFaceServerMessage extends ServerMessage {
         private int mID;
         private float mX;
         private float mY;
 
-        public MoveSpriteServerMessage()
-        {
+        public MoveFaceServerMessage() {
 
         }
 
-        public MoveSpriteServerMessage(final int pID, final float pX, final float pY) 
-        {
+        public MoveFaceServerMessage(final int pID, final float pX, final float pY) {
                 this.mID = pID;
                 this.mX = pX;
                 this.mY = pY;
         }
 
-        public void set(final int pID, final float pX, final float pY) 
-        {
+        public void set(final int pID, final float pX, final float pY) {
                 this.mID = pID;
                 this.mX = pX;
                 this.mY = pY;
         }
 
         @Override
-        public short getFlag() 
-        {
-                return FLAG_MESSAGE_SERVER_MOVE_SPRITE;
+        public short getFlag() {
+                return FLAG_MESSAGE_SERVER_MOVE_FACE;
         }
 
         @Override
-        protected void onReadTransmissionData(final DataInputStream pDataInputStream) throws IOException 
-        {
+        protected void onReadTransmissionData(final DataInputStream pDataInputStream) throws IOException {
                 this.mID = pDataInputStream.readInt();
                 this.mX = pDataInputStream.readFloat();
                 this.mY = pDataInputStream.readFloat();
         }
 
         @Override
-        protected void onWriteTransmissionData(final DataOutputStream pDataOutputStream) throws IOException
-        {
+        protected void onWriteTransmissionData(final DataOutputStream pDataOutputStream) throws IOException {
                 pDataOutputStream.writeInt(this.mID);
                 pDataOutputStream.writeFloat(this.mX);
                 pDataOutputStream.writeFloat(this.mY);
         }
-    }
+}
 
-    private class ExampleServerConnectorListener implements IBluetoothSocketConnectionServerConnectorListener 
-    {
+private class ExampleServerConnectorListener implements ISocketConnectionServerConnectorListener {
         @Override
-        public void onStarted(final ServerConnector<BluetoothSocketConnection> pConnector) 
-        {
+        public void onStarted(final ServerConnector<SocketConnection> pConnector) {
                 streetJumper.this.toast("CLIENT: Connected to server.");
         }
 
         @Override
-        public void onTerminated(final ServerConnector<BluetoothSocketConnection> pConnector) 
-        {
+        public void onTerminated(final ServerConnector<SocketConnection> pConnector) {
         	streetJumper.this.toast("CLIENT: Disconnected from Server...");
         	streetJumper.this.finish();
         }
-    }
+}
 
-    private class ExampleServerStateListener implements IBluetoothSocketServerListener<BluetoothSocketConnectionClientConnector> 
-    {
+private class ExampleServerStateListener implements ISocketServerListener<SocketConnectionClientConnector> {
         @Override
-        public void onStarted(final BluetoothSocketServer<BluetoothSocketConnectionClientConnector> pBluetoothSocketServer) 
-        {
+        public void onStarted(final SocketServer<SocketConnectionClientConnector> pSocketServer) {
         	streetJumper.this.toast("SERVER: Started.");
         }
 
         @Override
-        public void onTerminated(final BluetoothSocketServer<BluetoothSocketConnectionClientConnector> pBluetoothSocketServer) 
-        {
+        public void onTerminated(final SocketServer<SocketConnectionClientConnector> pSocketServer) {
         	streetJumper.this.toast("SERVER: Terminated.");
         }
 
         @Override
-        public void onException(final BluetoothSocketServer<BluetoothSocketConnectionClientConnector> pBluetoothSocketServer, final Throwable pThrowable) 
-        {
+        public void onException(final SocketServer<SocketConnectionClientConnector> pSocketServer, final Throwable pThrowable) {
                 Debug.e(pThrowable);
                 streetJumper.this.toast("SERVER: Exception: " + pThrowable);
         }
-    }
+}
 
-    private class ExampleClientConnectorListener implements IBluetoothSocketConnectionClientConnectorListener 
-    {
+private class ExampleClientConnectorListener implements ISocketConnectionClientConnectorListener {
         @Override
-        public void onStarted(final ClientConnector<BluetoothSocketConnection> pConnector) 
-        {
-        	streetJumper.this.toast("SERVER: Client connected: " + pConnector.getConnection().getBluetoothSocket().getRemoteDevice().getAddress());
+        public void onStarted(final ClientConnector<SocketConnection> pConnector) {
+        	streetJumper.this.toast("SERVER: Client connected: " + pConnector.getConnection().getSocket().getInetAddress().getHostAddress());
         }
 
         @Override
-        public void onTerminated(final ClientConnector<BluetoothSocketConnection> pConnector) 
-        {
-        	streetJumper.this.toast("SERVER: Client disconnected: " + pConnector.getConnection().getBluetoothSocket().getRemoteDevice().getAddress());
+        public void onTerminated(final ClientConnector<SocketConnection> pConnector) {
+        	streetJumper.this.toast("SERVER: Client disconnected: " + pConnector.getConnection().getSocket().getInetAddress().getHostAddress());
         }
-    }
-
+	}
 }
