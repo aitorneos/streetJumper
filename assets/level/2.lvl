@@ -2,6 +2,7 @@
 <level width="3000" height="480">
 
 	<entity x="50" y="150" width="75" height="75" type="player"/>
+	<entity x="50" y="150" width="75" height="75" type="playerOnline"/>
 	<entity x="740" y="310" width="75" height="75" type="playerSpecial"/>
 	
 	<entity x="2900" y="200" width="75" height="75" type="switcher"/>

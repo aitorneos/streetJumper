@@ -1,7 +1,6 @@
 package Players;
 
 import org.andengine.engine.camera.Camera;
-import org.andengine.entity.particle.SpriteParticleSystem;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.extension.physics.box2d.PhysicsConnector;
@@ -9,7 +8,6 @@ import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import particleSystem.BulletParticleSystem;
 import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
 

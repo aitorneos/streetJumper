@@ -41,7 +41,10 @@ import Animated_Features.SpringBoarder;
 import Animated_Features.Switcher;
 import Enemies.Enemy;
 import Enemies.slimeEnemy;
+import Network.ClientMessageFlags;
+import Network.ServerMessageFlags;
 import Players.Player;
+import Players.PlayerOnline;
 import Players.PlayerSpecial;
 import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
@@ -50,6 +53,8 @@ import Scene.LevelCompleteWindow.StarsCount;
 import Shader.WaterMaskEffectShader;
 import Timers.playTimer;
 
+import com.PFC.PlatformJumper.streetJumper;
+import com.PFC.PlatformJumper.streetJumper.PlayerSelectedServerMessage;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -61,7 +66,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
-public class GameScene extends BaseScene implements IOnSceneTouchListener
+public class GameScene extends BaseScene implements IOnSceneTouchListener, ServerMessageFlags, ClientMessageFlags
 {
 	
 	// ---------------- GENERAL (NON - SPECIFIC) VARIABLES ----------------------
@@ -73,7 +78,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	private Text timeText;
 	private int score = 0;
 	private boolean firstTouch = false;
-	private PhysicsWorld physicsWorld;
+	public PhysicsWorld physicsWorld;
 	private boolean gameOverDisplayed = false;
 	private playTimer playT;
 	private playTimer flicker;
@@ -82,7 +87,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	
 	//Player variables
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER = "player";
+	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_ONLINE = "playerOnline";
 	public Player player;
+	public PlayerOnline playerOnline;
 	public PlayerSpecial playerSpecial;
 	private Enemy enemy;
 	private Switcher switcher;
@@ -674,6 +681,24 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    levelObject.setSize(60, 60);
 	                }
 	                
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_ONLINE))
+	                {
+	                    playerOnline = new PlayerOnline(x, y, vbom, camera,  physicsWorld)
+	                    {
+	                        @Override
+	                        public void onDie()
+	                        {
+	                        	 if (!gameOverDisplayed)
+	                    	    {
+	                    	        displayGameOverText(1);
+	                    	    }
+	                        }
+	                    };
+	                    levelObject = playerOnline;
+	                    levelObject.setVisible(false);
+	                    levelObject.setSize(60, 60);
+	                }
+	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SNOW_HILL))
 	                {
 	                    levelObject = new Sprite(x, y, resourcesManager.snowHill, vbom);
@@ -1167,6 +1192,24 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 	                    levelObject.setSize(width, height);
 	                }
 	                
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_ONLINE))
+	                {
+	                    playerOnline = new PlayerOnline(x, y, vbom, camera,  physicsWorld)
+	                    {
+	                        @Override
+	                        public void onDie()
+	                        {
+	                        	 if (!gameOverDisplayed)
+	                    	    {
+	                    	        displayGameOverText(1);
+	                    	    }
+	                        }
+	                    };
+	                    levelObject = playerOnline;
+	                    levelObject.setVisible(false);
+	                    levelObject.setSize(60, 60);
+	                }
+	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_SPECIAL))
 	                {
 	                    playerSpecial = new PlayerSpecial(x, y, vbom, camera,  physicsWorld)
@@ -1551,6 +1594,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
         
     }
     
+	@SuppressWarnings("deprecation")
 	@Override
 	public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent)
 	{
@@ -1558,12 +1602,20 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 		{
 			firstTouch = true;
 			ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
+
+            final PlayerSelectedServerMessage playerSelectedServerMessage = (PlayerSelectedServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_PLAYER_SELECTED);
+            playerSelectedServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, player.getX(), player.getY());
+
+			ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(playerSelectedServerMessage);
+			ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerSelectedServerMessage);
+			return true;
 		}
 		if (pSceneTouchEvent.isActionDown())
 	    {
 			player.jump();        
 	    }
-	    return false;
+		
+		return true;
 	}
 	
 
@@ -2263,7 +2315,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
 		});
 	}
 	
-	public void touchParticleCollision()
+	/*public void touchParticleCollision()
 	{	
     	player.life = player.life - 1;
         if (player.life == 2) gameHUD.detachChild(hurt3);
@@ -2296,5 +2348,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener
                 engine.unregisterUpdateHandler(flicker);            
             }
         }));
-	}
+	}*/
+	
 }

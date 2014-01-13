@@ -20,18 +20,11 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.augmentedreality.BaseAugmentedRealityGameActivity;
-import org.andengine.input.sensor.acceleration.AccelerationData;
-import org.andengine.input.sensor.acceleration.IAccelerationListener;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.region.ITextureRegion;
-import org.andengine.util.WifiUtils;
-import org.andengine.util.WifiUtils.WifiUtilsException;
-import org.andengine.util.debug.Debug;
+import org.andengine.extension.multiplayer.adt.message.IMessage;
+import org.andengine.extension.multiplayer.adt.message.server.IServerMessage;
 
 //---------- ANDENGINE MULTIPLAYER EXTENSION IMPORTS -------------------------------------------------------------- //
 import org.andengine.extension.multiplayer.adt.message.server.ServerMessage;
-import org.andengine.extension.multiplayer.adt.message.server.IServerMessage;
-import org.andengine.extension.multiplayer.adt.message.IMessage;
 import org.andengine.extension.multiplayer.client.IServerMessageHandler;
 import org.andengine.extension.multiplayer.client.connector.ServerConnector;
 import org.andengine.extension.multiplayer.client.connector.SocketConnectionServerConnector;
@@ -43,12 +36,19 @@ import org.andengine.extension.multiplayer.server.connector.SocketConnectionClie
 import org.andengine.extension.multiplayer.server.connector.SocketConnectionClientConnector.ISocketConnectionClientConnectorListener;
 import org.andengine.extension.multiplayer.shared.SocketConnection;
 import org.andengine.extension.multiplayer.util.MessagePool;
+import org.andengine.input.sensor.acceleration.AccelerationData;
+import org.andengine.input.sensor.acceleration.IAccelerationListener;
+import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
+import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.util.WifiUtils;
+import org.andengine.util.WifiUtils.WifiUtilsException;
+import org.andengine.util.debug.Debug;
 
 //---------- NETWORK IMPORTS  -------------------------------------------------------------- //
 import Network.ConnectionCloseServerMessage;
 import Network.ServerMessageFlags;
+import Players.PlayerOnline;
 import Network.ClientMessageFlags;
-
 //---------- OTHERS -------------------------------------------------------------- //
 import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
@@ -83,8 +83,9 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 
      private static final int SERVER_PORT = 4444;
 
-     private static final short FLAG_MESSAGE_SERVER_ADD_FACE = 1;
+     public static final short FLAG_MESSAGE_SERVER_ADD_FACE = 1;
      private static final short FLAG_MESSAGE_SERVER_MOVE_FACE = FLAG_MESSAGE_SERVER_ADD_FACE + 1;
+     public static final short FLAG_MESSAGE_SERVER_PLAYER_SELECTED = FLAG_MESSAGE_SERVER_MOVE_FACE + 1;
 
      private static final int DIALOG_CHOOSE_SERVER_OR_CLIENT_ID = 0;
      private static final int DIALOG_ENTER_SERVER_IP_ID = DIALOG_CHOOSE_SERVER_OR_CLIENT_ID + 1;
@@ -99,14 +100,14 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	 private BitmapTextureAtlas mBitmapTextureAtlas;
      private ITextureRegion mFaceTextureRegion;
 
-    private int mFaceIDCounter;
-    private final SparseArray<Sprite> mFaces = new SparseArray<Sprite>();
+    public int mPlayerIDCounter;
+    private final SparseArray<Sprite> mPlayers = new SparseArray<Sprite>();
 
     private String mServerIP = LOCALHOST_IP;
-    private SocketServer<SocketConnectionClientConnector> mSocketServer;
+    public SocketServer<SocketConnectionClientConnector> mSocketServer;
     private ServerConnector<SocketConnection> mServerConnector;
 
-    private final MessagePool<IMessage> mMessagePool = new MessagePool<IMessage>();
+    public final MessagePool<IMessage> mMessagePool = new MessagePool<IMessage>();
    
 	//------------------------------------------------------------------------
      
@@ -123,6 +124,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	{
 	        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_ADD_FACE, AddFaceServerMessage.class);
 	        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_MOVE_FACE, MoveFaceServerMessage.class);
+	        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_PLAYER_SELECTED, PlayerSelectedServerMessage.class);
 	}
 
 	
@@ -193,7 +195,6 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	@Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
     {
-    	
     	SceneManager.getInstance().createSplashScene(pOnCreateSceneCallback);
 		
 		/*this.mEngine.registerUpdateHandler(new FPSLogger());
@@ -207,7 +208,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                         public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent) {
                                 if(pSceneTouchEvent.isActionDown()) {
                                         final AddFaceServerMessage addFaceServerMessage = (AddFaceServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_ADD_FACE);
-										addFaceServerMessage.set(streetJumper.this.mFaceIDCounter++, pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
+										addFaceServerMessage.set(streetJumper.this.mPlayerIDCounter++, pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
 
 										streetJumper.this.mSocketServer.sendBroadcastServerMessage(addFaceServerMessage);
 
@@ -288,10 +289,13 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	
 	@SuppressWarnings("deprecation")
 	@Override
-    protected Dialog onCreateDialog(final int pID) {
-            switch(pID) {
+    protected Dialog onCreateDialog(final int pID) 
+	{
+            switch(pID)
+            {
                     case DIALOG_SHOW_SERVER_IP_ID:
-				try {
+				try 
+				{
 					return new AlertDialog.Builder(this)
 					.setIcon(android.R.drawable.ic_dialog_info)
 					.setTitle("Your Server-IP ...")
@@ -299,17 +303,21 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 					.setMessage("The IP of your Server is:\n" + WifiUtils.getWifiIPv4Address(this))
 					.setPositiveButton(android.R.string.ok, null)
 					.create();
-				} catch (WifiUtilsException e) {
+				} 
+				catch (WifiUtilsException e) 
+				{
 					return new AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle("Your Server-IP ...")
                     .setCancelable(false)
                     .setMessage("Error retrieving IP of your Server: " + e)
-                    .setPositiveButton(android.R.string.ok, new OnClickListener() {
-                            @Override
-                            public void onClick(final DialogInterface pDialog, final int pWhich) {
-                                    streetJumper.this.finish();
-                            }
+                    .setPositiveButton(android.R.string.ok, new OnClickListener()
+                    {
+                        @Override
+                        public void onClick(final DialogInterface pDialog, final int pWhich)
+                        {
+                                streetJumper.this.finish();
+                        }
                     })
                     .create();
 				}
@@ -320,17 +328,21 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                             .setTitle("Enter Server-IP ...")
                             .setCancelable(false)
                             .setView(ipEditText)
-                            .setPositiveButton("Connect", new OnClickListener() {
-                                    public void onClick(final DialogInterface pDialog, final int pWhich) {
-                                            streetJumper.this.mServerIP = ipEditText.getText().toString();
-                                            streetJumper.this.initClient();
-                                    }
+                            .setPositiveButton("Connect", new OnClickListener() 
+                            {
+                                public void onClick(final DialogInterface pDialog, final int pWhich) 
+                                {
+                                        streetJumper.this.mServerIP = ipEditText.getText().toString();
+                                        streetJumper.this.initClient();
+                                }
                             })
-                            .setNegativeButton(android.R.string.cancel, new OnClickListener() {
-                                    @Override
-                                    public void onClick(final DialogInterface pDialog, final int pWhich) {
-                                    	streetJumper.this.finish();
-                                    }
+                            .setNegativeButton(android.R.string.cancel, new OnClickListener() 
+                            {
+                                @Override
+                                public void onClick(final DialogInterface pDialog, final int pWhich) 
+                                {
+                                	streetJumper.this.finish();
+                                }
                             })
                             .create();
                     case DIALOG_CHOOSE_SERVER_OR_CLIENT_ID:
@@ -338,30 +350,36 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                             .setIcon(android.R.drawable.ic_dialog_info)
                             .setTitle("Be Server or Client ...")
                             .setCancelable(false)
-                            .setPositiveButton("Client", new OnClickListener() {
-                                    @SuppressWarnings("deprecation")
-									@Override
-                                    public void onClick(final DialogInterface pDialog, final int pWhich) {
-                                    	streetJumper.this.showDialog(DIALOG_ENTER_SERVER_IP_ID);
-                                    }
+                            .setPositiveButton("Client", new OnClickListener() 
+                            {
+                                @SuppressWarnings("deprecation")
+								@Override
+                                public void onClick(final DialogInterface pDialog, final int pWhich) 
+                                {
+                                	streetJumper.this.showDialog(DIALOG_ENTER_SERVER_IP_ID);
+                                }
                             })
-                            .setNeutralButton("Server", new OnClickListener() {
-                                    @SuppressWarnings("deprecation")
-									@Override
-                                    public void onClick(final DialogInterface pDialog, final int pWhich) {
-                                    	streetJumper.this.toast("You can add and move sprites, which are only shown on the clients.");
-                                    	streetJumper.this.initServer();
-                                            streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
-                                    }
+                            .setNeutralButton("Server", new OnClickListener() 
+                            {
+                                @SuppressWarnings("deprecation")
+								@Override
+                                public void onClick(final DialogInterface pDialog, final int pWhich)
+                                {
+                                	streetJumper.this.toast("You can add and move sprites, which are only shown on the clients.");
+                                	streetJumper.this.initServer();
+                                        streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
+                                }
                             })
-                            .setNegativeButton("Both", new OnClickListener() {
-                                    @SuppressWarnings("deprecation")
-									@Override
-                                    public void onClick(final DialogInterface pDialog, final int pWhich) {
-                                    	streetJumper.this.toast("You can add sprites and move them, by dragging them.");
-                                    	streetJumper.this.initServerAndClient();
-                                    	streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
-                                    }
+                            .setNegativeButton("Both", new OnClickListener() 
+                            {
+                                @SuppressWarnings("deprecation")
+								@Override
+                                public void onClick(final DialogInterface pDialog, final int pWhich)
+                                {
+                                	streetJumper.this.toast("You can add sprites and move them, by dragging them.");
+                                	streetJumper.this.initServerAndClient();
+                                	streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
+                                }
                             })
                             .create();
                     default:
@@ -371,124 +389,180 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 
 	@SuppressWarnings("deprecation")
 	@Override
-    protected void onDestroy() {
-            if(this.mSocketServer != null) {
-                    this.mSocketServer.sendBroadcastServerMessage(new ConnectionCloseServerMessage());
-                    this.mSocketServer.terminate();
-            }
+    protected void onDestroy() 
+	{
+        if(this.mSocketServer != null) 
+        {
+            this.mSocketServer.sendBroadcastServerMessage(new ConnectionCloseServerMessage());
+            this.mSocketServer.terminate();
+        }
 
-            if(this.mServerConnector != null) {
-                    this.mServerConnector.terminate();
-            }
+        if(this.mServerConnector != null) 
+        {
+            this.mServerConnector.terminate();
+        }
 
-            super.onDestroy();
+        super.onDestroy();
     }
-
+  
     
-    /*@Override
-    public boolean onKeyUp(final int pKeyCode, final KeyEvent pEvent) {
-            switch(pKeyCode) {
-                    case KeyEvent.KEYCODE_BACK:
-                            this.finish();
-                            return true;
-            }
-            return super.onKeyUp(pKeyCode, pEvent);
-    }*/
-
-
-    
-    
- // ===========================================================
+	// ===========================================================
     // Methods
     // ===========================================================
 
-    public void addFace(final int pID, final float pX, final float pY) {
+	/**
+	 * 
+	 * @param pID : Sprite ID (Identificator)
+     * @param pX : Sprite x-axis position
+     * @param pY : Spite y-axis position
+	 */
+    public void addFace(final int pID, final float pX, final float pY) 
+    {
         final Scene scene = this.mEngine.getScene();
-        /* Create the face and add it to the scene. */
         final Sprite face = new Sprite(0, 0, this.mFaceTextureRegion, this.getVertexBufferObjectManager());
         face.setPosition(pX - face.getWidth() * 0.5f, pY - face.getHeight() * 0.5f);
         face.setUserData(pID);
-        this.mFaces.put(pID, face);
+        this.mPlayers.put(pID, face);
         scene.registerTouchArea(face);
         scene.attachChild(face);
 	}
+    
+    /**
+     * 
+     * @param pID : Sprite ID (Identificator)
+     * @param pX : Sprite x-axis position
+     * @param pY : Spite y-axis position
+     * 
+     * Method that migrates the code to client machine and it is executed into the CLIENT.
+     */
+    public void playerSelection(int playerID, final float pX, final float pY)
+    {
+    	// Obtain Client Engine Scene
+    	final Scene scene = this.mEngine.getScene();
+    	
+    	// Create variable that contains player online information
+    	PlayerOnline playerOnline = SceneManager.getInstance().getGameScene().playerOnline;
+    	playerOnline.setPosition(pX, pY);
+    	playerOnline.setUserData(playerID);
+        
+        // Put ID to mPlayers list
+        this.mPlayers.put(playerID, playerOnline);
+        
+        // configure player options
+        scene.registerTouchArea(playerOnline);
+        playerOnline.setVisible(true);
+        playerOnline.setRunning();
+        scene.attachChild(playerOnline);
+    }
 	
-	public void moveFace(final int pID, final float pX, final float pY) {
+	public void moveFace(final int pID, final float pX, final float pY) 
+	{
 	        /* Find and move the face. */
-	        final Sprite face = this.mFaces.get(pID);
+	        final Sprite face = this.mPlayers.get(pID);
 	        face.setPosition(pX - face.getWidth() * 0.5f, pY - face.getHeight() * 0.5f);
 	}
 
 
-	private void initServer() {
-    this.mSocketServer = new SocketServer<SocketConnectionClientConnector>(SERVER_PORT, new ExampleClientConnectorListener(), new ExampleServerStateListener()) {
-            @Override
-            protected SocketConnectionClientConnector newClientConnector(final SocketConnection pSocketConnection) throws IOException {
-                    return new SocketConnectionClientConnector(pSocketConnection);
-            }
+	private void initServer()
+	{
+		this.mSocketServer = new SocketServer<SocketConnectionClientConnector>(SERVER_PORT, new ExampleClientConnectorListener(), new ExampleServerStateListener()) 
+		{
+	        @Override
+	        protected SocketConnectionClientConnector newClientConnector(final SocketConnection pSocketConnection) throws IOException
+	        {
+                return new SocketConnectionClientConnector(pSocketConnection);
+	        }
 	    };
 	
 	    this.mSocketServer.start();
 	}
 	
-	private void initServerAndClient() {
+	private void initServerAndClient() 
+	{
         this.initServer();
 
         /* Wait some time after the server has been started, so it actually can start up. */
-        try {
-                Thread.sleep(250);
-        } catch (final Throwable t) {
-                Debug.e(t);
+        try 
+        {
+            Thread.sleep(500);
+        } 
+        catch (final Throwable t) 
+        {
+            Debug.e(t);
         }
-
         this.initClient();
 	}
 
 
-	private void initClient() {
-	    try {
-	            this.mServerConnector = new SocketConnectionServerConnector(new SocketConnection(new Socket(this.mServerIP, SERVER_PORT)), new ExampleServerConnectorListener());
-	
-	            this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_CONNECTION_CLOSE, ConnectionCloseServerMessage.class, new IServerMessageHandler<SocketConnection>() {
-	                    @Override
-	                    public void onHandleMessage(final ServerConnector<SocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException {
-	                    	streetJumper.this.finish();
-	                    }
-	            });
-	
-	            this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_ADD_FACE, AddFaceServerMessage.class, new IServerMessageHandler<SocketConnection>() {
-	                    @Override
-	                    public void onHandleMessage(final ServerConnector<SocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException {
-	                            final AddFaceServerMessage addFaceServerMessage = (AddFaceServerMessage)pServerMessage;
-	                            streetJumper.this.addFace(addFaceServerMessage.mID, addFaceServerMessage.mX, addFaceServerMessage.mY);
-	                    }
-	            });
-	
-	            this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_MOVE_FACE, MoveFaceServerMessage.class, new IServerMessageHandler<SocketConnection>() {
-	                    @Override
-	                    public void onHandleMessage(final ServerConnector<SocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException {
-	                            final MoveFaceServerMessage moveFaceServerMessage = (MoveFaceServerMessage)pServerMessage;
-	                            streetJumper.this.moveFace(moveFaceServerMessage.mID, moveFaceServerMessage.mX, moveFaceServerMessage.mY);
-	                    }
-	            });
-	
-	            this.mServerConnector.getConnection().start();
-		    } catch (final Throwable t) {
-		            Debug.e(t);
+	private void initClient() 
+	{
+	    try
+	    {
+            this.mServerConnector = new SocketConnectionServerConnector(new SocketConnection(new Socket(this.mServerIP, SERVER_PORT)), new ExampleServerConnectorListener());
+
+            this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_CONNECTION_CLOSE, ConnectionCloseServerMessage.class, new IServerMessageHandler<SocketConnection>() 
+            {
+                @Override
+                public void onHandleMessage(final ServerConnector<SocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException 
+                {
+                	streetJumper.this.finish();
+                }
+            });
+            
+            this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_PLAYER_SELECTED, PlayerSelectedServerMessage.class, new IServerMessageHandler<SocketConnection>() 
+            {
+                @Override
+                public void onHandleMessage(final ServerConnector<SocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException 
+                {
+                	final PlayerSelectedServerMessage playerSelectedServerMessage = (PlayerSelectedServerMessage)pServerMessage;
+                    streetJumper.this.playerSelection(playerSelectedServerMessage.mPlayerID, playerSelectedServerMessage.mX, playerSelectedServerMessage.mY);
+                }
+            });
+
+            this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_ADD_FACE, AddFaceServerMessage.class, new IServerMessageHandler<SocketConnection>() 
+            {
+                @Override
+                public void onHandleMessage(final ServerConnector<SocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException
+                {
+                    final AddFaceServerMessage addFaceServerMessage = (AddFaceServerMessage)pServerMessage;
+                    streetJumper.this.addFace(addFaceServerMessage.mID, addFaceServerMessage.mX, addFaceServerMessage.mY);
+                }
+            });
+
+            this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_MOVE_FACE, MoveFaceServerMessage.class, new IServerMessageHandler<SocketConnection>()
+            {
+                @Override
+                public void onHandleMessage(final ServerConnector<SocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException
+                {
+                    final MoveFaceServerMessage moveFaceServerMessage = (MoveFaceServerMessage)pServerMessage;
+                    streetJumper.this.moveFace(moveFaceServerMessage.mID, moveFaceServerMessage.mX, moveFaceServerMessage.mY);
+                }
+            });
+
+            this.mServerConnector.getConnection().start();
+	    } 
+	    
+	    catch (final Throwable t) 
+	    {
+            Debug.e(t);
 		}
 	}
 
-	private void log(final String pMessage) {
+	private void log(final String pMessage)
+	{
 	    Debug.d(pMessage);
 	}
 	
-	private void toast(final String pMessage) {
+	private void toast(final String pMessage) 
+	{
 	    this.log(pMessage);
-	    this.runOnUiThread(new Runnable() {
-	            @Override
-	            public void run() {
-	                    Toast.makeText(streetJumper.this, pMessage, Toast.LENGTH_SHORT).show();
-	            }
+	    this.runOnUiThread(new Runnable()
+	    {
+            @Override
+            public void run()
+            {
+                Toast.makeText(streetJumper.this, pMessage, Toast.LENGTH_SHORT).show();
+            }
 	    });
 	}
 
@@ -556,29 +630,34 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
     // Inner and Anonymous Classes
     // ===========================================================
 
-    public static class AddFaceServerMessage extends ServerMessage {
+    public static class AddFaceServerMessage extends ServerMessage 
+    {
         private int mID;
         private float mX;
         private float mY;
 
-        public AddFaceServerMessage() {
+        public AddFaceServerMessage() 
+        {
 
         }
 
-        public AddFaceServerMessage(final int pID, final float pX, final float pY) {
+        public AddFaceServerMessage(final int pID, final float pX, final float pY) 
+        {
                 this.mID = pID;
                 this.mX = pX;
                 this.mY = pY;
         }
 
-        public void set(final int pID, final float pX, final float pY) {
+        public void set(final int pID, final float pX, final float pY) 
+        {
                 this.mID = pID;
                 this.mX = pX;
                 this.mY = pY;
         }
 
         @Override
-        public short getFlag() {
+        public short getFlag()
+        {
                 return FLAG_MESSAGE_SERVER_ADD_FACE;
         }
 
@@ -590,93 +669,159 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         }
 
         @Override
-        protected void onWriteTransmissionData(final DataOutputStream pDataOutputStream) throws IOException {
+        protected void onWriteTransmissionData(final DataOutputStream pDataOutputStream) throws IOException 
+        {
                 pDataOutputStream.writeInt(this.mID);
                 pDataOutputStream.writeFloat(this.mX);
                 pDataOutputStream.writeFloat(this.mY);
         }
-}
+    }
+    
+    public static class PlayerSelectedServerMessage extends ServerMessage
+    {
+        private int mPlayerID;
+        private float mX;
+        private float mY;
 
-public static class MoveFaceServerMessage extends ServerMessage {
+        public PlayerSelectedServerMessage()
+        {
+
+        }
+
+        public PlayerSelectedServerMessage(final int pID, final float pX, final float pY) 
+        {
+                this.mPlayerID = pID;
+                this.mX = pX;
+                this.mY = pY;
+        }
+
+        public void set(final int pID, final float pX, final float pY) 
+        {
+                this.mPlayerID = pID;
+                this.mX = pX;
+                this.mY = pY;
+        }
+
+        @Override
+        public short getFlag()
+        {
+                return FLAG_MESSAGE_SERVER_PLAYER_SELECTED;
+        }
+
+        @Override
+        protected void onReadTransmissionData(final DataInputStream pDataInputStream) throws IOException
+        {
+                this.mPlayerID = pDataInputStream.readInt();
+                this.mX = pDataInputStream.readFloat();
+                this.mY = pDataInputStream.readFloat();
+        }
+
+        @Override
+        protected void onWriteTransmissionData(final DataOutputStream pDataOutputStream) throws IOException 
+        {
+                pDataOutputStream.writeInt(this.mPlayerID);
+                pDataOutputStream.writeFloat(this.mX);
+                pDataOutputStream.writeFloat(this.mY);
+        }
+    }
+
+	public static class MoveFaceServerMessage extends ServerMessage 
+	{
         private int mID;
         private float mX;
         private float mY;
 
-        public MoveFaceServerMessage() {
+        public MoveFaceServerMessage() 
+        {
 
         }
 
-        public MoveFaceServerMessage(final int pID, final float pX, final float pY) {
+        public MoveFaceServerMessage(final int pID, final float pX, final float pY) 
+        {
                 this.mID = pID;
                 this.mX = pX;
                 this.mY = pY;
         }
 
-        public void set(final int pID, final float pX, final float pY) {
+        public void set(final int pID, final float pX, final float pY)
+        {
                 this.mID = pID;
                 this.mX = pX;
                 this.mY = pY;
         }
 
         @Override
-        public short getFlag() {
+        public short getFlag()
+        {
                 return FLAG_MESSAGE_SERVER_MOVE_FACE;
         }
 
         @Override
-        protected void onReadTransmissionData(final DataInputStream pDataInputStream) throws IOException {
+        protected void onReadTransmissionData(final DataInputStream pDataInputStream) throws IOException 
+        {
                 this.mID = pDataInputStream.readInt();
                 this.mX = pDataInputStream.readFloat();
                 this.mY = pDataInputStream.readFloat();
         }
 
         @Override
-        protected void onWriteTransmissionData(final DataOutputStream pDataOutputStream) throws IOException {
+        protected void onWriteTransmissionData(final DataOutputStream pDataOutputStream) throws IOException
+        {
                 pDataOutputStream.writeInt(this.mID);
                 pDataOutputStream.writeFloat(this.mX);
                 pDataOutputStream.writeFloat(this.mY);
         }
-}
-
-private class ExampleServerConnectorListener implements ISocketConnectionServerConnectorListener {
+	}
+	
+	private class ExampleServerConnectorListener implements ISocketConnectionServerConnectorListener 
+	{
         @Override
-        public void onStarted(final ServerConnector<SocketConnection> pConnector) {
+        public void onStarted(final ServerConnector<SocketConnection> pConnector) 
+        {
                 streetJumper.this.toast("CLIENT: Connected to server.");
         }
 
         @Override
-        public void onTerminated(final ServerConnector<SocketConnection> pConnector) {
+        public void onTerminated(final ServerConnector<SocketConnection> pConnector) 
+        {
         	streetJumper.this.toast("CLIENT: Disconnected from Server...");
         	streetJumper.this.finish();
         }
-}
-
-private class ExampleServerStateListener implements ISocketServerListener<SocketConnectionClientConnector> {
+	}
+	
+	private class ExampleServerStateListener implements ISocketServerListener<SocketConnectionClientConnector>
+	{
         @Override
-        public void onStarted(final SocketServer<SocketConnectionClientConnector> pSocketServer) {
+        public void onStarted(final SocketServer<SocketConnectionClientConnector> pSocketServer) 
+        {
         	streetJumper.this.toast("SERVER: Started.");
         }
 
         @Override
-        public void onTerminated(final SocketServer<SocketConnectionClientConnector> pSocketServer) {
+        public void onTerminated(final SocketServer<SocketConnectionClientConnector> pSocketServer) 
+        {
         	streetJumper.this.toast("SERVER: Terminated.");
         }
 
         @Override
-        public void onException(final SocketServer<SocketConnectionClientConnector> pSocketServer, final Throwable pThrowable) {
+        public void onException(final SocketServer<SocketConnectionClientConnector> pSocketServer, final Throwable pThrowable) 
+        {
                 Debug.e(pThrowable);
                 streetJumper.this.toast("SERVER: Exception: " + pThrowable);
         }
-}
-
-private class ExampleClientConnectorListener implements ISocketConnectionClientConnectorListener {
+	}
+	
+	private class ExampleClientConnectorListener implements ISocketConnectionClientConnectorListener 
+	{
         @Override
-        public void onStarted(final ClientConnector<SocketConnection> pConnector) {
+        public void onStarted(final ClientConnector<SocketConnection> pConnector)
+        {
         	streetJumper.this.toast("SERVER: Client connected: " + pConnector.getConnection().getSocket().getInetAddress().getHostAddress());
         }
 
         @Override
-        public void onTerminated(final ClientConnector<SocketConnection> pConnector) {
+        public void onTerminated(final ClientConnector<SocketConnection> pConnector) 
+        {
         	streetJumper.this.toast("SERVER: Client disconnected: " + pConnector.getConnection().getSocket().getInetAddress().getHostAddress());
         }
 	}
