@@ -55,6 +55,7 @@ import Timers.playTimer;
 
 import com.PFC.PlatformJumper.streetJumper;
 import com.PFC.PlatformJumper.streetJumper.PlayerSelectedServerMessage;
+import com.PFC.PlatformJumper.streetJumper.ChangeLevelServerMessage;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -859,7 +860,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	   	                                // Clear Scenary 1 Graphics ...
 	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
 	   	        		                {                                    
-	   	        		                    public void onTimePassed(final TimerHandler pTimerHandler)
+	   	        		                    @SuppressWarnings("deprecation")
+											public void onTimePassed(final TimerHandler pTimerHandler)
 	   	        		                    {
 	   	        		                        pTimerHandler.reset();
 	   	        		                        
@@ -867,6 +869,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	   	    	                            	disposeScene(1);
 	   	    	                            	
 	   	    	                            	// Load Level
+	   	    	                            	// Send to CLIENT next level loading message
+		   	    	                 		    /*final ChangeLevelServerMessage changeLevelServerMessage = (ChangeLevelServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_NEXT_LEVEL);
+		   	    	                 		    changeLevelServerMessage.set(2);
+		   	    	                 			ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(changeLevelServerMessage);
+		   	    	                 			ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(changeLevelServerMessage);*/
+		   	    	                 			
 	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
 	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
 	   	        		                    }
@@ -884,7 +892,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	   	                                // Clear Scenary 1 Graphics ...
 	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
 	   	        		                {                                    
-	   	        		                    public void onTimePassed(final TimerHandler pTimerHandler)
+	   	        		                    @SuppressWarnings("deprecation")
+											public void onTimePassed(final TimerHandler pTimerHandler)
 	   	        		                    {
 	   	        		                        pTimerHandler.reset();
 	   	        		                        
@@ -892,6 +901,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	   	    	                            	disposeScene(1);
 	   	    	                            	
 	   	    	                            	// Load Level
+	   	    	                            	// Send to CLIENT next level loading message
+		   	    	                 		    /*final ChangeLevelServerMessage changeLevelServerMessage = (ChangeLevelServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_NEXT_LEVEL);
+		   	    	                 		    changeLevelServerMessage.set(2);
+		   	    	                 			ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(changeLevelServerMessage);
+		   	    	                 			ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(changeLevelServerMessage);*/
+		   	    	                 			
 	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
 	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
 	   	        		                    }
@@ -909,7 +924,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	   	                                // Clear Scenary 1 Graphics ...
 	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
 	   	        		                {                                    
-	   	        		                    public void onTimePassed(final TimerHandler pTimerHandler)
+	   	        		                    @SuppressWarnings("deprecation")
+											public void onTimePassed(final TimerHandler pTimerHandler)
 	   	        		                    {
 	   	        		                        pTimerHandler.reset();
 	   	        		                        
@@ -917,6 +933,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	   	    	                            	disposeScene(1);
 	   	    	                            	
 	   	    	                            	// Load Level
+	   	    	                            	// Send to CLIENT next level loading message
+		   	    	                 		    /*final ChangeLevelServerMessage changeLevelServerMessage = (ChangeLevelServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_NEXT_LEVEL);
+		   	    	                 		    changeLevelServerMessage.set(2);
+		   	    	                 			ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(changeLevelServerMessage);
+		   	    	                 			ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(changeLevelServerMessage);*/
+		   	    	                 			
 	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
 	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
 	   	        		                    }

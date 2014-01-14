@@ -6,8 +6,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-
-
 //---------- ANDENGINE KERNEL IMPORTS -------------------------------------------------------------- //
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
@@ -46,8 +44,6 @@ import org.andengine.util.WifiUtils;
 import org.andengine.util.WifiUtils.WifiUtilsException;
 import org.andengine.util.debug.Debug;
 
-
-
 //---------- NETWORK IMPORTS  -------------------------------------------------------------- //
 import Network.ConnectionCloseServerMessage;
 import Network.ServerMessageFlags;
@@ -57,6 +53,7 @@ import Network.ClientMessageFlags;
 //---------- OTHERS -------------------------------------------------------------- //
 import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
+import Timers.playTimer;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -91,6 +88,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
      public static final short FLAG_MESSAGE_SERVER_ADD_FACE = 1;
      private static final short FLAG_MESSAGE_SERVER_MOVE_PLAYER = FLAG_MESSAGE_SERVER_ADD_FACE + 1;
      public static final short FLAG_MESSAGE_SERVER_PLAYER_SELECTED = FLAG_MESSAGE_SERVER_MOVE_PLAYER + 1;
+     public static final short FLAG_MESSAGE_SERVER_NEXT_LEVEL = FLAG_MESSAGE_SERVER_PLAYER_SELECTED + 1;
 
      private static final int DIALOG_CHOOSE_SERVER_OR_CLIENT_ID = 0;
      private static final int DIALOG_ENTER_SERVER_IP_ID = DIALOG_CHOOSE_SERVER_OR_CLIENT_ID + 1;
@@ -174,6 +172,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	 Method that limits the FPS (frames per second) to 60 Herz due to 
 	 the diferent frame rate technology
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public Engine onCreateEngine(EngineOptions pEngineOptions) 
 	{
@@ -200,7 +199,26 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	@Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
     {
-    	SceneManager.getInstance().createSplashScene(pOnCreateSceneCallback);
+		// Every 0.5 SECONDS velocity && position are sended to CLIENT (twekeable)
+    	playTimer playT = new playTimer(0.15f, new playTimer.ITimerCallback()
+	     {
+	        @SuppressWarnings("deprecation")
+			@Override
+	         public void onTick()
+	         {
+	        	// Move SERVER player in CLIENT machine
+	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true)
+	         	{
+	         		final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER);
+	         		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
+	         		streetJumper.this.mSocketServer.sendBroadcastServerMessage(movePlayerServerMessage);
+	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerServerMessage);
+	         	}
+	         }
+	       }
+	     );
+		this.mEngine.registerUpdateHandler(playT);
+		SceneManager.getInstance().createSplashScene(pOnCreateSceneCallback);
 		
 		/*this.mEngine.registerUpdateHandler(new FPSLogger());
 
@@ -460,6 +478,14 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         scene.attachChild(playerOnline);
     }
 	
+    /**
+     * 
+     * @param pID : Sprite ID (Identificator)
+     * @param vX : Sprite x-axis velocity
+     * @param vY : Spite y-axis velocity
+     * 
+     * Method that migrates the code to client machine and it is executed into the CLIENT.
+     */
 	public void movePlayer(final int pID, final float vX, final float vY) 
 	{
 		if (SceneManager.getInstance().getGameScene() != null)
@@ -478,6 +504,21 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	        }
 		}
     
+	}
+	
+    /**
+     * 
+     * @param levelID : LEVEL ID (Identificator)
+     * 
+     * Method that migrates the code to client machine and it is executed into the CLIENT.
+     */
+	public void changeLevel (final int levelID)
+	{
+		if (levelID == 2)
+		{
+			SceneManager.getInstance().getGameScene().disposeScene(1);
+			SceneManager.getInstance().loadGameScene(mEngine, 2);
+		}
 	}
 
 
@@ -557,6 +598,17 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                 }
             });
 
+            this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_NEXT_LEVEL, ChangeLevelServerMessage.class, new IServerMessageHandler<SocketConnection>()
+            {
+                @Override
+                public void onHandleMessage(final ServerConnector<SocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException
+                {
+                    final ChangeLevelServerMessage changeLevelServerMessage = (ChangeLevelServerMessage)pServerMessage;
+                    streetJumper.this.changeLevel(changeLevelServerMessage.levelID);
+                }
+            });
+
+            
             this.mServerConnector.getConnection().start();
 	    } 
 	    
@@ -597,7 +649,6 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 
     }
 
-    @SuppressWarnings("deprecation")
 	@Override
     public void onAccelerationChanged(AccelerationData pAccelerationData)
     {
@@ -624,15 +675,6 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
     		if (SceneManager.getInstance().getGameScene().player.getX() < 50) SceneManager.getInstance().getGameScene().player.body.setLinearVelocity(3, 0);
     		if (SceneManager.getInstance().getGameScene().player.getX() > 1090) SceneManager.getInstance().getGameScene().player.body.setLinearVelocity(-3, 0);
     		this.enableAccelerationSensor(this);
-    	}
-    	
-    	// Move SERVER player in CLIENT machine
-    	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true)
-    	{
-    		final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER);
-    		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
-    		streetJumper.this.mSocketServer.sendBroadcastServerMessage(movePlayerServerMessage);
-    		streetJumper.this.mMessagePool.recycleMessage(movePlayerServerMessage);
     	}
     }
     
@@ -750,6 +792,45 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                 pDataOutputStream.writeInt(this.mPlayerID);
                 pDataOutputStream.writeFloat(this.mX);
                 pDataOutputStream.writeFloat(this.mY);
+        }
+    }
+    
+    public static class ChangeLevelServerMessage extends ServerMessage
+    {
+        private int levelID;
+
+        public ChangeLevelServerMessage()
+        {
+
+        }
+
+        public ChangeLevelServerMessage(final int pID) 
+        {
+                this.levelID = pID;
+
+        }
+
+        public void set(final int pID) 
+        {
+                this.levelID = pID;
+        }
+
+        @Override
+        public short getFlag()
+        {
+                return FLAG_MESSAGE_SERVER_NEXT_LEVEL;
+        }
+
+        @Override
+        protected void onReadTransmissionData(final DataInputStream pDataInputStream) throws IOException
+        {
+                this.levelID = pDataInputStream.readInt();
+        }
+
+        @Override
+        protected void onWriteTransmissionData(final DataOutputStream pDataOutputStream) throws IOException 
+        {
+                pDataOutputStream.writeInt(this.levelID);
         }
     }
 
