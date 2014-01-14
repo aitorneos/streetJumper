@@ -462,10 +462,12 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	
 	public void movePlayer(final int pID, final float vX, final float vY) 
 	{
+		if (SceneManager.getInstance().getGameScene() != null)
+		{
 			PlayerOnline playerOnline = SceneManager.getInstance().getGameScene().playerOnline;
 	        playerOnline.body.setLinearVelocity(vX, vY);
 	        
-	        // Comprovate Flipped mode
+	     // Comprovate Flipped mode
 	        if (vX > 0.0f)
 	        {
 	        	playerOnline.setFlippedHorizontal(false);
@@ -474,6 +476,8 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	        {
 	        	playerOnline.setFlippedHorizontal(true);
 	        }
+		}
+    
 	}
 
 
@@ -623,10 +627,13 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
     	}
     	
     	// Move SERVER player in CLIENT machine
-    	final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER);
-		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
-		streetJumper.this.mSocketServer.sendBroadcastServerMessage(movePlayerServerMessage);
-		streetJumper.this.mMessagePool.recycleMessage(movePlayerServerMessage);
+    	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true)
+    	{
+    		final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER);
+    		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
+    		streetJumper.this.mSocketServer.sendBroadcastServerMessage(movePlayerServerMessage);
+    		streetJumper.this.mMessagePool.recycleMessage(movePlayerServerMessage);
+    	}
     }
     
     // ------------------------------------------------------------------------------------------

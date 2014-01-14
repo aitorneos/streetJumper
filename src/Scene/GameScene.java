@@ -77,7 +77,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	private Text lifeText;
 	private Text timeText;
 	private int score = 0;
-	private boolean firstTouch = false;
+	public boolean firstTouch = false;
 	public PhysicsWorld physicsWorld;
 	private boolean gameOverDisplayed = false;
 	private playTimer playT;
