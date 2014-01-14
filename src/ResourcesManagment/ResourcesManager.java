@@ -174,7 +174,7 @@ public class ResourcesManager
     
     // Augmented Reality or Normal MODE selection
     private boolean AR = false;
-    public int playerOnlineSelected = 2;
+    public int playerOnlineSelected = 3;
 
     
     //---------------------------------------------

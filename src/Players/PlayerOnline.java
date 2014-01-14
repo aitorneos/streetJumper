@@ -65,7 +65,7 @@ public abstract class PlayerOnline extends AnimatedSprite
 		footContacts = 0;
 		impulse = 0;
 		createPhysics(camera, physicsWorld);
-		camera.setChaseEntity(this);
+		//camera.setChaseEntity(this);
 	}
 	
 	

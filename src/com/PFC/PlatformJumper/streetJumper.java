@@ -6,6 +6,8 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+
+
 //---------- ANDENGINE KERNEL IMPORTS -------------------------------------------------------------- //
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
@@ -44,11 +46,14 @@ import org.andengine.util.WifiUtils;
 import org.andengine.util.WifiUtils.WifiUtilsException;
 import org.andengine.util.debug.Debug;
 
+
+
 //---------- NETWORK IMPORTS  -------------------------------------------------------------- //
 import Network.ConnectionCloseServerMessage;
 import Network.ServerMessageFlags;
 import Players.PlayerOnline;
 import Network.ClientMessageFlags;
+
 //---------- OTHERS -------------------------------------------------------------- //
 import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
@@ -84,8 +89,8 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
      private static final int SERVER_PORT = 4444;
 
      public static final short FLAG_MESSAGE_SERVER_ADD_FACE = 1;
-     private static final short FLAG_MESSAGE_SERVER_MOVE_FACE = FLAG_MESSAGE_SERVER_ADD_FACE + 1;
-     public static final short FLAG_MESSAGE_SERVER_PLAYER_SELECTED = FLAG_MESSAGE_SERVER_MOVE_FACE + 1;
+     private static final short FLAG_MESSAGE_SERVER_MOVE_PLAYER = FLAG_MESSAGE_SERVER_ADD_FACE + 1;
+     public static final short FLAG_MESSAGE_SERVER_PLAYER_SELECTED = FLAG_MESSAGE_SERVER_MOVE_PLAYER + 1;
 
      private static final int DIALOG_CHOOSE_SERVER_OR_CLIENT_ID = 0;
      private static final int DIALOG_ENTER_SERVER_IP_ID = DIALOG_CHOOSE_SERVER_OR_CLIENT_ID + 1;
@@ -123,7 +128,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	private void initMessagePool()
 	{
 	        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_ADD_FACE, AddFaceServerMessage.class);
-	        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_MOVE_FACE, MoveFaceServerMessage.class);
+	        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER, movePlayerServerMessage.class);
 	        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_PLAYER_SELECTED, PlayerSelectedServerMessage.class);
 	}
 
@@ -230,12 +235,12 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                                 final Sprite face = (Sprite)pTouchArea;
 								final Integer faceID = (Integer)face.getUserData();
 
-								final MoveFaceServerMessage moveFaceServerMessage = (MoveFaceServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_FACE);
-								moveFaceServerMessage.set(faceID, pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
+								final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER);
+								movePlayerServerMessage.set(faceID, pSceneTouchEvent.getX(), pSceneTouchEvent.getY());
 
-								streetJumper.this.mSocketServer.sendBroadcastServerMessage(moveFaceServerMessage);
+								streetJumper.this.mSocketServer.sendBroadcastServerMessage(movePlayerServerMessage);
 
-								streetJumper.this.mMessagePool.recycleMessage(moveFaceServerMessage);
+								streetJumper.this.mMessagePool.recycleMessage(movePlayerServerMessage);
                                 return true;
                         }
                 });
@@ -455,11 +460,20 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         scene.attachChild(playerOnline);
     }
 	
-	public void moveFace(final int pID, final float pX, final float pY) 
+	public void movePlayer(final int pID, final float vX, final float vY) 
 	{
-	        /* Find and move the face. */
-	        final Sprite face = this.mPlayers.get(pID);
-	        face.setPosition(pX - face.getWidth() * 0.5f, pY - face.getHeight() * 0.5f);
+			PlayerOnline playerOnline = SceneManager.getInstance().getGameScene().playerOnline;
+	        playerOnline.body.setLinearVelocity(vX, vY);
+	        
+	        // Comprovate Flipped mode
+	        if (vX > 0.0f)
+	        {
+	        	playerOnline.setFlippedHorizontal(false);
+	        }
+	        else
+	        {
+	        	playerOnline.setFlippedHorizontal(true);
+	        }
 	}
 
 
@@ -529,13 +543,13 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                 }
             });
 
-            this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_MOVE_FACE, MoveFaceServerMessage.class, new IServerMessageHandler<SocketConnection>()
+            this.mServerConnector.registerServerMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER, movePlayerServerMessage.class, new IServerMessageHandler<SocketConnection>()
             {
                 @Override
                 public void onHandleMessage(final ServerConnector<SocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException
                 {
-                    final MoveFaceServerMessage moveFaceServerMessage = (MoveFaceServerMessage)pServerMessage;
-                    streetJumper.this.moveFace(moveFaceServerMessage.mID, moveFaceServerMessage.mX, moveFaceServerMessage.mY);
+                    final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage)pServerMessage;
+                    streetJumper.this.movePlayer(movePlayerServerMessage.mID, movePlayerServerMessage.mX, movePlayerServerMessage.mY);
                 }
             });
 
@@ -579,7 +593,8 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 
     }
 
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public void onAccelerationChanged(AccelerationData pAccelerationData)
     {
     	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().player.getAc() == false && (pAccelerationData.getX() > 0.5 || pAccelerationData.getX() < -0.5 ))
@@ -606,6 +621,12 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
     		if (SceneManager.getInstance().getGameScene().player.getX() > 1090) SceneManager.getInstance().getGameScene().player.body.setLinearVelocity(-3, 0);
     		this.enableAccelerationSensor(this);
     	}
+    	
+    	// Move SERVER player in CLIENT machine
+    	final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER);
+		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
+		streetJumper.this.mSocketServer.sendBroadcastServerMessage(movePlayerServerMessage);
+		streetJumper.this.mMessagePool.recycleMessage(movePlayerServerMessage);
     }
     
     // ------------------------------------------------------------------------------------------
@@ -725,18 +746,18 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         }
     }
 
-	public static class MoveFaceServerMessage extends ServerMessage 
+	public static class movePlayerServerMessage extends ServerMessage 
 	{
         private int mID;
         private float mX;
         private float mY;
 
-        public MoveFaceServerMessage() 
+        public movePlayerServerMessage() 
         {
 
         }
 
-        public MoveFaceServerMessage(final int pID, final float pX, final float pY) 
+        public movePlayerServerMessage(final int pID, final float pX, final float pY) 
         {
                 this.mID = pID;
                 this.mX = pX;
@@ -753,7 +774,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         @Override
         public short getFlag()
         {
-                return FLAG_MESSAGE_SERVER_MOVE_FACE;
+                return FLAG_MESSAGE_SERVER_MOVE_PLAYER;
         }
 
         @Override

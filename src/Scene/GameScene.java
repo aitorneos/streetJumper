@@ -264,6 +264,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	    registerUpdateHandler(physicsWorld);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Override
     public void createScene()
     {
@@ -274,7 +275,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		 loadLevel(ResourcesManager.getInstance().getLevelComplete());
 		 setOnSceneTouchListener(this);
 		 ResourcesManager.getInstance().getSceneMusic().play();
-		 
+
 		 // Create and initialize timer options an update
 		 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
 	     {
@@ -1602,13 +1603,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		{
 			firstTouch = true;
 			ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
-
-            final PlayerSelectedServerMessage playerSelectedServerMessage = (PlayerSelectedServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_PLAYER_SELECTED);
-            playerSelectedServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, player.getX(), player.getY());
-
+			
+			// Show SERVER player in CLIENT machine
+		    final PlayerSelectedServerMessage playerSelectedServerMessage = (PlayerSelectedServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_PLAYER_SELECTED);
+	        playerSelectedServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, playerOnline.body.getPosition().x, playerOnline.body.getPosition().y);
 			ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(playerSelectedServerMessage);
 			ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerSelectedServerMessage);
-			return true;
 		}
 		if (pSceneTouchEvent.isActionDown())
 	    {

@@ -113,6 +113,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        	case 0:
 		        		
 		        		player_sel = 1;
+		        		//resourcesManager.playerOnlineSelected = 0;
 		        		resourcesManager.playerSelected = 0;
 		       	     	resourcesManager.player1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(resourcesManager.optionsTextureAtlas, activity, "player1.png");
 		       	     	final IMenuItem player1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER1_SEL, resourcesManager.player1, vbom), 1.2f, 1);
@@ -124,6 +125,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		
 		        		player_sel = 2;
 		        		resourcesManager.playerSelected = 1;
+		        		//resourcesManager.playerOnlineSelected = 1;
 		        		
 		        		// UNLOAD previous texture !!!
 		        		menuChildScene.clearChildScene();
@@ -139,6 +141,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		
 		        		player_sel = 3;
 		        		resourcesManager.playerSelected = 2;
+		        		//resourcesManager.playerOnlineSelected = 2;
 		        		
 		        		// UNLOAD previous texture !!!
 		        		menuChildScene.clearChildScene();
@@ -154,6 +157,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		
 		        		player_sel = 0;
 		        		resourcesManager.playerSelected = 3;
+		        		//resourcesManager.playerOnlineSelected = 3;
 		        		
 		        		// UNLOAD previous texture !!!
 		        		menuChildScene.clearChildScene();
