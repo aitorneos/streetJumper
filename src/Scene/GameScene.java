@@ -430,7 +430,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 // ---------------------------------------------- SPRITES -------------------------------------------------------------------
         	 player.clearEntityModifiers();
         	 player.clearUpdateHandlers();
-        	 player.removePhysics(physicsWorld, this);
+        	 //player.removePhysics(physicsWorld, this);
+        	 playerOnline.clearEntityModifiers();
+        	 playerOnline.clearUpdateHandlers();
         	 enemy.clearEntityModifiers();
         	 enemy.clearUpdateHandlers();
         	 //enemy.removePhysics(physicsWorld, this);
@@ -443,6 +445,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 hurt3.clearEntityModifiers();
         	 hurt3.detachSelf();
         	 hurt3.dispose();
+        	 
+        	 this.clearScene();
         	 
         	 // ------------------------------------------------ SHADERS --------------------------------------------------------------------
         	 water.clearEntityModifiers();
@@ -523,6 +527,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 player.removePhysics(physicsWorld, this);
         	 playerSpecial.clearEntityModifiers();
         	 playerSpecial.clearUpdateHandlers();
+        	 this.clearScene();
         	 
         	// ------------------------------------------ TEXT ---------------------------------------------------------------------
         	 scoreText.clearEntityModifiers();
@@ -690,10 +695,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                        @Override
 	                        public void onDie()
 	                        {
-	                        	 if (!gameOverDisplayed)
-	                    	    {
-	                    	        displayGameOverText(1);
-	                    	    }
+	                        	// Nothing to do here, GAME OVER is only displyed in the server not inthe client .
 	                        }
 	                    };
 	                    levelObject = playerOnline;
@@ -1222,15 +1224,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                        @Override
 	                        public void onDie()
 	                        {
-	                        	 if (!gameOverDisplayed)
-	                    	    {
-	                    	        displayGameOverText(1);
-	                    	    }
+	                        	// Nothing to do here, GAME OVER is only displyed in the server not inthe client .
 	                        }
 	                    };
 	                    levelObject = playerOnline;
 	                    levelObject.setVisible(false);
-	                    levelObject.setSize(60, 60);
+	                    levelObject.setSize(width, height);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_SPECIAL))
@@ -2301,7 +2300,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		}
 		
 		Iterator<Body> localIterator = physicsWorld.getBodies();
-		while (true)
+		while (localIterator.hasNext())
 		{
 			if (!localIterator.hasNext())
 			{

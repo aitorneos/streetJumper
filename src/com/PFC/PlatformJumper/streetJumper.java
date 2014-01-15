@@ -400,7 +400,8 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                                 public void onClick(final DialogInterface pDialog, final int pWhich)
                                 {
                                 	streetJumper.this.toast("You can add sprites and move them, by dragging them.");
-                                	streetJumper.this.initServerAndClient();
+                                	streetJumper.this.initServer();
+                                	streetJumper.this.showDialog(DIALOG_ENTER_SERVER_IP_ID);
                                 	streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
                                 }
                             })
