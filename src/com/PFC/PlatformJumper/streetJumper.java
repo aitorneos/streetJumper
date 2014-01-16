@@ -219,7 +219,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer != null)
 	         	{
 	         		final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER);
-	         		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
+	         		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
 	         		streetJumper.this.mSocketServer.sendBroadcastServerMessage(movePlayerServerMessage);
 	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerServerMessage);
 	         	}
@@ -228,7 +228,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer == null)
 	         	{
 	         		final MovePlayerClientServerMessage movePlayerClientServerMessage = (MovePlayerClientServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT);
-	         		movePlayerClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
+	         		movePlayerClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
 	         		streetJumper.this.mServerConnector.sendClientMessage(movePlayerClientServerMessage);
 	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerClientServerMessage);
 	         	}
@@ -475,10 +475,10 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         if (playerID == 2) resourcesManager.playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(resourcesManager.gameTextureAtlas, this, "player3.png", 3, 1);
         if (playerID == 3) resourcesManager.playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(resourcesManager.gameTextureAtlas, this, "player4.png", 3, 1);
         
-        SceneManager.getInstance().getGameScene().playerOnline = new PlayerOnline(100, 400, this.getVertexBufferObjectManager(), camera, SceneManager.getInstance().getGameScene().physicsWorld)
+        SceneManager.getInstance().getGameScene().playerOnline = new PlayerOnline(90, 175, this.getVertexBufferObjectManager(), camera, SceneManager.getInstance().getGameScene().physicsWorld)
         {	
         };
-        SceneManager.getInstance().getGameScene().playerOnline.setSize(75, 75);
+        SceneManager.getInstance().getGameScene().playerOnline.setSize(60, 60);
         scene.attachChild(SceneManager.getInstance().getGameScene().playerOnline);
         
         try 

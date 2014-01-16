@@ -94,6 +94,6 @@
     <entity x="90" y="360" type="keyYellow"/>
     <entity x="600" y="385" type="keyGreen"/>
     <entity x="140" y="220" type="player"/>  
-     <entity x="100" y="400" type="playerOnline"/>
+     <entity x="90" y="175" type="playerOnline"/>
     
 </level>

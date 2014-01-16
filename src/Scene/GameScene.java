@@ -1625,7 +1625,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		if (firstTouch == false)
 		{
 			firstTouch = true;
-			ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
 			
 			// Send Player to be Loaded from SERVER to CLIENT
 			if (ResourcesManager.getInstance().activity.mSocketServer != null)
