@@ -113,6 +113,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        	case 0:
 		        		
 		        		player_sel = 1;
+		        		ResourcesManager.getInstance().controlLoaded = true;
 		        		//resourcesManager.playerOnlineSelected = 0;
 		        		resourcesManager.playerSelected = 0;
 		       	     	resourcesManager.player1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(resourcesManager.optionsTextureAtlas, activity, "player1.png");
@@ -125,13 +126,14 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		
 		        		player_sel = 2;
 		        		resourcesManager.playerSelected = 1;
+		        		ResourcesManager.getInstance().controlLoaded = true;
 		        		//resourcesManager.playerOnlineSelected = 1;
 		        		
 		        		// UNLOAD previous texture !!!
 		        		menuChildScene.clearChildScene();
 		        		createScene();
 		        		
-		        		resourcesManager.player2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(resourcesManager.optionsTextureAtlas, activity, "player2.png");
+		        		resourcesManager.player2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(resourcesManager.optionsTextureAtlas, activity, "player2.png");		        		
 		       	     	final IMenuItem player2Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER2_SEL, resourcesManager.player2, vbom), 1.2f, 1);
 		       	     	menuChildScene.addMenuItem(player2Sel);
 		       	     	player2Sel.setPosition(player2Sel.getX() + 200 ,player2Sel.getY() -100);
@@ -141,6 +143,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		
 		        		player_sel = 3;
 		        		resourcesManager.playerSelected = 2;
+		        		ResourcesManager.getInstance().controlLoaded = true;
 		        		//resourcesManager.playerOnlineSelected = 2;
 		        		
 		        		// UNLOAD previous texture !!!
@@ -157,6 +160,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		
 		        		player_sel = 0;
 		        		resourcesManager.playerSelected = 3;
+		        		ResourcesManager.getInstance().controlLoaded = true;
 		        		//resourcesManager.playerOnlineSelected = 3;
 		        		
 		        		// UNLOAD previous texture !!!
