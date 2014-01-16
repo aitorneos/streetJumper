@@ -55,7 +55,7 @@ import Timers.playTimer;
 
 import com.PFC.PlatformJumper.streetJumper;
 import com.PFC.PlatformJumper.streetJumper.PlayerSelectedServerMessage;
-import com.PFC.PlatformJumper.streetJumper.ChangeLevelServerMessage;
+import com.PFC.PlatformJumper.streetJumper.PlayerSelectedClientServerMessage;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -1626,10 +1626,22 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
 			
 			// Show SERVER player in CLIENT machine
-		    final PlayerSelectedServerMessage playerSelectedServerMessage = (PlayerSelectedServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_PLAYER_SELECTED);
-	        playerSelectedServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, playerOnline.body.getPosition().x, playerOnline.body.getPosition().y);
-			ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(playerSelectedServerMessage);
-			ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerSelectedServerMessage);
+			if (ResourcesManager.getInstance().activity.mSocketServer != null)
+			{
+				final PlayerSelectedServerMessage playerSelectedServerMessage = (PlayerSelectedServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_PLAYER_SELECTED);
+		        playerSelectedServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, player.body.getPosition().x, player.body.getPosition().y);
+				ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(playerSelectedServerMessage);
+				ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerSelectedServerMessage);
+			}
+			
+			// Show CLIENT player in SERVER machine
+			if (ResourcesManager.getInstance().activity.mSocketServer == null)
+			{
+				final PlayerSelectedClientServerMessage playerSelectedClientServerMessage = (PlayerSelectedClientServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_CLIENT_PLAYER_SELECTED_CLIENT);
+				playerSelectedClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, player.body.getPosition().x, player.body.getPosition().y);
+				ResourcesManager.getInstance().activity.mServerConnector.sendClientMessage(playerSelectedClientServerMessage);
+				ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerSelectedClientServerMessage);
+			}
 		}
 		if (pSceneTouchEvent.isActionDown())
 	    {

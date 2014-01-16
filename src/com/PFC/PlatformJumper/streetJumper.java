@@ -29,6 +29,7 @@ import org.andengine.extension.multiplayer.client.IServerMessageHandler;
 import org.andengine.extension.multiplayer.client.connector.ServerConnector;
 import org.andengine.extension.multiplayer.client.connector.SocketConnectionServerConnector;
 import org.andengine.extension.multiplayer.client.connector.SocketConnectionServerConnector.ISocketConnectionServerConnectorListener;
+import org.andengine.extension.multiplayer.server.IClientMessageHandler;
 import org.andengine.extension.multiplayer.server.SocketServer;
 import org.andengine.extension.multiplayer.server.SocketServer.ISocketServerListener;
 import org.andengine.extension.multiplayer.server.connector.ClientConnector;
@@ -42,6 +43,8 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.WifiUtils;
 import org.andengine.util.WifiUtils.WifiUtilsException;
+import org.andengine.extension.multiplayer.adt.message.client.ClientMessage;
+import org.andengine.extension.multiplayer.adt.message.client.IClientMessage;
 import org.andengine.util.debug.Debug;
 
 //---------- NETWORK IMPORTS  -------------------------------------------------------------- //
@@ -78,7 +81,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
     // Constants
     // ===========================================================
 
-	 private static final String LOCALHOST_IP = "127.0.0.1";
+	 public static final String LOCALHOST_IP = "127.0.0.1";
 
      //private static final int CAMERA_WIDTH = 720;
      //private static final int CAMERA_HEIGHT = 480;
@@ -89,6 +92,8 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
      private static final short FLAG_MESSAGE_SERVER_MOVE_PLAYER = FLAG_MESSAGE_SERVER_ADD_FACE + 1;
      public static final short FLAG_MESSAGE_SERVER_PLAYER_SELECTED = FLAG_MESSAGE_SERVER_MOVE_PLAYER + 1;
      public static final short FLAG_MESSAGE_SERVER_NEXT_LEVEL = FLAG_MESSAGE_SERVER_PLAYER_SELECTED + 1;
+     public static final short FLAG_MESSAGE_CLIENT_PLAYER_SELECTED_CLIENT = FLAG_MESSAGE_SERVER_NEXT_LEVEL + 1;
+     public static final short FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT = FLAG_MESSAGE_CLIENT_PLAYER_SELECTED_CLIENT + 1;
 
      private static final int DIALOG_CHOOSE_SERVER_OR_CLIENT_ID = 0;
      private static final int DIALOG_ENTER_SERVER_IP_ID = DIALOG_CHOOSE_SERVER_OR_CLIENT_ID + 1;
@@ -106,9 +111,10 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
     public int mPlayerIDCounter;
     private final SparseArray<Sprite> mPlayers = new SparseArray<Sprite>();
 
-    private String mServerIP = LOCALHOST_IP;
-    public SocketServer<SocketConnectionClientConnector> mSocketServer;
-    private ServerConnector<SocketConnection> mServerConnector;
+    public String mServerIP = LOCALHOST_IP;
+    public SocketServer<SocketConnectionClientConnector> mSocketServer = null;
+    public ServerConnector<SocketConnection> mServerConnector;
+    private SocketConnectionClientConnector mClientConnector;
 
     public final MessagePool<IMessage> mMessagePool = new MessagePool<IMessage>();
    
@@ -128,6 +134,8 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_ADD_FACE, AddFaceServerMessage.class);
 	        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER, movePlayerServerMessage.class);
 	        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_PLAYER_SELECTED, PlayerSelectedServerMessage.class);
+	        this.mMessagePool.registerMessage(FLAG_MESSAGE_CLIENT_PLAYER_SELECTED_CLIENT, PlayerSelectedClientServerMessage.class);
+	        this.mMessagePool.registerMessage(FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT, MovePlayerClientServerMessage.class);
 	}
 
 	
@@ -199,20 +207,29 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	@Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
     {
-		// Every 0.5 SECONDS velocity && position are sended to CLIENT (twekeable)
+		// Every 0.15 SECONDS velocity && position are sended to CLIENT (twekeable)
     	playTimer playT = new playTimer(0.15f, new playTimer.ITimerCallback()
-	     {
+	    {
 	        @SuppressWarnings("deprecation")
 			@Override
 	         public void onTick()
 	         {
 	        	// Move SERVER player in CLIENT machine
-	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true)
+	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer != null)
 	         	{
 	         		final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER);
 	         		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
 	         		streetJumper.this.mSocketServer.sendBroadcastServerMessage(movePlayerServerMessage);
 	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerServerMessage);
+	         	}
+	         	
+	         	// Move Client player in SERVER machine
+	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer == null)
+	         	{
+	         		final MovePlayerClientServerMessage movePlayerClientServerMessage = (MovePlayerClientServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT);
+	         		movePlayerClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
+	         		streetJumper.this.mServerConnector.sendClientMessage(movePlayerClientServerMessage);
+	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerClientServerMessage);
 	         	}
 	         }
 	       }
@@ -388,9 +405,8 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 								@Override
                                 public void onClick(final DialogInterface pDialog, final int pWhich)
                                 {
-                                	streetJumper.this.toast("You can add and move sprites, which are only shown on the clients.");
                                 	streetJumper.this.initServer();
-                                        streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
+                                    streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
                                 }
                             })
                             .setNegativeButton("Both", new OnClickListener() 
@@ -399,7 +415,6 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 								@Override
                                 public void onClick(final DialogInterface pDialog, final int pWhich)
                                 {
-                                	streetJumper.this.toast("You can add sprites and move them, by dragging them.");
                                 	streetJumper.this.initServer();
                                 	streetJumper.this.showDialog(DIALOG_ENTER_SERVER_IP_ID);
                                 	streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
@@ -476,7 +491,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         scene.registerTouchArea(playerOnline);
         playerOnline.setVisible(true);
         playerOnline.setRunning();
-        scene.attachChild(playerOnline);
+        //scene.attachChild(playerOnline);
     }
 	
     /**
@@ -507,6 +522,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
     
 	}
 	
+	
     /**
      * 
      * @param levelID : LEVEL ID (Identificator)
@@ -529,10 +545,32 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 		{
 	        @Override
 	        protected SocketConnectionClientConnector newClientConnector(final SocketConnection pSocketConnection) throws IOException
-	        {
-                return new SocketConnectionClientConnector(pSocketConnection);
+	        {          
+                mClientConnector = new SocketConnectionClientConnector(pSocketConnection);
+            	
+                mClientConnector.registerClientMessage(FLAG_MESSAGE_CLIENT_PLAYER_SELECTED_CLIENT, PlayerSelectedClientServerMessage.class, new IClientMessageHandler<SocketConnection>() 
+        		{
+	                @Override
+	                public void onHandleMessage(final ClientConnector<SocketConnection> pClientConnector, final IClientMessage pClientMessage) throws IOException
+	                {
+	                	final PlayerSelectedClientServerMessage playerSelectedClientServerMessage = (PlayerSelectedClientServerMessage)pClientMessage;
+	                    streetJumper.this.playerSelection(playerSelectedClientServerMessage.mPlayerID, playerSelectedClientServerMessage.mX, playerSelectedClientServerMessage.mY);
+	                }
+                });
+                
+                mClientConnector.registerClientMessage(FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT, MovePlayerClientServerMessage.class, new IClientMessageHandler<SocketConnection>() 
+        		{
+	                @Override
+	                public void onHandleMessage(final ClientConnector<SocketConnection> pClientConnector, final IClientMessage pClientMessage) throws IOException
+	                {
+	                	final MovePlayerClientServerMessage movePlayerClientServerMessage = (MovePlayerClientServerMessage)pClientMessage;
+	                    streetJumper.this.movePlayer(movePlayerClientServerMessage.mID, movePlayerClientServerMessage.mX, movePlayerClientServerMessage.mY);
+	                }
+                });
+                
+                return mClientConnector;
 	        }
-	    };
+		};
 	
 	    this.mSocketServer.start();
 	}
@@ -796,6 +834,54 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         }
     }
     
+    public static class PlayerSelectedClientServerMessage extends ClientMessage
+    {
+        private int mPlayerID;
+        private float mX;
+        private float mY;
+
+        public PlayerSelectedClientServerMessage()
+        {
+
+        }
+
+        public PlayerSelectedClientServerMessage(final int pID, final float pX, final float pY) 
+        {
+                this.mPlayerID = pID;
+                this.mX = pX;
+                this.mY = pY;
+        }
+
+        public void set(final int pID, final float pX, final float pY) 
+        {
+                this.mPlayerID = pID;
+                this.mX = pX;
+                this.mY = pY;
+        }
+
+        @Override
+        public short getFlag()
+        {
+                return FLAG_MESSAGE_CLIENT_PLAYER_SELECTED_CLIENT;
+        }
+
+        @Override
+        protected void onReadTransmissionData(final DataInputStream pDataInputStream) throws IOException
+        {
+                this.mPlayerID = pDataInputStream.readInt();
+                this.mX = pDataInputStream.readFloat();
+                this.mY = pDataInputStream.readFloat();
+        }
+
+        @Override
+        protected void onWriteTransmissionData(final DataOutputStream pDataOutputStream) throws IOException 
+        {
+                pDataOutputStream.writeInt(this.mPlayerID);
+                pDataOutputStream.writeFloat(this.mX);
+                pDataOutputStream.writeFloat(this.mY);
+        }
+    }
+    
     public static class ChangeLevelServerMessage extends ServerMessage
     {
         private int levelID;
@@ -864,6 +950,54 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         public short getFlag()
         {
                 return FLAG_MESSAGE_SERVER_MOVE_PLAYER;
+        }
+
+        @Override
+        protected void onReadTransmissionData(final DataInputStream pDataInputStream) throws IOException 
+        {
+                this.mID = pDataInputStream.readInt();
+                this.mX = pDataInputStream.readFloat();
+                this.mY = pDataInputStream.readFloat();
+        }
+
+        @Override
+        protected void onWriteTransmissionData(final DataOutputStream pDataOutputStream) throws IOException
+        {
+                pDataOutputStream.writeInt(this.mID);
+                pDataOutputStream.writeFloat(this.mX);
+                pDataOutputStream.writeFloat(this.mY);
+        }
+	}
+	
+	public static class MovePlayerClientServerMessage extends ClientMessage 
+	{
+        private int mID;
+        private float mX;
+        private float mY;
+
+        public MovePlayerClientServerMessage() 
+        {
+
+        }
+
+        public MovePlayerClientServerMessage(final int pID, final float pX, final float pY) 
+        {
+                this.mID = pID;
+                this.mX = pX;
+                this.mY = pY;
+        }
+
+        public void set(final int pID, final float pX, final float pY)
+        {
+                this.mID = pID;
+                this.mX = pX;
+                this.mY = pY;
+        }
+
+        @Override
+        public short getFlag()
+        {
+                return FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT;
         }
 
         @Override
