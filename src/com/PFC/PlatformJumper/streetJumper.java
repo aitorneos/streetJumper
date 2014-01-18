@@ -219,7 +219,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer != null)
 	         	{
 	         		final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER);
-	         		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
+	         		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 1.9f);
 	         		streetJumper.this.mSocketServer.sendBroadcastServerMessage(movePlayerServerMessage);
 	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerServerMessage);
 	         	}
@@ -228,7 +228,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer == null)
 	         	{
 	         		final MovePlayerClientServerMessage movePlayerClientServerMessage = (MovePlayerClientServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT);
-	         		movePlayerClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
+	         		movePlayerClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 1.9f);
 	         		streetJumper.this.mServerConnector.sendClientMessage(movePlayerClientServerMessage);
 	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerClientServerMessage);
 	         	}
@@ -427,7 +427,6 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         scene.registerTouchArea(playerOnline);
         playerOnline.setVisible(true);
         playerOnline.setRunning();
-        //scene.attachChild(playerOnline);
     }
 	
     /**
@@ -438,11 +437,16 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
      * 
      * Method that migrates the code to client machine and it is executed into the CLIENT.
      */
-	public void movePlayer(final int pID, final float vX, final float vY) 
+	public void movePlayer(final int pID, final float vX, float vY, float jumpImpulse) 
 	{
 		if (SceneManager.getInstance().getGameScene() != null)
 		{
 			PlayerOnline playerOnline = SceneManager.getInstance().getGameScene().playerOnline;
+			if (SceneManager.getInstance().getGameScene().isJumping == true) 
+			{
+				vY = vY * jumpImpulse;
+				SceneManager.getInstance().getGameScene().isJumping = false;
+			}
 	        playerOnline.body.setLinearVelocity(vX, vY);
 	        
 	     // Comprovate Flipped mode
@@ -518,7 +522,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	                public void onHandleMessage(final ClientConnector<SocketConnection> pClientConnector, final IClientMessage pClientMessage) throws IOException
 	                {
 	                	final MovePlayerClientServerMessage movePlayerClientServerMessage = (MovePlayerClientServerMessage)pClientMessage;
-	                    streetJumper.this.movePlayer(movePlayerClientServerMessage.mID, movePlayerClientServerMessage.mX, movePlayerClientServerMessage.mY);
+	                    streetJumper.this.movePlayer(movePlayerClientServerMessage.mID, movePlayerClientServerMessage.mX, movePlayerClientServerMessage.mY, movePlayerClientServerMessage.jumpImpulse);
 	                }
                 });
                 
@@ -587,7 +591,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                 public void onHandleMessage(final ServerConnector<SocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException
                 {
                     final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage)pServerMessage;
-                    streetJumper.this.movePlayer(movePlayerServerMessage.mID, movePlayerServerMessage.mX, movePlayerServerMessage.mY);
+                    streetJumper.this.movePlayer(movePlayerServerMessage.mID, movePlayerServerMessage.mX, movePlayerServerMessage.mY, movePlayerServerMessage.Jumpimpulse);
                 }
             });
             
@@ -793,24 +797,27 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         private int mID;
         private float mX;
         private float mY;
+        private float Jumpimpulse;
 
         public movePlayerServerMessage() 
         {
 
         }
 
-        public movePlayerServerMessage(final int pID, final float pX, final float pY) 
+        public movePlayerServerMessage(final int pID, final float pX, final float pY, float jumpImpulse) 
         {
                 this.mID = pID;
                 this.mX = pX;
                 this.mY = pY;
+                this.Jumpimpulse = jumpImpulse;
         }
 
-        public void set(final int pID, final float pX, final float pY)
+        public void set(final int pID, final float pX, final float pY, float jumpImpulse)
         {
                 this.mID = pID;
                 this.mX = pX;
                 this.mY = pY;
+                this.Jumpimpulse = jumpImpulse;
         }
 
         @Override
@@ -825,6 +832,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                 this.mID = pDataInputStream.readInt();
                 this.mX = pDataInputStream.readFloat();
                 this.mY = pDataInputStream.readFloat();
+                this.Jumpimpulse = pDataInputStream.readFloat();
         }
 
         @Override
@@ -833,6 +841,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                 pDataOutputStream.writeInt(this.mID);
                 pDataOutputStream.writeFloat(this.mX);
                 pDataOutputStream.writeFloat(this.mY);
+                pDataOutputStream.writeFloat(this.Jumpimpulse);
         }
 	}
 	
@@ -841,24 +850,27 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         private int mID;
         private float mX;
         private float mY;
+        private float jumpImpulse;
 
         public MovePlayerClientServerMessage() 
         {
 
         }
 
-        public MovePlayerClientServerMessage(final int pID, final float pX, final float pY) 
+        public MovePlayerClientServerMessage(final int pID, final float pX, final float pY, float jumpImpulse) 
         {
                 this.mID = pID;
                 this.mX = pX;
                 this.mY = pY;
+                this.jumpImpulse = jumpImpulse;
         }
 
-        public void set(final int pID, final float pX, final float pY)
+        public void set(final int pID, final float pX, final float pY, float jumpImpulse)
         {
                 this.mID = pID;
                 this.mX = pX;
                 this.mY = pY;
+                this.jumpImpulse = jumpImpulse;
         }
 
         @Override
@@ -873,6 +885,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                 this.mID = pDataInputStream.readInt();
                 this.mX = pDataInputStream.readFloat();
                 this.mY = pDataInputStream.readFloat();
+                this.jumpImpulse = pDataInputStream.readFloat();
         }
 
         @Override
@@ -881,6 +894,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                 pDataOutputStream.writeInt(this.mID);
                 pDataOutputStream.writeFloat(this.mX);
                 pDataOutputStream.writeFloat(this.mY);
+                pDataOutputStream.writeFloat(this.jumpImpulse);
         }
 	}
 	

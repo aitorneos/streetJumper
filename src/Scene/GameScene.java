@@ -165,6 +165,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private boolean playSound = false;
 	 private boolean playSoundGreen = false;
 	 private LevelCompleteWindow levelCompleteWindow;
+	 public boolean isJumping = false;
 	 
 	 // ---------------------------- LEVEL_2 VARIABLES ---------------------------------------------------------------
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ARROW_LEFT = "arrowLeft";
@@ -1626,6 +1627,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		{
 			firstTouch = true;
 			
+			// ------------------------ SERVER TO CLIENT ------------------------------------------------------------------------------------------------------------------------
+			
 			// Send Player to be Loaded from SERVER to CLIENT
 			if (ResourcesManager.getInstance().activity.mSocketServer != null)
 			{
@@ -1644,6 +1647,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 				ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerSelectedServerMessage);
 			}
 			
+			// ------------------------ CLIENT TO SERVER ------------------------------------------------------------------------------------------------------------------------
+
 			// Send Player to be Loaded from CLIENT to SERVER
 			if (ResourcesManager.getInstance().activity.mSocketServer == null)
 			{
@@ -1664,6 +1669,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		}
 		if (pSceneTouchEvent.isActionDown())
 	    {
+			this.isJumping = true;
 			player.jump();        
 	    }
 		
