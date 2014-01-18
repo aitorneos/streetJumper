@@ -1633,7 +1633,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			if (ResourcesManager.getInstance().activity.mSocketServer != null)
 			{
 				final PlayerServer playerServer = (PlayerServer) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_PLAYER);
-				playerServer.set(resourcesManager.playerSelected);
+				playerServer.set(resourcesManager.playerSelected, player.getX(), player.getY());
 				ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(playerServer);
 				ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerServer);
 			}
@@ -1642,7 +1642,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			if (ResourcesManager.getInstance().activity.mSocketServer != null)
 			{
 				final PlayerSelectedServerMessage playerSelectedServerMessage = (PlayerSelectedServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_PLAYER_SELECTED);
-		        playerSelectedServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, player.body.getPosition().x, player.body.getPosition().y);
+		        playerSelectedServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, player.getX(), player.getY());
 				ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(playerSelectedServerMessage);
 				ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerSelectedServerMessage);
 			}
@@ -1653,7 +1653,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			if (ResourcesManager.getInstance().activity.mSocketServer == null)
 			{
 				final PlayerClient playerClient = (PlayerClient) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_CLIENT_PLAYER);
-				playerClient.set(resourcesManager.playerSelected);
+				playerClient.set(resourcesManager.playerSelected, player.getX(), player.getY());
 				ResourcesManager.getInstance().activity.mServerConnector.sendClientMessage(playerClient);
 				ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerClient);
 			}
@@ -1662,7 +1662,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			if (ResourcesManager.getInstance().activity.mSocketServer == null)
 			{
 				final PlayerSelectedClientServerMessage playerSelectedClientServerMessage = (PlayerSelectedClientServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_CLIENT_PLAYER_SELECTED_CLIENT);
-				playerSelectedClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, player.body.getPosition().x, player.body.getPosition().y);
+				playerSelectedClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, player.getX(), player.getY());
 				ResourcesManager.getInstance().activity.mServerConnector.sendClientMessage(playerSelectedClientServerMessage);
 				ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerSelectedClientServerMessage);
 			}

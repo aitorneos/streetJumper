@@ -6,8 +6,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-
-
 //---------- ANDENGINE KERNEL IMPORTS -------------------------------------------------------------- //
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
@@ -53,8 +51,6 @@ import org.andengine.extension.multiplayer.adt.message.client.ClientMessage;
 import org.andengine.extension.multiplayer.adt.message.client.IClientMessage;
 import org.andengine.util.debug.Debug;
 
-
-
 //---------- NETWORK IMPORTS  -------------------------------------------------------------- //
 import Network.ConnectionCloseServerMessage;
 import Network.ServerMessageFlags;
@@ -78,8 +74,10 @@ import android.widget.Toast;
 
 /**
  *
- * @author Aitor Arque Arnaiz (1194443)
+ * @author Aitor Arque Arnaiz
  * @Date : 12 / 01 / 2014
+ * @category : Platformer AndEngine Game 
+ * @see : https://github.com/nicolasgramlich/AndEngine/tree/GLES2-AnchorCenter
  */
 
 public class streetJumper extends BaseAugmentedRealityGameActivity implements IAccelerationListener, ServerMessageFlags, ClientMessageFlags
@@ -91,9 +89,8 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 
 	 public static final String LOCALHOST_IP = "127.0.0.1";
 
-     //private static final int CAMERA_WIDTH = 720;
-     //private static final int CAMERA_HEIGHT = 480;
-
+	 // --------------------- DATA TRANSMISSION FLAGS ------------------------------------------------------------------------------
+	 
      private static final int SERVER_PORT = 4444;
      private static final short FLAG_MESSAGE_SERVER_MOVE_PLAYER = 1;
      public static final short FLAG_MESSAGE_SERVER_PLAYER_SELECTED = FLAG_MESSAGE_SERVER_MOVE_PLAYER + 1;
@@ -102,6 +99,8 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
      public static final short FLAG_MESSAGE_SERVER_PLAYER = FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT + 1;
      public static final short FLAG_MESSAGE_CLIENT_PLAYER = FLAG_MESSAGE_SERVER_PLAYER + 1;
 
+     // ----------------------------- DIALOG FLAGS ----------------------------------------------------------------------------------
+     
      private static final int DIALOG_CHOOSE_SERVER_OR_CLIENT_ID = 0;
      private static final int DIALOG_ENTER_SERVER_IP_ID = DIALOG_CHOOSE_SERVER_OR_CLIENT_ID + 1;
      private static final int DIALOG_SHOW_SERVER_IP_ID = DIALOG_ENTER_SERVER_IP_ID + 1;
@@ -111,9 +110,6 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	private BoundCamera camera;
 	private ResourcesManager resourcesManager;
 	private boolean activated = false;
-	
-	 private BitmapTextureAtlas mBitmapTextureAtlas;
-     private ITextureRegion mFaceTextureRegion;
 
     public int mPlayerIDCounter;
     private final SparseArray<Sprite> mPlayers = new SparseArray<Sprite>();
@@ -435,7 +431,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
      * @param vX : Sprite x-axis velocity
      * @param vY : Spite y-axis velocity
      * 
-     * Method that migrates the code to client machine and it is executed into the CLIENT.
+     * Method that sends player position to other smartphone conected
      */
 	public void movePlayer(final int pID, final float vX, float vY, float jumpImpulse) 
 	{
@@ -468,7 +464,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
      * 
      * Method load apropiate texture
      */
-    public void playerLoad(int playerID)
+    public void playerLoad(int playerID, final float pX, final float pY)
     {
     	// Obtain Client Engine Scene
     	final Scene scene = this.mEngine.getScene();
@@ -479,7 +475,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         if (playerID == 2) resourcesManager.playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(resourcesManager.gameTextureAtlas, this, "player3.png", 3, 1);
         if (playerID == 3) resourcesManager.playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(resourcesManager.gameTextureAtlas, this, "player4.png", 3, 1);
         
-        SceneManager.getInstance().getGameScene().playerOnline = new PlayerOnline(90, 175, this.getVertexBufferObjectManager(), camera, SceneManager.getInstance().getGameScene().physicsWorld)
+        SceneManager.getInstance().getGameScene().playerOnline = new PlayerOnline(pX, pY, this.getVertexBufferObjectManager(), camera, SceneManager.getInstance().getGameScene().physicsWorld)
         {	
         };
         SceneManager.getInstance().getGameScene().playerOnline.setSize(60, 60);
@@ -532,7 +528,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	                public void onHandleMessage(final ClientConnector<SocketConnection> pClientConnector, final IClientMessage pClientMessage) throws IOException
 	                {
 	                	final PlayerClient playerClient = (PlayerClient)pClientMessage;
-	                    streetJumper.this.playerLoad(playerClient.playerRegion);
+	                    streetJumper.this.playerLoad(playerClient.playerRegion, playerClient.pX, playerClient.pY);
 	                }
                 });
                 
@@ -601,7 +597,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                 public void onHandleMessage(final ServerConnector<SocketConnection> pServerConnector, final IServerMessage pServerMessage) throws IOException
                 {
                     final PlayerServer playerServer = (PlayerServer)pServerMessage;
-                    streetJumper.this.playerLoad(playerServer.playerRegion);
+                    streetJumper.this.playerLoad(playerServer.playerRegion, playerServer.pX, playerServer.pY);
                 }
             });
        
@@ -901,20 +897,26 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	public static class PlayerServer extends ServerMessage 
 	{
         private int playerRegion;
+        private float pX;
+        private float pY;
 
         public PlayerServer() 
         {
 
         }
 
-        public PlayerServer(int pR) 
+        public PlayerServer(int pR, float pX, float pY) 
         {
                 this.playerRegion = pR;
+                this.pX = pX;
+                this.pY = pY;
         }
 
-        public void set(int pR)
+        public void set(int pR, float pX, float pY)
         {
               this.playerRegion = pR;
+              this.pX = pX;
+              this.pY = pY;
         }
 
         @Override
@@ -927,32 +929,42 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         protected void onReadTransmissionData(final DataInputStream pDataInputStream) throws IOException 
         {
                 this.playerRegion = pDataInputStream.readInt();
+                this.pX = pDataInputStream.readFloat();
+                this.pY = pDataInputStream.readFloat();
         }
 
         @Override
         protected void onWriteTransmissionData(final DataOutputStream pDataOutputStream) throws IOException
         {
                 pDataOutputStream.writeInt(this.playerRegion);
+                pDataOutputStream.writeFloat(this.pX);
+                pDataOutputStream.writeFloat(this.pY);
         }
 	}
 	
 	public static class PlayerClient extends ClientMessage 
 	{
         private int playerRegion;
+        private float pX;
+        private float pY;
 
         public PlayerClient() 
         {
 
         }
 
-        public PlayerClient(int pR) 
+        public PlayerClient(int pR, float pX, float pY) 
         {
                 this.playerRegion = pR;
+                this.pX = pX;
+                this.pY = pY;
         }
 
-        public void set(int pR)
+        public void set(int pR, float pX, float pY)
         {
               this.playerRegion = pR;
+              this.pX = pX;
+              this.pY = pY;
         }
 
         @Override
@@ -965,12 +977,16 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         protected void onReadTransmissionData(final DataInputStream pDataInputStream) throws IOException 
         {
                 this.playerRegion = pDataInputStream.readInt();
+                this.pX = pDataInputStream.readFloat();
+                this.pY = pDataInputStream.readFloat();
         }
 
         @Override
         protected void onWriteTransmissionData(final DataOutputStream pDataOutputStream) throws IOException
         {
                 pDataOutputStream.writeInt(this.playerRegion);
+                pDataOutputStream.writeFloat(this.pX);
+                pDataOutputStream.writeFloat(this.pY);
         }
 	}
 	
