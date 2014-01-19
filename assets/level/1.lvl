@@ -65,7 +65,7 @@
     <entity x="1280" y="75" type="snowHill"/>
     
     <entity x="550" y="90" type="spikes"/>
-    <entity x="500" y="410" type="mine"/>
+    <entity x="500" y="420" type="mine"/>
     <entity x="590" y="340" type="spikes"/>
     <entity x="90" y="360" type="levelComplete"/>
    
@@ -84,12 +84,10 @@
     <entity x="720" y="90" type="coin_gold"/>
     <entity x="395" y="410" type="coin"/>
     <entity x="445" y="410" type="coin"/>
-    <entity x="495" y="410" type="coin"/>
-    <entity x="545" y="410" type="coin_bronze"/>
     <entity x="395" y="450" type="coin_gold"/>
     <entity x="445" y="450" type="coin_gold"/>
-    <entity x="495" y="450" type="coin"/>
     <entity x="545" y="450" type="coin_bronze"/>
+    <entity x="545" y="410" type="coin_bronze"/>
     <entity x="595" y="450" type="coin_gold"/>
     <entity x="90" y="360" type="keyYellow"/>
     <entity x="600" y="385" type="keyGreen"/>
