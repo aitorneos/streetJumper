@@ -602,15 +602,15 @@ public class ResourcesManager
     	{
     		if (ResourcesManager.getInstance().getLevelComplete() == 1)
     		{
-    			this.backgroundMusic = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity.getApplicationContext(),"POL.ogg");
-        	    this.backgroundMusic.setVolume(0.15f);
+    			this.backgroundMusic = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity.getApplicationContext(),"POL-rocket-station-short.ogg");
+        	    this.backgroundMusic.setVolume(0.075f, 0.075f);
         	    this.backgroundMusic.setLooping(true);
     		}
     		
     		else if (ResourcesManager.getInstance().getLevelComplete() == 2)
     		{
-    			this.backgroundMusic = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity.getApplicationContext(),"POL-misty-cave-short.ogg");
-        	    this.backgroundMusic.setVolume(0.15f);
+    			this.backgroundMusic = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity.getApplicationContext(),"POL-treasure-match-short.ogg");
+        	    this.backgroundMusic.setVolume(0.075f, 0.075f);
         	    this.backgroundMusic.setLooping(true);
     		}
     	    
@@ -665,7 +665,7 @@ public class ResourcesManager
     	{    
     		this.machine = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "machineGun.ogg");
     		this.machine.setLooping(true);
-    		this.machine.setVolume(0.3f, 0.5f);
+    		this.machine.setVolume(0.1f, 0.05f);
     	} 
     	catch (IllegalStateException e) 
     	{   
