@@ -16,7 +16,9 @@ public class LoadingScene extends BaseScene
 	public void createScene()
 	{
 	    setBackground(new Background(Color.BLACK));
-	    attachChild(new Text(400, 240, resourcesManager.font, "Loading...", vbom));
+	    ResourcesManager.getInstance().loadGameFonts();
+	    attachChild(new Text(400, 240, ResourcesManager.getInstance().loadingFont, "Loading... WAIT", vbom));
+	    
 	}
 
 	@Override
@@ -36,7 +38,12 @@ public class LoadingScene extends BaseScene
 	@Override
 	public void disposeScene(int levelID)
 	{
-		
+		this.clearEntityModifiers();
+		this.clearTouchAreas();
+		this.clearUpdateHandlers();
+		this.clearChildScene();
+		this.detachSelf();
+	
 	}
 
 }

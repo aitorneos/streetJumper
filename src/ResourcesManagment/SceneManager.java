@@ -142,6 +142,9 @@ public class SceneManager
     {
     	gameScene = null;
     	ResourcesManager.getInstance().loading = true;
+    	loadingScene.disposeScene(1);
+    	loadingScene = new LoadingScene();
+    	loadingScene.createScene();
         setScene(loadingScene);
         if (reourcesLevel == 1) ResourcesManager.getInstance().unloadMenuTextures();
         mEngine.registerUpdateHandler(new TimerHandler(0.15f, new ITimerCallback() 

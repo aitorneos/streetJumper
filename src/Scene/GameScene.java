@@ -1683,7 +1683,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	    camera.setChaseEntity(null);
 		
 	    // Set background to Black color (usually) and remove player HUD
-		 setBackground(new Background(Color.BLACK));
+		 setBackground(new Background(Color.RED));
 		 camera.setHUD(null);
 		 
 		 // Clear some features not more needed
@@ -1694,8 +1694,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		 disposeScene(levelID);
 		 
 		 // Write the message
-		 ResourcesManager.getInstance().loadMenuFonts();
-		 attachChild(new Text(camera.getCenterX(), camera.getCenterY(), resourcesManager.font, "GAME OVER... ! ", vbom));
+		 ResourcesManager.getInstance().loadGameFonts();
+		 attachChild(new Text(camera.getCenterX(), camera.getCenterY(), resourcesManager.loadingFont, "GAME OVER... ! ", vbom));
 		 
 		 engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
          {                                    

@@ -25,9 +25,7 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
 import org.andengine.util.debug.Debug;
-
 import android.graphics.Color;
-
 import com.PFC.PlatformJumper.streetJumper;
 
 
@@ -51,6 +49,8 @@ public class ResourcesManager
     public VertexBufferObjectManager vbom;
     public IFont font;
     public IFont fontText;
+    public IFont loadingFont;
+    public IFont loadingFont2;
     private int level = 1;
     public boolean loading= false;
     
@@ -479,7 +479,7 @@ public class ResourcesManager
         this.loadToonFont();
     }
     
-    private void loadGameFonts()
+    public void loadGameFonts()
     {
 	  if (this.getLevelComplete() == 1)
 	  {
@@ -505,22 +505,28 @@ public class ResourcesManager
         font.load(); 
     }
     
-    private void loadBodieMFHollyFont()
+    public void loadBodieMFHollyFont()
     {
     	FontFactory.setAssetBasePath("font/");
         final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "BodieMFHolly.ttf", 60, true, Color.DKGRAY, 4, Color.BLACK);
+        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "Snowtop Caps.ttf", 60, true, Color.GRAY, 3, Color.LTGRAY);
         font.load(); 
+        
+        loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "Snowtop Caps.ttf", 100, true, Color.GRAY, 3, Color.LTGRAY);
+        loadingFont.load(); 
     }
     
-    private void loadBurnstowFont()
+    public void loadBurnstowFont()
     {
     	FontFactory.setAssetBasePath("font/");
         final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
         font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "BURNSTOW.ttf", 100, true, Color.DKGRAY, 3, Color.BLACK);
         font.load(); 
+        
+        loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "BURNSTOW.ttf", 125, true, Color.GRAY, 3, Color.LTGRAY);
+        loadingFont.load(); 
     }
     
     private void loadCheapsteFont()
@@ -715,6 +721,8 @@ public class ResourcesManager
     	{
     		gameTextureAtlas.unload();
         	gameTextureAtlas.clearTextureAtlasSources();
+        	font.unload();
+        	loadingFont.unload();
         	player_region = null;
         	platform1_region = null;
         	platform2_region = null;
@@ -741,6 +749,8 @@ public class ResourcesManager
     	{
     		gameTextureAtlas.unload();
         	gameTextureAtlas.clearTextureAtlasSources();
+        	font.unload();
+        	loadingFont.unload();
         	player_region = null;
         	playerSecondary = null;
         	coin_silver = null;
