@@ -315,7 +315,7 @@ public class ResourcesManager
         mine = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "mine.png");
         
         // --------------------------------------------- PHYSIC SPRITE ---------------------------------------------------------------------
-        waterDrop = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "waterDropTexture.png");
+        waterDrop = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "snowflake.png");
         fireDrop = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "dot.png");
         stalactitaLeft = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "snowLedgeLeft.png");
         stalactitaRight = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "snowLedgeRight.png");

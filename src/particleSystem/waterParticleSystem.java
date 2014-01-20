@@ -35,11 +35,11 @@ public class waterParticleSystem implements ParticleSystemFactory
 	    final float particlesYSpawn = fontY;
 
 	    //Max & min rate are the maximum particles per second and the minimum particles per second.
-	    final float maxRate = 5;
-	    final float minRate = 3;
+	    final float maxRate = 4;
+	    final float minRate = 2;
 
 	    //This variable determines the maximum particles in the particle system.
-	    final int maxParticles = 200;
+	    final int maxParticles = 100;
 
 	    //Particle emitter which will set all of the particles at a ertain point when they are initialized.
 	    final PointParticleEmitter pointParticleEmtitter = new PointParticleEmitter(particlesXSpawn, particlesYSpawn);
@@ -49,16 +49,15 @@ public class waterParticleSystem implements ParticleSystemFactory
 
 	    //And now, lets create the initiallizers and modifiers.
 	    //Velocity initiallizer - will pick a random velocity from -20 to 20 on the x & y axes. Play around with this value.
-	    particleSystem.addParticleInitializer(new VelocityParticleInitializer<Sprite>(-20, 20, -20, 20));
+	    particleSystem.addParticleInitializer(new VelocityParticleInitializer<Sprite>(-30, 30, -20, 20));
 
 	    //Acceleration initializer - gives all the particles the earth gravity (so they accelerate down).
 	    particleSystem.addParticleInitializer(new GravityParticleInitializer<Sprite>());
-
-	    //And now, adding an alpha modifier, so particles slowly fade out. This makes a particle go from alpha = 1 to alpha = 0 in 3 seconds, starting exactly when the particle is spawned.
+	    
 	    particleSystem.addParticleModifier(new AlphaParticleModifier<Sprite>(1, 0, 0, 0));
 
 	    //Lastly, expire modifier. Make particles die after 3 seconds - their alpha reached 0.
-	    particleSystem.addParticleInitializer(new ExpireParticleInitializer<Sprite>(8));  
+	    particleSystem.addParticleInitializer(new ExpireParticleInitializer<Sprite>(12));  
 
 	    return particleSystem;
 }

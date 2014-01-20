@@ -304,16 +304,16 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
  
 			// Put "font" snow raining
 			 ps = new waterParticleSystem();
-			 attachChild (sps = ps.build(engine, 400, 485));
+			 attachChild (sps = ps.build(engine, 400, 500));
 
 			 ps2 = new waterParticleSystem();
-			 attachChild (sps2 = ps2.build(engine, 150, 485));
+			 attachChild (sps2 = ps2.build(engine, 150, 500));
 			 
 			 ps3 = new waterParticleSystem();
-			 attachChild (sps3 = ps3.build(engine, 800, 485));
+			 attachChild (sps3 = ps3.build(engine, 800, 500));
 			 
 			 ps4 = new waterParticleSystem();
-			 attachChild (sps4 = ps3.build(engine, 1240, 485));
+			 attachChild (sps4 = ps3.build(engine, 1240, 500));
 			 
 			 // create WATER SHADER !
 			 water = new Sprite(0, 120, 2048, -240, ResourcesManager.getInstance().waterShader, vbom);
