@@ -125,6 +125,15 @@ public abstract class PlayerSpecial extends AnimatedSprite
         mphysicsWorld.destroyBody(PlayerPhysicsConnector.getBody());
 	}
 	
+	public void destroyBulletSystem()
+	{
+		sps.clearUpdateHandlers();
+		sps.getParticleEmitter().reset();
+		sps.reset();
+		sps.detachSelf();
+		sps.dispose();
+	}
+	
 	
 	// ---------------------------------------------
 	// GETTERS AND SETTERS

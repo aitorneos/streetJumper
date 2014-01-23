@@ -470,18 +470,26 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 sps.clearUpdateHandlers();
         	 sps.getParticleEmitter().reset();
         	 sps.reset();
+        	 sps.detachSelf();
+        	 sps.dispose();
         	 
         	 sps2.clearUpdateHandlers();
         	 sps2.getParticleEmitter().reset();
         	 sps2.reset();
+        	 sps2.detachSelf();
+        	 sps2.dispose();
         	 
         	 sps3.clearUpdateHandlers();
         	 sps3.getParticleEmitter().reset();
         	 sps3.reset();
+        	 sps3.detachSelf();
+        	 sps3.dispose();
         	 
         	 sps4.clearUpdateHandlers();
         	 sps4.getParticleEmitter().reset();
         	 sps4.reset();
+        	 sps4.detachSelf();
+        	 sps4.dispose();
         	 
         	 System.gc();
     	 }
@@ -538,7 +546,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	// ------------------------------------------ PLAYERS -----------------------------------------------------------------------
         	 player.clearEntityModifiers();
         	 player.clearUpdateHandlers();
-        	 player.removePhysics(physicsWorld, this);
         	 playerSpecial.clearEntityModifiers();
         	 playerSpecial.clearUpdateHandlers();
         	 this.clearScene();
@@ -550,6 +557,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 lifeText.clearUpdateHandlers();
         	 timeText.clearEntityModifiers();
         	 timeText.clearUpdateHandlers();
+        	 
+        	 waterEx.clearUpdateHandlers();
+        	 waterEx.getParticleEmitter().reset();
+        	 waterEx.reset();
+        	 waterEx.detachSelf();
+        	 waterEx.dispose();
+        	 playerSpecial.destroyBulletSystem();
         	 
         	 System.gc();
     	 }
@@ -587,6 +601,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 gameHUD.detachChildren();
         	 gameHUD.detachSelf();
         	 gameHUD.dispose(); 
+        	 
+        	 this.clearScene();
         	 
     		 System.gc();
     	 }
