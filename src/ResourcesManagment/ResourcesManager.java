@@ -111,6 +111,15 @@ public class ResourcesManager
     public ITextureRegion sun;
     public ITextureRegion bullet;
     public ITextureRegion buttonYellow;
+    public ITextureRegion cradle;
+    public ITextureRegion littleMountain;
+    public ITextureRegion mountainPlatform;
+    public ITextureRegion platform;
+    public ITextureRegion platformSmall;
+    public ITextureRegion bigTree;
+    public ITextureRegion troncPlatform;
+    public ITextureRegion troncSmall;
+    
     
     // --------------------------------------- COINS ---------------------------------------------------------------
     public ITextureRegion coin_silver;
@@ -448,6 +457,17 @@ public class ResourcesManager
     	gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
         scene_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "level3_background.png");
         
+        // ------------------------------ PLATFORMS TYPES --------------------------------------------------------------------------------------------------------
+        
+        cradle = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "cradle.png");
+        littleMountain = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "littleMountain.png");
+        mountainPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "mountainPlatform.png");
+        platform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "platform.png");
+        platformSmall = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "platformSmall.png");
+        bigTree = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "tree.png");
+        troncPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "troncPlatform.png");
+        troncSmall = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "troncSmall.png");
+        
      // --------------------------- HUD LOADING-------------------------------------------------------------------------------------------------------
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level2/");   
         starHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "star.png");
@@ -492,7 +512,7 @@ public class ResourcesManager
 	  }
 	  else if (this.getLevelComplete() == 3)
 	  {
-		  this.loadCheapsteFont();
+		  this.loadWalkDaWalkOneFont();
 	  }
     }
     
@@ -543,8 +563,11 @@ public class ResourcesManager
     	FontFactory.setAssetBasePath("font/");
         final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-        fontText = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "WalkDaWalkOne.ttf", 80, true, Color.BLUE, 4, Color.YELLOW);
-        fontText.load(); 
+        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 45, true, Color.CYAN, 4, Color.BLUE);
+        font.load(); 
+        
+        loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "font.ttf", 60, true, Color.CYAN, 3, Color.BLUE);
+        loadingFont.load(); 
     }
     // ------------------------------------- LOAD AUDIO (SOUND && MUSIC) ------------------------------------------------------------------
     private void loadMenuAudio()

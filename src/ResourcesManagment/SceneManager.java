@@ -142,7 +142,7 @@ public class SceneManager
     {
     	gameScene = null;
     	ResourcesManager.getInstance().loading = true;
-    	loadingScene.disposeScene(1);
+    	loadingScene.disposeScene(reourcesLevel);
     	loadingScene = new LoadingScene();
     	loadingScene.createScene();
         setScene(loadingScene);

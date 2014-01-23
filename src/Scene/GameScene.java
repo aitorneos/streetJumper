@@ -168,6 +168,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 public boolean isJumping = false;
 	 
 	 // ---------------------------- LEVEL_2 VARIABLES ---------------------------------------------------------------
+	 
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ARROW_LEFT = "arrowLeft";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK = "rock";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SAND = "sand";
@@ -190,6 +191,16 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BUTTON_YELLOW = "buttonYellow";
 	 
 	 Text nBombs = new Text(40, 300, resourcesManager.font, "+ 1", new TextOptions(HorizontalAlign.LEFT), vbom);
+	 
+	// ---------------------------- LEVEL 3 VARIABLES ---------------------------------------------------------------
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE = "cradle";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_LITTLE_MOUNTAIN = "littleMountain";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MOUNTAIN_PLATFORM = "mountainPlatform";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM = "platform";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM_SMALL = "platformSmall";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BIG_TREE = "bigTree";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TRONC_PLATFORM = "troncPlatform";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TRONC_SMALL = "troncSmall";	 
 	
 
 	// ---------------------- METHODS ----------------------------------------------------------------------------------------------------------
@@ -337,7 +348,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		 
 		 else if (ResourcesManager.getInstance().getLevelComplete() == 3)
 		 {
-			 
+			 player.setRunning();
 		 }
     }
 
@@ -1603,6 +1614,79 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    levelObject = player;
 	                    levelObject.setSize(width, height);
 	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.cradle, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("cradle");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_LITTLE_MOUNTAIN))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.littleMountain, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("littleMountain");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MOUNTAIN_PLATFORM))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.mountainPlatform, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("mountainPlatform");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.platform, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("platform");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM_SMALL))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.platformSmall, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("platformSmall");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BIG_TREE))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.bigTree, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("bigTree");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TRONC_PLATFORM))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.troncPlatform, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("troncPlatform");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TRONC_SMALL))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.troncSmall, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("troncSmall");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
 		            else
 	                {
 	                    throw new IllegalArgumentException();

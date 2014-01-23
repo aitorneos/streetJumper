@@ -2,5 +2,10 @@
 <level width="2000" height="480">
 
 <entity x="50" y="150" width="75" height="75" type="player"/>
+
+<entity x="60" y="25" width="75" height="75" type="troncPlatform"/>
+<entity x="185" y="25" width="75" height="75" type="troncPlatform"/>
+<entity x="300" y="25" width="75" height="75" type="troncPlatform"/>
+<entity x="425" y="25" width="75" height="75" type="troncPlatform"/>
 	
 </level>
