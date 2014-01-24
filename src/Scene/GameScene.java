@@ -1703,6 +1703,72 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    //levelObject.setSize(width, height);
 	                }
 		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.coin_silver, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                                addToScore(3);
+	                                ResourcesManager.getInstance().getCoinSound().play();
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                    //levelObject.setSize(width, height);
+	                } 
+	                
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN_GOLD))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.coin_gold, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                                addToScore(5);
+	                                ResourcesManager.getInstance().getCoinSound().play();
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                    //levelObject.setSize(width, height);
+	                } 
+	                
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN_BRONZE))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.coin_bronze, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                                addToScore(1);
+	                                ResourcesManager.getInstance().getCoinSound().play();
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                    //levelObject.setSize(width, height);
+	                } 
+		            
 		            else
 	                {
 	                    throw new IllegalArgumentException();
