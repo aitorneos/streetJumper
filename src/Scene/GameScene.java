@@ -289,29 +289,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		 levelCompleteWindow = new LevelCompleteWindow(vbom);
 		 loadLevel(ResourcesManager.getInstance().getLevelComplete());
 		 setOnSceneTouchListener(this);
-		 ResourcesManager.getInstance().getSceneMusic().play();
-
-		 // Create and initialize timer options an update
-		 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
-	     {
-	         @Override
-	         public void onTick()
-	         {
-	            if (player.time > 0) player.time = player.time - 1;
-	            timeText.setText("Time: " + player.time);
-	         }
-	       }
-	     );
-		 engine.registerUpdateHandler(playT);
-		 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);	
 		 controlAc = 0;
-		 ResourcesManager.getInstance().loadTextFont();
 		
 		 if (ResourcesManager.getInstance().getLevelComplete() == 1)
 		 {
 			 player.setRunning();
 			 enemy.setRunning();
 	         enemy.body.setLinearVelocity(0.5f, 0.0f);
+	         ResourcesManager.getInstance().getSceneMusic().play();
  
 			// Put "font" snow raining
 			 ps = new waterParticleSystem();
@@ -335,6 +320,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	         water.setVisible(true);
 	         water.setFlippedVertical(true);
 	         attachChild(water);
+	         ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
+	         // Create and initialize timer options an update
+			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
+		     {
+		         @Override
+		         public void onTick()
+		         {
+		            if (player.time > 0) player.time = player.time - 1;
+		            timeText.setText("Time: " + player.time);
+		         }
+		       }
+		     );
+			 engine.registerUpdateHandler(playT);	
 		 }
 		 
 		 else if (ResourcesManager.getInstance().getLevelComplete() == 2)
@@ -342,13 +340,40 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 player.setRunning();
 			 playerSpecial.setRunning();
 			 playerSpecial.body.setLinearVelocity(2.0f, 0.0f);
+			 ResourcesManager.getInstance().getSceneMusic().play();
 			 wp = new waterExplosion();
 			 waterEx = wp.build(engine, 1800 , 150);
+			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
+			// Create and initialize timer options an update
+			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
+		     {
+		         @Override
+		         public void onTick()
+		         {
+		            if (player.time > 0) player.time = player.time - 1;
+		            timeText.setText("Time: " + player.time);
+		         }
+		       }
+		     );
+			 engine.registerUpdateHandler(playT);	
 		 }
 		 
 		 else if (ResourcesManager.getInstance().getLevelComplete() == 3)
 		 {
 			 player.setRunning();
+			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
+			// Create and initialize timer options an update
+			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
+		     {
+		         @Override
+		         public void onTick()
+		         {
+		            if (player.time > 0) player.time = player.time - 1;
+		            timeText.setText("Time: " + player.time);
+		         }
+		       }
+		     );
+			 engine.registerUpdateHandler(playT);	
 		 }
     }
 
@@ -373,7 +398,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         		disposeScene(3);
         	}
         	SceneManager.getInstance().loadMenuScene(engine);
-        	ResourcesManager.getInstance().setLevelComplete(1);
+        	//ResourcesManager.getInstance().setLevelComplete(1);
     	}
     }
 
@@ -572,7 +597,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
     	 {
     		 ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
     		 ResourcesManager.getInstance().unloadGameTextures(levelID);
-        	 ResourcesManager.getInstance().unloadGameSounds();
+        	 //ResourcesManager.getInstance().unloadGameSounds();
 
         	 // code responsible for disposing scene
         	 // removing all game scene objects.

@@ -30,7 +30,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	private final int PLAYER3_SEL = 3;
 	private final int PLAYER4_SEL = 4;
 	private final int AR_SEL = 5;
-	private final int BACK = 6;
+	private final int LEVEL_SEL = 6;
 	
 	private void createBackground()
 	 {
@@ -54,15 +54,18 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	     final Sprite background =  new Sprite(350, 230, resourcesManager.optionsBack, vbom);
 	     final IMenuItem player = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PLAYER_SEL, resourcesManager.options_player_selection, vbom), 1.2f, 1);
 	     final IMenuItem arSel = new ScaleMenuItemDecorator(new SpriteMenuItem(AR_SEL, resourcesManager.ARSel, vbom), 1.2f, 1);
+	     final IMenuItem levelSel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL_SEL, resourcesManager.levelLoad, vbom), 1.2f, 1);
 	     
 	     menuChildScene.addMenuItem(player);
 	     menuChildScene.addMenuItem(arSel);
+	     menuChildScene.addMenuItem(levelSel);
   
 	     menuChildScene.buildAnimations();
 	     menuChildScene.setBackgroundEnabled(false);
 	     
-	     player.setPosition(player.getX() + 195 , player.getY() - 150);
-	     arSel.setPosition(arSel.getX() + 205 , arSel.getY() - 130);
+	     player.setPosition(player.getX() + 195 , player.getY() - 190);
+	     arSel.setPosition(arSel.getX() + 205 , arSel.getY() - 165);
+	     levelSel.setPosition(levelSel.getX() + 205, levelSel.getY() - 165);
  
 	     menuChildScene.setOnMenuItemClickListener(this);
 	     setChildScene(menuChildScene);
@@ -192,8 +195,14 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	        	return true;
 	        	
 	        case AR_SEL: 
-	        			ResourcesManager.getInstance().setAR(!ResourcesManager.getInstance().getAR());
-	        			return true;
+	        	
+    			ResourcesManager.getInstance().setAR(!ResourcesManager.getInstance().getAR());
+    			return true;
+	        			
+	        case LEVEL_SEL:
+	        	
+	        	// Assign level selected to resources manager variable
+	        	ResourcesManager.getInstance().setLevelComplete((ResourcesManager.getInstance().getLevelComplete() % 3) + 1);
 	            
 	        default:
 	            return false;

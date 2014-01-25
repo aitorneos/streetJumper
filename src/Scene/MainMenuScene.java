@@ -9,6 +9,7 @@ import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
 
+import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
 import ResourcesManagment.SceneManager.SceneType;
 
@@ -99,7 +100,7 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	        case MENU_PLAY:
 	        	
 	            //Load Game Scene!
-	            SceneManager.getInstance().loadGameScene(engine, 1);
+	            SceneManager.getInstance().loadGameScene(engine, ResourcesManager.getInstance().getLevelComplete());
 	            return true;
 	            
 	        case MENU_OPTIONS:

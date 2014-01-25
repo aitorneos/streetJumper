@@ -54,7 +54,7 @@
 	<entity x="1236"  y="31"  width="60"  height="60"  type="platform" />
 	<entity x="1364"  y="31"  width="60"  height="60"  type="platform" />
 	<entity x="1492"  y="31"  width="60"  height="60"  type="platform" />
-	<entity x="1595"  y="40"  width="60"  height="60"  type="platformSmall" />
+	<entity x="1585"  y="30"  width="60"  height="60"  type="platformSmall" />
 	<entity x="805"  y="120"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="883"  y="120"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="963"  y="121"  width="60"  height="60"  type="coin_bronze" />

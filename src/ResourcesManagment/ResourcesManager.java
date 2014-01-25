@@ -79,6 +79,7 @@ public class ResourcesManager
 	public ITextureRegion ARSel;
 	public ITextureRegion optionsBack;
 	public ITextureRegion menuBack;
+	public ITextureRegion levelLoad;
 	
 	
 	// Level Complete Window
@@ -266,6 +267,8 @@ public class ResourcesManager
     	optionsTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
     	options_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "options_menu.png");
     	options_player_selection = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "player_selection.png");
+    	levelLoad = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "levelLoader.png");
+    	
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/options_menu/");
     	ARSel = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "ar.png");
     	optionsBack = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "BlankPanel-1.png");
@@ -476,6 +479,10 @@ public class ResourcesManager
         coin_silver = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin_silver.png");
         coin_gold = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin_gold.png");
         coin_bronze = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin_bronze.png");
+        complete_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "levelCompleteWindow.png");
+        complete_stars_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "star.png", 2, 1);
+        keyHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyYellow.png");
+        keyGreenHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyGreen.png");
         
         // --------------------------- PLAYER SELECTION LOADING-------------------------------------------------------------------------------------------------------
         
@@ -568,10 +575,10 @@ public class ResourcesManager
     	FontFactory.setAssetBasePath("font/");
         final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "orange juice 2.0.ttf", 90, true, Color.BLACK, 5, Color.WHITE);
+        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "orange juice 2.0.ttf", 75, true, Color.GREEN, 4, Color.TRANSPARENT);
         font.load(); 
         
-        loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "orange juice 2.0.ttf", 100, true, Color.GREEN, 5, Color.DKGRAY);
+        loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "orange juice 2.0.ttf", 100, true, Color.GREEN, 4, Color.TRANSPARENT);
         loadingFont.load(); 
     }
     // ------------------------------------- LOAD AUDIO (SOUND && MUSIC) ------------------------------------------------------------------
