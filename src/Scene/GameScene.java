@@ -2057,67 +2057,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	            	}
 	            }
 	            
-	            // Contact Player ------> SLIME Enemy 
-	            if (x1.getBody().getUserData().equals("slimeEnemy") && x2.getBody().getUserData().equals("player"))
-	            {
-
-	            	if (player.getSlimeColision() == false)
-	            	{
-	            		player.setSlimeColision(true);
-	            		ResourcesManager.getInstance().getPinguinSound().play();
-
-	            			// Control Impulse and direction
-			            	if (player.body.getLinearVelocity().x > 0)
-			            	{
-			            		player.body.applyLinearImpulse(-50.0f, -20.0f, player.body.getPosition().x - 5, player.body.getPosition().y);
-			            	}
-			            	
-			            	else if (player.body.getLinearVelocity().x < 0)
-			            	{
-			            		player.body.applyLinearImpulse(50.0f, -20.0f, player.body.getPosition().x + 5, player.body.getPosition().y);
-
-			            	}
-			            	
-			            	else
-			            	{
-			            		
-			            		player.body.setLinearVelocity(player.body.getLinearVelocity().x, player.body.getLinearVelocity().y);
-			            	}
-	            		
-	            		player.life = player.life - 1;
-                        if (player.life == 2) gameHUD.detachChild(hurt3);
-                        if (player.life == 1) gameHUD.detachChild(hurt2);
-                        if (player.life == 0) gameHUD.detachChild(hurt1);
-
-		            	// DO flickering while period of time after touching the spikes 
-			       		flicker = new playTimer(0.1f , new playTimer.ITimerCallback()
-			       	    {
-			            	boolean visible = false;
-			       	        @Override
-			       	        public void onTick()
-			       	        {
-			       	            player.setVisible(visible);
-			       	            visible = !visible;
-			       	        }
-			       	      }
-			       	    );
-			       		engine.registerUpdateHandler(flicker);
-
-		                engine.registerUpdateHandler(new TimerHandler(1.0f, new ITimerCallback()
-		                {                                    
-		                    public void onTimePassed(final TimerHandler pTimerHandler)
-		                    {
-		                        pTimerHandler.reset();
-		                        flicker.pause();
-		                        flicker.reset();
-		                        if (player.isVisible() == false) player.setVisible(true);
-		                        engine.unregisterUpdateHandler(pTimerHandler);
-		                        engine.unregisterUpdateHandler(flicker);
-		                    }
-		                }));
-	            	}
-	            }
-	            
 	            // Contact Player ------> MINES (EXPLOSION) 
 	            if (x1.getBody().getUserData().equals("mine") && x2.getBody().getUserData().equals("player"))
 	            {
@@ -2411,19 +2350,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                }));
 	            }
 	            
-	            if (x1.getBody().getUserData().equals("slimeEnemy") && x2.getBody().getUserData().equals("player"))
-	            {
-	            	engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
-	                {                                    
-	                    public void onTimePassed(final TimerHandler pTimerHandler)
-	                    {
-	                        pTimerHandler.reset();
-	                        player.setSlimeColision(false);
-	                        engine.unregisterUpdateHandler(pTimerHandler); 
-	                    }
-	                }));
-	            }
-	            
 	            if (x1.getBody().getUserData().equals("platform2") && x2.getBody().getUserData().equals("player") && x2.getBody().getPosition().y > x1.getBody().getPosition().y)
 	            {
 	            	engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
@@ -2455,18 +2381,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	            
 	            // ------------------------------ LEVEL 2 ------------------------------------------------------------------------
 	            // ------------------------------ BOXES --------------------------------------------------------------------------
-	            /*if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("rockHalfBigPlatform"))
-            	{
-            		  engine.registerUpdateHandler(new TimerHandler(0.5f, new ITimerCallback()
-        		      {                                    
-							public void onTimePassed(final TimerHandler pTimerHandler)
-							{
-							    pTimerHandler.reset();
-							    engine.unregisterUpdateHandler(pTimerHandler);
-							    x2.getBody().setType(BodyType.DynamicBody);
-							}
-        		    }));
-            	}*/
 	            
 	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("buttonYellow"))
 	            {

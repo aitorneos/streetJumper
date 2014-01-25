@@ -172,9 +172,7 @@ public class ResourcesManager
     private Sound machine;
     private Sound spikeS;
     private Sound flySound;
-    private Sound slimeSound;
     private Sound openK;
-    private Sound die;
     private Music backgroundMusic;
     
     private BuildableBitmapTextureAtlas menuTextureAtlas;
@@ -596,16 +594,6 @@ public class ResourcesManager
     	if (this.level == 1)
     	{
     		
-    		// LOAD DIE
-        	try
-        	{
-        	    this.die = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(),"die.ogg");
-        	}
-        	catch (IOException e)
-        	{
-        	    e.printStackTrace();
-        	}
-    		
     		// LOAD COIN COLLISION SOUND EFFECT
         	try 
         	{    
@@ -693,16 +681,6 @@ public class ResourcesManager
     	else if (this.level == 2)
     	{
     		
-    		// LOAD DIE
-        	try
-        	{
-        	    this.die = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(),"die.ogg");
-        	}
-        	catch (IOException e)
-        	{
-        	    e.printStackTrace();
-        	}
-    		
     		// LOAD COIN COLLISION SOUND EFFECT
         	try 
         	{    
@@ -784,16 +762,6 @@ public class ResourcesManager
         	catch (IOException e) 
         	{   
         		e.printStackTrace();
-        	}
-        	
-        	// LOAD DIE
-        	try
-        	{
-        	    this.die = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(),"die.ogg");
-        	}
-        	catch (IOException e)
-        	{
-        	    e.printStackTrace();
         	}
     	}  
     }
@@ -902,18 +870,15 @@ public class ResourcesManager
     	{
     		this.backgroundMusic.stop();
         	this.coin.stop();
-        	this.die.stop();
         	this.explosion.stop();
         	this.flySound.stop();
         	this.openK.stop();
-        	this.slimeSound.stop();
         	this.spikeS.stop();
     	}
     	else if (this.level == 2)
     	{
     		this.backgroundMusic.stop();
         	this.coin.stop();
-        	this.die.stop();
         	this.explosion.stop();
     	}
     	else if (this.level == 3)
@@ -978,19 +943,9 @@ public class ResourcesManager
     	this.AR = selection;
     }
     
-    public Sound getPinguinSound()
-    {
-    	return (this.flySound);
-    }
-    
     public Sound getFlySound()
     {
-    	return (this.slimeSound);
-    }
-    
-    public Sound getDieSound()
-    {
-    	return (this.die);
+    	return (this.flySound);
     }
     
     public Sound getKeySound()
