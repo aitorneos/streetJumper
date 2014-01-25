@@ -362,7 +362,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		 {
 			 player.setRunning();
 			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
-			// Create and initialize timer options an update
+			 // Create and initialize timer options an update
 			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
 		     {
 		         @Override
@@ -398,7 +398,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         		disposeScene(3);
         	}
         	SceneManager.getInstance().loadMenuScene(engine);
-        	//ResourcesManager.getInstance().setLevelComplete(1);
     	}
     }
 
@@ -430,10 +429,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 // removing all game scene objects.
         	 
         	// --------------------------------------- SCENE SPRITES ---------------------------------------------------------------
-
-        	this.clearTouchAreas();
-        	this.clearUpdateHandlers();
         	this.clearChildScene();
+        	this.clearScene();
         	this.detachSelf();
         	this.dispose();
 
@@ -485,8 +482,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 hurt3.detachSelf();
         	 hurt3.dispose();
         	 
-        	 this.clearScene();
-        	 
         	 // ------------------------------------------------ SHADERS --------------------------------------------------------------------
         	 water.clearEntityModifiers();
         	 water.clearUpdateHandlers();
@@ -495,26 +490,18 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 sps.clearUpdateHandlers();
         	 sps.getParticleEmitter().reset();
         	 sps.reset();
-        	 sps.detachSelf();
-        	 sps.dispose();
         	 
         	 sps2.clearUpdateHandlers();
         	 sps2.getParticleEmitter().reset();
         	 sps2.reset();
-        	 sps2.detachSelf();
-        	 sps2.dispose();
         	 
         	 sps3.clearUpdateHandlers();
         	 sps3.getParticleEmitter().reset();
         	 sps3.reset();
-        	 sps3.detachSelf();
-        	 sps3.dispose();
         	 
         	 sps4.clearUpdateHandlers();
         	 sps4.getParticleEmitter().reset();
         	 sps4.reset();
-        	 sps4.detachSelf();
-        	 sps4.dispose();
         	 
         	 System.gc();
     	 }
@@ -2559,7 +2546,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 				clearPhysicsWorld(physicsWorld);
 				clearTouchAreas();
 				clearUpdateHandlers();
-				System.gc();
 			}
 		});
 	}

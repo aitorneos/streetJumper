@@ -25,7 +25,9 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
 import org.andengine.util.debug.Debug;
+
 import android.graphics.Color;
+
 import com.PFC.PlatformJumper.streetJumper;
 
 
@@ -575,148 +577,225 @@ public class ResourcesManager
     	FontFactory.setAssetBasePath("font/");
         final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "orange juice 2.0.ttf", 75, true, Color.GREEN, 4, Color.TRANSPARENT);
+        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "orange juice 2.0.ttf", 75, true, Color.LTGRAY, 1, Color.GREEN);
         font.load(); 
         
-        loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "orange juice 2.0.ttf", 100, true, Color.GREEN, 4, Color.TRANSPARENT);
+        loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "orange juice 2.0.ttf", 100, true, Color.LTGRAY , 1, Color.GREEN);
         loadingFont.load(); 
     }
     // ------------------------------------- LOAD AUDIO (SOUND && MUSIC) ------------------------------------------------------------------
     private void loadMenuAudio()
-    {
-        
+    { 
     }
-
-    
+   
     private void loadGameAudio()
     {
     	SoundFactory.setAssetBasePath("gfx/sounds/");
     	MusicFactory.setAssetBasePath("gfx/sounds/");
     	
-    	// LOAD COIN COLLISION SOUND EFFECT
-    	try 
-    	{    
-    		this.coin = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "moneda.ogg");
-    		//this.coin.setLoaded(true);
-    	} 
-    	catch (IllegalStateException e) 
-    	{   
-    		e.printStackTrace();
-    	} 
-    	catch (IOException e) 
-    	{   
-    		e.printStackTrace();
-    	}
-    	
-    	// LOAD MINE EXPLOSION SOUND EFFECT
-    	try 
-    	{    
-    		this.explosion = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "explosion.ogg");
-    		//this.explosion.setLoaded(true);
-    	} 
-    	catch (IllegalStateException e) 
-    	{   
-    		e.printStackTrace();
-    	} 
-    	catch (IOException e) 
-    	{   
-    		e.printStackTrace();
-    	}
-    	
-    	// LOAD SPIKE COLISION SOUND EFFECT
-    	try 
-    	{    
-    		this.spikeS = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "spike.ogg");
-    		//this.explosion.setLoaded(true);
-    	} 
-    	catch (IllegalStateException e) 
-    	{   
-    		e.printStackTrace();
-    	} 
-    	catch (IOException e) 
-    	{   
-    		e.printStackTrace();
-    	}
-    	
-    	// LOAD GAME SCENE BACKGROUND MUSIC
-    	try
+    	if (this.level == 1)
     	{
-    		if (ResourcesManager.getInstance().getLevelComplete() == 1)
-    		{
-    			this.backgroundMusic = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity.getApplicationContext(),"POL-rocket-station-short.ogg");
-        	    this.backgroundMusic.setVolume(0.075f, 0.075f);
-        	    this.backgroundMusic.setLooping(true);
-    		}
     		
-    		else if (ResourcesManager.getInstance().getLevelComplete() == 2)
-    		{
-    			this.backgroundMusic = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity.getApplicationContext(),"POL-treasure-match-short.ogg");
-        	    this.backgroundMusic.setVolume(0.075f, 0.075f);
-        	    this.backgroundMusic.setLooping(true);
-    		}
+    		// LOAD DIE
+        	try
+        	{
+        	    this.die = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(),"die.ogg");
+        	}
+        	catch (IOException e)
+        	{
+        	    e.printStackTrace();
+        	}
+    		
+    		// LOAD COIN COLLISION SOUND EFFECT
+        	try 
+        	{    
+        		this.coin = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "moneda.ogg");
+        		//this.coin.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
+        	
+        	// LOAD MINE EXPLOSION SOUND EFFECT
+        	try 
+        	{    
+        		this.explosion = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "explosion.ogg");
+        		//this.explosion.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
+        	
+        	// LOAD SPIKE COLISION SOUND EFFECT
+        	try 
+        	{    
+        		this.spikeS = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "spike.ogg");
+        		//this.explosion.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
+        	
+        	// LOAD GAME SCENE BACKGROUND MUSIC
+        	try 
+        	{
+				this.backgroundMusic = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity.getApplicationContext(),"POL-rocket-station-short.ogg");
+			} 
+        	catch (IllegalStateException e) 
+        	{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+        	catch (IOException e) 
+        	{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	    this.backgroundMusic.setVolume(0.075f, 0.075f);
+    	    this.backgroundMusic.setLooping(true);
     	    
+    	    // LOAD FLY ATTACK 
+        	try
+        	{
+        	    this.flySound = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(),"flyAttack.ogg");
+        	}
+        	catch (IOException e)
+        	{
+        	    e.printStackTrace();
+        	}
+        	
+        	// LOAD OPEN KEYS
+        	try
+        	{
+        	    this.openK = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(),"openKey.ogg");
+        	}
+        	catch (IOException e)
+        	{
+        	    e.printStackTrace();
+        	}
+    		
     	}
-    	catch (IOException e)
+    	else if (this.level == 2)
     	{
-    	    e.printStackTrace();
+    		
+    		// LOAD DIE
+        	try
+        	{
+        	    this.die = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(),"die.ogg");
+        	}
+        	catch (IOException e)
+        	{
+        	    e.printStackTrace();
+        	}
+    		
+    		// LOAD COIN COLLISION SOUND EFFECT
+        	try 
+        	{    
+        		this.coin = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "moneda.ogg");
+        		//this.coin.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
+        	
+        	// LOAD MINE EXPLOSION SOUND EFFECT
+        	try 
+        	{    
+        		this.explosion = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "explosion.ogg");
+        		//this.explosion.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
+        	
+        	// LOAD GAME SCENE BACKGROUND MUSIC
+        	try 
+        	{
+				this.backgroundMusic = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity.getApplicationContext(),"POL-treasure-match-short.ogg");
+			} 
+        	catch (IllegalStateException e) 
+        	{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+        	catch (IOException e) 
+        	{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	    this.backgroundMusic.setVolume(0.075f, 0.075f);
+    	    this.backgroundMusic.setLooping(true);
+    	    
+    	    // LOAD MACHINE GUN SOUND
+        	try 
+        	{    
+        		this.machine = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "machineGun.ogg");
+        		this.machine.setLooping(true);
+        		this.machine.setVolume(0.1f, 0.05f);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
+    		
     	}
-    	
-    	// LOAD PINGUIN ATTACK 
-    	try
+    	else if (this.level == 3)
     	{
-    	    this.slimeSound = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(),"pinguinAttack.ogg");
-    	}
-    	catch (IOException e)
-    	{
-    	    e.printStackTrace();
-    	}
-    	
-    	// LOAD FLY ATTACK 
-    	try
-    	{
-    	    this.flySound = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(),"flyAttack.ogg");
-    	}
-    	catch (IOException e)
-    	{
-    	    e.printStackTrace();
-    	}
-    	
-    	// LOAD DIE
-    	try
-    	{
-    	    this.die = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(),"die.ogg");
-    	}
-    	catch (IOException e)
-    	{
-    	    e.printStackTrace();
-    	}
-    	
-    	// LOAD OPEN KEYS
-    	try
-    	{
-    	    this.openK = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(),"openKey.ogg");
-    	}
-    	catch (IOException e)
-    	{
-    	    e.printStackTrace();
-    	}
-    	
-    	// LOAD MACHINE GUN SOUND
-    	try 
-    	{    
-    		this.machine = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "machineGun.ogg");
-    		this.machine.setLooping(true);
-    		this.machine.setVolume(0.1f, 0.05f);
-    	} 
-    	catch (IllegalStateException e) 
-    	{   
-    		e.printStackTrace();
-    	} 
-    	catch (IOException e) 
-    	{   
-    		e.printStackTrace();
-    	}
-        
+    		
+    		// LOAD COIN COLLISION SOUND EFFECT
+        	try 
+        	{    
+        		this.coin = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "moneda.ogg");
+        		//this.coin.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
+        	
+        	// LOAD DIE
+        	try
+        	{
+        	    this.die = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(),"die.ogg");
+        	}
+        	catch (IOException e)
+        	{
+        	    e.printStackTrace();
+        	}
+    	}  
     }
     
     
@@ -819,14 +898,27 @@ public class ResourcesManager
     
     public void unloadGameSounds()
     {
-    	this.backgroundMusic.stop();
-    	this.coin.stop();
-    	this.die.stop();
-    	this.explosion.stop();
-    	this.flySound.stop();
-    	this.openK.stop();
-    	this.slimeSound.stop();
-    	this.spikeS.stop();
+    	if (this.level == 1)
+    	{
+    		this.backgroundMusic.stop();
+        	this.coin.stop();
+        	this.die.stop();
+        	this.explosion.stop();
+        	this.flySound.stop();
+        	this.openK.stop();
+        	this.slimeSound.stop();
+        	this.spikeS.stop();
+    	}
+    	else if (this.level == 2)
+    	{
+    		this.backgroundMusic.stop();
+        	this.coin.stop();
+        	this.die.stop();
+        	this.explosion.stop();
+    	}
+    	else if (this.level == 3)
+    	{
+    	}
     }
 
     
