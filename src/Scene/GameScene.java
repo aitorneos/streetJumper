@@ -362,6 +362,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		 {
 			 player.setRunning();
 			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
+			 ResourcesManager.getInstance().getSceneMusic().play();
+			 
 			 // Create and initialize timer options an update
 			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
 		     {
@@ -584,7 +586,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
     	 {
     		 ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
     		 ResourcesManager.getInstance().unloadGameTextures(levelID);
-        	 //ResourcesManager.getInstance().unloadGameSounds();
+        	 ResourcesManager.getInstance().unloadGameSounds();
 
         	 // code responsible for disposing scene
         	 // removing all game scene objects.

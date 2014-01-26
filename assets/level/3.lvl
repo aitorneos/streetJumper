@@ -8,7 +8,7 @@
 	<entity x="240"  y="19"  width="60"  height="60"  type="troncPlatform" />
 	<entity x="361"  y="19"  width="60"  height="60"  type="troncPlatform" />
 	<entity x="481"  y="20"  width="60"  height="60"  type="troncPlatform" />
-	<entity x="601"  y="139"  width="60"  height="60"  type="bigTree" />
+	<entity x="675"  y="139"  width="60"  height="60"  type="bigTree" />
 	<entity x="29"  y="324"  width="60"  height="60"  type="platform" />
 	<entity x="157"  y="324"  width="60"  height="60"  type="platform" />
 	<entity x="285"  y="324"  width="60"  height="60"  type="platform" />
@@ -31,20 +31,11 @@
 	<entity x="396"  y="211"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="445"  y="274"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="501"  y="331"  width="60"  height="60"  type="coin_bronze" />
-	<entity x="151"  y="367"  width="60"  height="60"  type="cradle" />
-	<entity x="1306"  y="310"  width="60"  height="60"  type="troncSmall" />
-	<entity x="1361"  y="257"  width="60"  height="60"  type="troncSmall" />
-	<entity x="1419"  y="206"  width="60"  height="60"  type="troncSmall" />
-	<entity x="1471"  y="149"  width="60"  height="60"  type="troncSmall" />
-	<entity x="1529"  y="97"  width="60"  height="60"  type="troncSmall" />
+	<entity x="151"  y="410"  width="60"  height="60"  type="cradle" />
+
 	<entity x="1671"  y="18"  width="60"  height="60"  type="troncPlatform" />
 	<entity x="1792"  y="18"  width="60"  height="60"  type="troncPlatform" />
 	<entity x="1913"  y="18"  width="60"  height="60"  type="troncPlatform" />
-	<entity x="1315"  y="383"  width="60"  height="60"  type="coin_gold" />
-	<entity x="1373"  y="328"  width="60"  height="60"  type="coin_bronze" />
-	<entity x="1431"  y="282"  width="60"  height="60"  type="coin_gold" />
-	<entity x="1491"  y="222"  width="60"  height="60"  type="coin_bronze" />
-	<entity x="1538"  y="170"  width="60"  height="60"  type="coin_gold" />
 	<entity x="1819"  y="375"  width="60"  height="60"  type="platform" />
 	<entity x="1692"  y="375"  width="60"  height="60"  type="platform" />
 	<entity x="727"  y="31"  width="60"  height="60"  type="platform" />

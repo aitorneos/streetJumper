@@ -748,7 +748,25 @@ public class ResourcesManager
     	}
     	else if (this.level == 3)
     	{
-    		
+    		// LOAD GAME SCENE BACKGROUND MUSIC
+        	try 
+        	{
+				this.backgroundMusic = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity.getApplicationContext(),"jungle.ogg");
+			} 
+        	catch (IllegalStateException e) 
+        	{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+        	catch (IOException e) 
+        	{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	    this.backgroundMusic.setVolume(0.075f, 0.075f);
+    	    this.backgroundMusic.setLooping(true);
+    	    
+    	    
     		// LOAD COIN COLLISION SOUND EFFECT
         	try 
         	{    
@@ -883,6 +901,7 @@ public class ResourcesManager
     	}
     	else if (this.level == 3)
     	{
+    		this.backgroundMusic.stop();
     	}
     }
 
