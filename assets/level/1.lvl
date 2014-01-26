@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <level width="1300" height="480"> 
  	 
-    <entity x="90" y="300" type="castleClifftRight"/>
+ 	<entity x="40" y="300" type="castleClifftRight"/> 
     <entity x="305" y="200" type="castleHalf"/>
     <entity x="380" y="200" type="castleHalf"/>
     <entity x="380" y="350" type="castleClifftLeft"/>
@@ -43,7 +43,7 @@
     <entity x="1140" y="40" type="castleHalf"/>
     <entity x="1210" y="40" type="castleHalf"/>
     <entity x="1280" y="40" type="castleHalf"/>
-    <entity x="100" y="140" type="castleHalf"/>
+    <entity x="40" y="140" type="castleHalf"/>
     
     <entity x="20" y="75" type="snowHill"/>
     <entity x="90" y="75" type="snowHill"/>
@@ -89,7 +89,8 @@
     <entity x="545" y="450" type="coin_bronze"/>
     <entity x="545" y="410" type="coin_bronze"/>
     <entity x="595" y="450" type="coin_gold"/>
-    <entity x="90" y="360" type="keyYellow"/>
+    <entity x="35" y="365" type="coin_gold"/> 
+    <entity x="535" y="150" type="keyYellow"/>
     <entity x="600" y="385" type="keyGreen"/>
     <entity x="140" y="220" type="player"/>  
      <entity x="90" y="175" type="playerOnline"/>

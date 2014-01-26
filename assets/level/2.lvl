@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <level width="3000" height="480">
 
+	<entity x="5" y="100" width="75" height="75" type="rockHalfBigPlatform"/>
+	<entity x="5" y="130" width="75" height="75" type="rockHalfBigPlatform"/>
+	<entity x="5" y="160" width="75" height="75" type="rockHalfBigPlatform"/>
+	<entity x="5" y="190" width="75" height="75" type="rockHalfBigPlatform"/>
+	<entity x="5" y="220" width="75" height="75" type="rockHalfBigPlatform"/>
+
 	<entity x="50" y="150" width="75" height="75" type="player"/>
 	<entity x="50" y="150" width="75" height="75" type="playerOnline"/>
 	<entity x="740" y="310" width="75" height="75" type="playerSpecial"/>
