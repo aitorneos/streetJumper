@@ -49,10 +49,24 @@
 	<entity x="805"  y="120"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="883"  y="120"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="963"  y="121"  width="60"  height="60"  type="coin_bronze" />
-	<entity x="1041"  y="120"  width="60"  height="60"  type="coin_bronze" />
+	<entity x="1041"  y="120"  width="60"  height="60"  type="keyRed" />
 	<entity x="1116"  y="120"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="1194"  y="120"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="1277"  y="120"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="1363"  y="119"  width="60"  height="60"  type="coin_bronze" />
+	
+	<entity x="240"  y="75"  width="60"  height="60"  type="switchGreenOff" />
+	<entity x="1126"  y="420"  width="60"  height="60"  type="switchGreenOff" />
+	
+	<entity x="1375"  y="350"  width="60"  height="60"  type="bush" />
+	<entity x="1400"  y="250"  width="60"  height="60"  type="bush" />
+	<entity x="1525"  y="175"  width="60"  height="60"  type="bush" />
+	<entity x="1575"  y="350"  width="60"  height="60"  type="bush" />
+	<entity x="1650"  y="230"  width="60"  height="60"  type="bush" />
+	<entity x="1375"  y="400"  width="60"  height="60"  type="coin" />
+	<entity x="1400"  y="300"  width="60"  height="60"  type="coin_gold" />
+	<entity x="1525"  y="225"  width="60"  height="60"  type="keyBlue" />
+	<entity x="1575"  y="400"  width="60"  height="60"  type="coin" />
+	<entity x="1650"  y="280"  width="60"  height="60"  type="coin" />
 	
 </level>

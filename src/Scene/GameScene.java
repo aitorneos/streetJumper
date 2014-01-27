@@ -200,7 +200,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLATFORM_SMALL = "platformSmall";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BIG_TREE = "bigTree";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TRONC_PLATFORM = "troncPlatform";
-	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TRONC_SMALL = "troncSmall";	 
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TRONC_SMALL = "troncSmall";	
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BUSH = "bush";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_KEY_BLUE = "keyBlue";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_KEY_RED = "keyRed";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SWITCH_GREEN_OFF = "switchGreenOff";
 	
 
 	// ---------------------- METHODS ----------------------------------------------------------------------------------------------------------
@@ -261,9 +265,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		    gameHUD.attachChild(timeText);
 		    
 		    // Put Initial Life (hurts)
-		    hurt1 = new Sprite(165, 380, resourcesManager.starHUD, vbom);
-			hurt2 = new Sprite(205, 380, resourcesManager.starHUD, vbom);
-			hurt3 = new Sprite(245, 380, resourcesManager.starHUD, vbom);
+		    hurt1 = new Sprite(165, 390, resourcesManager.starHUD, vbom);
+			hurt2 = new Sprite(205, 390, resourcesManager.starHUD, vbom);
+			hurt3 = new Sprite(245, 390, resourcesManager.starHUD, vbom);
 		    gameHUD.attachChild(hurt1);
 		    gameHUD.attachChild(hurt2);
 		    gameHUD.attachChild(hurt3);
@@ -1717,6 +1721,75 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    //levelObject.setSize(width, height);
 	                }
 		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BUSH))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.bush, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("bush");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_KEY_BLUE))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.key_blue, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                            	player.hasKey = true;
+	                     	    	//gameHUD.attachChild(key);
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                } 
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_KEY_RED))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.key_red, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                            	player.hasGreenKey = true;
+	                     	    	//gameHUD.attachChild(key);
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                } 
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_KEY_RED))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.key_red, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("keyRed");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SWITCH_GREEN_OFF))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.switch_green_off, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("switchGreenOff");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN))
 	                {
 	                    levelObject = new Sprite(x, y, resourcesManager.coin_silver, vbom)
@@ -2292,6 +2365,73 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
             		}
             	}
             	
+            	//------------------------------------------ LEVEL 3 --------------------------------------------------------------------------------------
+            	 // Contact Player ------> MINES (EXPLOSION) 
+	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("switchGreenOff"))
+	            {
+
+	            	if (player.getMineColision() == false)
+	            	{
+	            		explosion = new FireParticleSystem();
+	            		ResourcesManager.getInstance().getExplosionSound().play();
+		            	attachChild (explosion.build(engine, 240, 75));
+		            	attachChild (explosion.build(engine, 1126, 420));
+		            	player.setMineColision(true);
+
+		            	// Control Impulse and direction
+		            	if (player.body.getLinearVelocity().x > 0)
+		            	{
+		            		player.body.applyLinearImpulse(-50.0f, 10.0f, player.body.getPosition().x - 5, player.body.getPosition().y);
+		            	}
+		            	
+		            	else if (player.body.getLinearVelocity().x < 0)
+		            	{
+		            		player.body.applyLinearImpulse(50.0f, 10.0f, player.body.getPosition().x + 5, player.body.getPosition().y);
+
+		            	}
+		            	
+		            	else
+		            	{
+		            		
+		            		player.body.setLinearVelocity(player.body.getLinearVelocity().x, player.body.getLinearVelocity().y);
+		            	}
+		            	
+		            	player.life = player.life - 1;
+                        if (player.life == 2) gameHUD.detachChild(hurt3);
+                        if (player.life == 1) gameHUD.detachChild(hurt2);
+                        if (player.life == 0) gameHUD.detachChild(hurt1);
+
+		            	// DO flickering while period of time after touching the spikes 
+			       		flicker = new playTimer(0.1f , new playTimer.ITimerCallback()
+			       	    {
+			            	boolean visible = false;
+			       	        @Override
+			       	        public void onTick()
+			       	        {
+			       	            player.setVisible(visible);
+			       	            visible = !visible;
+			       	        }
+			       	      }
+			       	    );
+			       		engine.registerUpdateHandler(flicker);
+			       		
+		                engine.registerUpdateHandler(new TimerHandler(1.0f, new ITimerCallback()
+		                {                                    
+		                    public void onTimePassed(final TimerHandler pTimerHandler)
+		                    {
+		                        pTimerHandler.reset();
+		                        flicker.pause();
+		                        flicker.reset();
+		                        if (player.isVisible() == false) player.setVisible(true);
+		                        engine.unregisterUpdateHandler(pTimerHandler);
+		                        engine.unregisterUpdateHandler(flicker);
+		                        detachChild(explosion.getParticleSystem());
+		                        
+		                    }
+		                }));
+	            	}
+	            }           	
+            	
 	        }
 
 	        // END CONTACT COLISION BETWEEN PLAYER AND ANY OF PHYSICS SCENE OBJECT
@@ -2385,6 +2525,21 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	            // ------------------------------ BOXES --------------------------------------------------------------------------
 	            
 	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("buttonYellow"))
+	            {
+	            	engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+	                {                                    
+	                    public void onTimePassed(final TimerHandler pTimerHandler)
+	                    {
+	                        pTimerHandler.reset();
+	                        player.setMineColision(false);
+	                        engine.unregisterUpdateHandler(pTimerHandler); 
+	                    }
+	                }));
+
+	            }
+	            
+	            // ----------------------------------- LEVEL 3 ---------------------------------------------------------------------------
+	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("switchGreenOff"))
 	            {
 	            	engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
 	                {                                    

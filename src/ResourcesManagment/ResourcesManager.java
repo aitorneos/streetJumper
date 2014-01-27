@@ -122,6 +122,10 @@ public class ResourcesManager
     public ITextureRegion bigTree;
     public ITextureRegion troncPlatform;
     public ITextureRegion troncSmall;
+    public ITextureRegion bush;
+    public ITextureRegion key_blue;
+    public ITextureRegion key_red;
+    public ITextureRegion switch_green_off;
     
     
     // --------------------------------------- COINS ---------------------------------------------------------------
@@ -470,12 +474,15 @@ public class ResourcesManager
         bigTree = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "tree.png");
         troncPlatform = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "troncPlatform.png");
         troncSmall = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "troncSmall.png");
+        bush = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bush.png");
+        key_blue = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "key_blue.png");
+        key_red = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "key_red.png");
+        switch_green_off = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "switch_green_off.png");
         
      // --------------------------- HUD LOADING-------------------------------------------------------------------------------------------------------
-        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level2/");   
-        starHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "star.png");
-        
+ 
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level1/");
+        starHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "heart.png");
         coin_silver = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin_silver.png");
         coin_gold = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin_gold.png");
         coin_bronze = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin_bronze.png");
@@ -772,6 +779,21 @@ public class ResourcesManager
         	{    
         		this.coin = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "moneda.ogg");
         		//this.coin.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
+        	
+        	// LOAD MINE EXPLOSION SOUND EFFECT
+        	try 
+        	{    
+        		this.explosion = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "explosion.ogg");
+        		//this.explosion.setLoaded(true);
         	} 
         	catch (IllegalStateException e) 
         	{   
