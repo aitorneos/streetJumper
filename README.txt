@@ -1,5 +1,5 @@
-author : Aitor Arqué arnaiz
-email : aitormenta71@gmail.com
+@Author : Aitor Arqué arnaiz
+@Email : aitormenta71@gmail.com
 														STREET JUMPER :
 
 USAGE INSTRUCCIONS :
