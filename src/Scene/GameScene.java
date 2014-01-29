@@ -2373,9 +2373,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	            	if (player.getMineColision() == false)
 	            	{
 	            		explosion = new FireParticleSystem();
+	            		explosion2 = new FireParticleSystem();
 	            		ResourcesManager.getInstance().getExplosionSound().play();
 		            	attachChild (explosion.build(engine, 240, 75));
-		            	attachChild (explosion.build(engine, 1126, 420));
+		            	attachChild (explosion2.build(engine, 1126, 420));
 		            	player.setMineColision(true);
 
 		            	// Control Impulse and direction
@@ -2426,6 +2427,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		                        engine.unregisterUpdateHandler(pTimerHandler);
 		                        engine.unregisterUpdateHandler(flicker);
 		                        detachChild(explosion.getParticleSystem());
+		                        detachChild(explosion2.getParticleSystem());
 		                        
 		                    }
 		                }));
