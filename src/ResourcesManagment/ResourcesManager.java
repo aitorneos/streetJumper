@@ -169,6 +169,8 @@ public class ResourcesManager
     // Textures definitions for physic effects
     public ITextureRegion waterDrop;
     public ITextureRegion fireDrop;
+    public ITextureRegion mineExplosion;
+    public ITextureRegion rainFire;
     
     //Sound and effects
     private Sound explosion;
@@ -332,7 +334,7 @@ public class ResourcesManager
         
         // --------------------------------------------- PHYSIC SPRITE ---------------------------------------------------------------------
         waterDrop = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "snowflake.png");
-        fireDrop = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "dot.png");
+        mineExplosion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "explosion.png");
         stalactitaLeft = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "snowLedgeLeft.png");
         stalactitaRight = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "snowLedgeRight.png");
         
@@ -430,7 +432,7 @@ public class ResourcesManager
         doorF = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "doorFinal.png");
         complete_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "levelCompleteWindow.png");
         complete_stars_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "star.png", 2, 1);
-        fireDrop = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "dot.png");
+        mineExplosion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "explosion.png");
         
         // --------------------------- PLAYER SELECTION LOADING-------------------------------------------------------------------------------------------------------
         
@@ -478,6 +480,9 @@ public class ResourcesManager
         key_blue = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "key_blue.png");
         key_red = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "key_red.png");
         switch_green_off = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "switch_green_off.png");
+        waterSynthetic = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "waterSynthetic.png");
+        mineExplosion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "explosion.png");
+        rainFire = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "spark.png");
         
      // --------------------------- HUD LOADING-------------------------------------------------------------------------------------------------------
  
@@ -490,7 +495,6 @@ public class ResourcesManager
         complete_stars_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "star.png", 2, 1);
         keyHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyYellow.png");
         keyGreenHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyGreen.png");
-        fireDrop = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "dot.png");
         
         // --------------------------- PLAYER SELECTION LOADING-------------------------------------------------------------------------------------------------------
         

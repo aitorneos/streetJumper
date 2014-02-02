@@ -1,6 +1,7 @@
 package particleSystem;
 
 import org.andengine.engine.Engine;
+import org.andengine.entity.particle.ParticleSystem;
 import org.andengine.entity.particle.SpriteParticleSystem;
 import org.andengine.entity.particle.emitter.PointParticleEmitter;
 import org.andengine.entity.particle.initializer.ExpireParticleInitializer;
@@ -8,6 +9,7 @@ import org.andengine.entity.particle.initializer.GravityParticleInitializer;
 import org.andengine.entity.particle.initializer.VelocityParticleInitializer;
 import org.andengine.entity.particle.modifier.*;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
@@ -27,7 +29,7 @@ public class waterParticleSystem implements ParticleSystemFactory
     }
     
     @Override
-    public SpriteParticleSystem build(Engine engine, float fontX, float fontY)
+    public SpriteParticleSystem build(Engine engine, float fontX, float fontY, ITextureRegion texture)
     {
 
         //X & Y for the particles to spawn at.
@@ -39,13 +41,13 @@ public class waterParticleSystem implements ParticleSystemFactory
 	    final float minRate = 2;
 
 	    //This variable determines the maximum particles in the particle system.
-	    final int maxParticles = 100;
+	    final int maxParticles = 50;
 
 	    //Particle emitter which will set all of the particles at a ertain point when they are initialized.
 	    final PointParticleEmitter pointParticleEmtitter = new PointParticleEmitter(particlesXSpawn, particlesYSpawn);
 
 	    //Creating the particle system.
-		final SpriteParticleSystem particleSystem = new SpriteParticleSystem (pointParticleEmtitter, maxRate, minRate, maxParticles, ResourcesManager.getInstance().waterDrop, vbom);
+		final SpriteParticleSystem particleSystem = new SpriteParticleSystem (pointParticleEmtitter, maxRate, minRate, maxParticles, texture, vbom);
 
 	    //And now, lets create the initiallizers and modifiers.
 	    //Velocity initiallizer - will pick a random velocity from -20 to 20 on the x & y axes. Play around with this value.
@@ -67,5 +69,11 @@ public class waterParticleSystem implements ParticleSystemFactory
     {
             return "WaterParticleSystem";
     }
+
+	@Override
+	public ParticleSystem<Sprite> build(Engine engine, float fontX, float fontY) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

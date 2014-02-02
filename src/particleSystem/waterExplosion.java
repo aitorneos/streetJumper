@@ -2,6 +2,7 @@ package particleSystem;
 
 import org.andengine.engine.Engine;
 import org.andengine.entity.IEntity;
+import org.andengine.entity.particle.ParticleSystem;
 import org.andengine.entity.particle.SpriteParticleSystem;
 import org.andengine.entity.particle.emitter.PointParticleEmitter;
 import org.andengine.entity.particle.initializer.ExpireParticleInitializer;
@@ -9,6 +10,7 @@ import org.andengine.entity.particle.initializer.GravityParticleInitializer;
 import org.andengine.entity.particle.initializer.VelocityParticleInitializer;
 import org.andengine.entity.particle.modifier.*;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
@@ -74,6 +76,13 @@ public class waterExplosion implements ParticleSystemFactory
 	public IEntity getParticleSystem() 
 	{
 		return (particleSystem);
+	}
+
+	@Override
+	public ParticleSystem<Sprite> build(Engine engine, float fontX,
+			float fontY, ITextureRegion texture) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

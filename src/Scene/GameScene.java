@@ -204,8 +204,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BUSH = "bush";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_KEY_BLUE = "keyBlue";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_KEY_RED = "keyRed";
-	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SWITCH_GREEN_OFF = "switchGreenOff";
-	
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SWITCH_GREEN_OFF = "switchGreenOff";	
 
 	// ---------------------- METHODS ----------------------------------------------------------------------------------------------------------
 	
@@ -304,16 +303,16 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
  
 			// Put "font" snow raining
 			 ps = new waterParticleSystem();
-			 attachChild (sps = ps.build(engine, 400, 500));
+			 attachChild (sps = ps.build(engine, 400, 500, ResourcesManager.getInstance().waterDrop));
 
 			 ps2 = new waterParticleSystem();
-			 attachChild (sps2 = ps2.build(engine, 150, 500));
+			 attachChild (sps2 = ps2.build(engine, 150, 500, ResourcesManager.getInstance().waterDrop));
 			 
 			 ps3 = new waterParticleSystem();
-			 attachChild (sps3 = ps3.build(engine, 800, 500));
+			 attachChild (sps3 = ps3.build(engine, 800, 500, ResourcesManager.getInstance().waterDrop));
 			 
 			 ps4 = new waterParticleSystem();
-			 attachChild (sps4 = ps3.build(engine, 1240, 500));
+			 attachChild (sps4 = ps3.build(engine, 1240, 500, ResourcesManager.getInstance().waterDrop));
 			 
 			 // create WATER SHADER !
 			 water = new Sprite(0, 120, 2048, -240, ResourcesManager.getInstance().waterShader, vbom);
@@ -367,6 +366,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 player.setRunning();
 			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
 			 ResourcesManager.getInstance().getSceneMusic().play();
+			 
+			// Put "font" fire raining
+			 ps = new waterParticleSystem();
+			 attachChild (sps = ps.build(engine, 700, 500, ResourcesManager.getInstance().rainFire));
+
+			 ps2 = new waterParticleSystem();
+			 attachChild (sps2 = ps2.build(engine, 300, 500, ResourcesManager.getInstance().rainFire));
+			 
+			 ps3 = new waterParticleSystem();
+			 attachChild (sps3 = ps3.build(engine, 1200, 500, ResourcesManager.getInstance().rainFire));
+			 
+			 ps4 = new waterParticleSystem();
+			 attachChild (sps4 = ps3.build(engine, 1700, 500, ResourcesManager.getInstance().rainFire));
 			 
 			 // Create and initialize timer options an update
 			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
@@ -1833,6 +1845,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
 	                    //levelObject.setSize(width, height);
 	                } 
+		            
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_WATER_SYNTHETIC))
+	                {
+	                	levelObject = new Sprite(x, y, 160, 130, resourcesManager.waterSynthetic, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("waterSynthetic");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN_BRONZE))
 	                {
@@ -2375,19 +2395,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	            		explosion = new FireParticleSystem();
 	            		explosion2 = new FireParticleSystem();
 	            		ResourcesManager.getInstance().getExplosionSound().play();
-		            	attachChild (explosion.build(engine, 240, 75));
-		            	attachChild (explosion2.build(engine, 1126, 420));
+		            	attachChild (explosion.build(engine, 616, 175));
+		            	attachChild (explosion2.build(engine, 1690, 165));
 		            	player.setMineColision(true);
 
 		            	// Control Impulse and direction
 		            	if (player.body.getLinearVelocity().x > 0)
 		            	{
-		            		player.body.applyLinearImpulse(-50.0f, 10.0f, player.body.getPosition().x - 5, player.body.getPosition().y);
+		            		player.body.applyLinearImpulse(-50.0f, 20.0f, player.body.getPosition().x - 5, player.body.getPosition().y);
 		            	}
 		            	
 		            	else if (player.body.getLinearVelocity().x < 0)
 		            	{
-		            		player.body.applyLinearImpulse(50.0f, 10.0f, player.body.getPosition().x + 5, player.body.getPosition().y);
+		            		player.body.applyLinearImpulse(50.0f, 20.0f, player.body.getPosition().x + 5, player.body.getPosition().y);
 
 		            	}
 		            	

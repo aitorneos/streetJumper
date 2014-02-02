@@ -6,6 +6,7 @@ import org.andengine.entity.particle.ParticleSystem;
 import org.andengine.entity.particle.SpriteParticleSystem;
 import org.andengine.entity.particle.initializer.*;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import ResourcesManagment.ResourcesManager;
@@ -71,6 +72,13 @@ public class BulletParticleSystem implements ParticleSystemFactory
     {
 		return (this.particleSystem);	
     }
+
+	@Override
+	public ParticleSystem<Sprite> build(Engine engine, float fontX,
+			float fontY, ITextureRegion texture) {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
     
 }

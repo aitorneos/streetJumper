@@ -6,6 +6,7 @@ import org.andengine.entity.particle.ParticleSystem;
 import org.andengine.entity.particle.SpriteParticleSystem;
 import org.andengine.entity.particle.initializer.*;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import ResourcesManagment.ResourcesManager;
@@ -41,7 +42,7 @@ public class FireParticleSystem implements ParticleSystemFactory
 	    final CircleParticleEmitter circleParticleEmtitter = new CircleParticleEmitter(particlesXSpawn, particlesYSpawn, 1.0f);
 
 	    //Creating the particle system.
-		particleSystem = new SpriteParticleSystem (circleParticleEmtitter, maxRate, minRate, maxParticles, ResourcesManager.getInstance().fireDrop.deepCopy(), vbom);
+		particleSystem = new SpriteParticleSystem (circleParticleEmtitter, maxRate, minRate, maxParticles, ResourcesManager.getInstance().mineExplosion.deepCopy(), vbom);
 
 		//And now, lets create the initiallizers and modifiers.
 	    //Velocity initiallizer - will pick a random velocity from -20 to 20 on the x & y axes. Play around with this value.
@@ -69,6 +70,13 @@ public class FireParticleSystem implements ParticleSystemFactory
     {
 		return (this.particleSystem);	
     }
+
+	@Override
+	public ParticleSystem<Sprite> build(Engine engine, float fontX,
+			float fontY, ITextureRegion texture) {
+		// TODO Auto-generated method stub
+		return null;
+	}
     
     
 }
