@@ -7,9 +7,9 @@
 	<entity x="5" y="190" width="75" height="75" type="rockHalfBigPlatform"/>
 	<entity x="5" y="220" width="75" height="75" type="rockHalfBigPlatform"/>
 
-	<entity x="50" y="150" width="75" height="75" type="player"/>
-	<entity x="50" y="150" width="75" height="75" type="playerOnline"/>
-	<entity x="740" y="310" width="75" height="75" type="playerSpecial"/>
+	<entity x="50" y="150" width="90" height="90" type="player"/>
+	<entity x="50" y="150" width="90" height="90" type="playerOnline"/>
+	<entity x="740" y="310" width="90" height="90" type="playerSpecial"/>
 	
 	<entity x="2900" y="200" width="75" height="75" type="switcher"/>
 	<entity x="20" y="125" width="75" height="75" type="levelComplete"/>

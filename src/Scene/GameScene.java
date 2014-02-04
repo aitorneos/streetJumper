@@ -807,7 +807,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                        }
 	                    };
 	                    levelObject = player;
-	                    levelObject.setSize(60, 60);
+	                    levelObject.setSize(75, 75);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_ONLINE))
@@ -822,7 +822,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    };
 	                    levelObject = playerOnline;
 	                    levelObject.setVisible(false);
-	                    levelObject.setSize(60, 60);
+	                    levelObject.setSize(75, 75);
 	                }
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SNOW_HILL))
@@ -991,13 +991,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	   	        		                        
 	   	        		                        detachChild(levelCompleteWindow);
 	   	    	                            	disposeScene(1);
-	   	    	                            	
-	   	    	                            	// Load Level
-	   	    	                            	// Send to CLIENT next level loading message
-		   	    	                 		    /*final ChangeLevelServerMessage changeLevelServerMessage = (ChangeLevelServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_NEXT_LEVEL);
-		   	    	                 		    changeLevelServerMessage.set(2);
-		   	    	                 			ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(changeLevelServerMessage);
-		   	    	                 			ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(changeLevelServerMessage);*/
 		   	    	                 			
 	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
 	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
@@ -1023,13 +1016,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	   	        		                        
 	   	        		                        detachChild(levelCompleteWindow);
 	   	    	                            	disposeScene(1);
-	   	    	                            	
-	   	    	                            	// Load Level
-	   	    	                            	// Send to CLIENT next level loading message
-		   	    	                 		    /*final ChangeLevelServerMessage changeLevelServerMessage = (ChangeLevelServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_NEXT_LEVEL);
-		   	    	                 		    changeLevelServerMessage.set(2);
-		   	    	                 			ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(changeLevelServerMessage);
-		   	    	                 			ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(changeLevelServerMessage);*/
 		   	    	                 			
 	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
 	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
@@ -1055,13 +1041,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	   	        		                        
 	   	        		                        detachChild(levelCompleteWindow);
 	   	    	                            	disposeScene(1);
-	   	    	                            	
-	   	    	                            	// Load Level
-	   	    	                            	// Send to CLIENT next level loading message
-		   	    	                 		    /*final ChangeLevelServerMessage changeLevelServerMessage = (ChangeLevelServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_NEXT_LEVEL);
-		   	    	                 		    changeLevelServerMessage.set(2);
-		   	    	                 			ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(changeLevelServerMessage);
-		   	    	                 			ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(changeLevelServerMessage);*/
 		   	    	                 			
 	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
 	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
@@ -1720,6 +1699,21 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                        }
 	                    };
 	                    levelObject = player;
+	                    levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_ONLINE))
+	                {
+	                    playerOnline = new PlayerOnline(x, y, vbom, camera,  physicsWorld)
+	                    {
+	                        @Override
+	                        public void onDie()
+	                        {
+	                        	// Nothing to do here, GAME OVER is only displyed in the server not inthe client .
+	                        }
+	                    };
+	                    levelObject = playerOnline;
+	                    levelObject.setVisible(false);
 	                    levelObject.setSize(width, height);
 	                }
 		            
