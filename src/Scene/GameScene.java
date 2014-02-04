@@ -1,10 +1,9 @@
 package Scene;
 
+//---------------------------------- JAVA && TEXTURES IMPORTS ------------------------------------------------------
 import java.io.IOException;
 import java.util.Iterator;
-
 import javax.microedition.khronos.opengles.GL10;
-
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -34,6 +33,7 @@ import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
+//---------------------------------- PARTICLE SYSTEM && NETWORK ------------------------------------------------------
 import particleSystem.FireParticleSystem;
 import particleSystem.waterExplosion;
 import particleSystem.waterParticleSystem;
@@ -46,18 +46,26 @@ import Network.ServerMessageFlags;
 import Players.Player;
 import Players.PlayerOnline;
 import Players.PlayerSpecial;
+
+//---------------------------------- RESOURCES MANAGEMENT ------------------------------------------------------
 import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
 import ResourcesManagment.SceneManager.SceneType;
+
+//---------------------------------- SHADERS && TIMERS ------------------------------------------------------
 import Scene.LevelCompleteWindow.StarsCount;
+import Shader.RadialBlur;
 import Shader.WaterMaskEffectShader;
 import Timers.playTimer;
 
+//---------------------------------- INNER && ANONIMOUS CLASES ------------------------------------------------------
 import com.PFC.PlatformJumper.streetJumper;
 import com.PFC.PlatformJumper.streetJumper.PlayerClient;
 import com.PFC.PlatformJumper.streetJumper.PlayerSelectedServerMessage;
 import com.PFC.PlatformJumper.streetJumper.PlayerSelectedClientServerMessage;
 import com.PFC.PlatformJumper.streetJumper.PlayerServer;
+
+//---------------------------------- PHYSICS BOX2D EXTENSION ------------------------------------------------------
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -104,10 +112,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	waterParticleSystem ps2;
 	waterParticleSystem ps3;
 	waterParticleSystem ps4;
+	waterParticleSystem ps5;
 	SpriteParticleSystem sps;
 	SpriteParticleSystem sps2;
 	SpriteParticleSystem sps3;
 	SpriteParticleSystem sps4;
+	SpriteParticleSystem sps5;
 	FireParticleSystem explosion;
 	FireParticleSystem explosion2;
 	waterExplosion wp;
@@ -159,7 +169,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 final Sprite keyG = new Sprite(65, 340, resourcesManager.keyGreenHUD, vbom);
 	 final Sprite key = new Sprite(30, 340, resourcesManager.keyHUD, vbom);
 	 Sprite water;
-	 Sprite cartoon;
 	 Sprite kY;
 	 Sprite kG;
 	 private boolean playSound = false;
@@ -312,7 +321,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 attachChild (sps3 = ps3.build(engine, 800, 500, ResourcesManager.getInstance().waterDrop));
 			 
 			 ps4 = new waterParticleSystem();
-			 attachChild (sps4 = ps3.build(engine, 1240, 500, ResourcesManager.getInstance().waterDrop));
+			 attachChild (sps4 = ps4.build(engine, 1240, 500, ResourcesManager.getInstance().waterDrop));
 			 
 			 // create WATER SHADER !
 			 water = new Sprite(0, 120, 2048, -240, ResourcesManager.getInstance().waterShader, vbom);
@@ -369,17 +378,20 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 
 			// Put "font" fire raining
 			 ps = new waterParticleSystem();
-			 attachChild (sps = ps.build(engine, 700, 500, ResourcesManager.getInstance().rainFire));
+			 attachChild (sps = ps.build(engine, 300, 500, ResourcesManager.getInstance().rainFire));
 
 			 ps2 = new waterParticleSystem();
-			 attachChild (sps2 = ps2.build(engine, 300, 500, ResourcesManager.getInstance().rainFire));
+			 attachChild (sps2 = ps2.build(engine, 600, 500, ResourcesManager.getInstance().rainFire));
 			 
 			 ps3 = new waterParticleSystem();
-			 attachChild (sps3 = ps3.build(engine, 1200, 500, ResourcesManager.getInstance().rainFire));
+			 attachChild (sps3 = ps3.build(engine, 1000, 500, ResourcesManager.getInstance().rainFire));
 			 
 			 ps4 = new waterParticleSystem();
-			 attachChild (sps4 = ps3.build(engine, 1700, 500, ResourcesManager.getInstance().rainFire));
+			 attachChild (sps4 = ps4.build(engine, 1400, 500, ResourcesManager.getInstance().rainFire));
 			 
+			 ps5 = new waterParticleSystem();
+			 attachChild (sps5 = ps5.build(engine, 1700, 500, ResourcesManager.getInstance().rainFire));
+			 			 
 			 // Create and initialize timer options an update
 			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
 		     {
@@ -578,6 +590,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 player.clearUpdateHandlers();
         	 playerSpecial.clearEntityModifiers();
         	 playerSpecial.clearUpdateHandlers();
+        	 playerOnline.clearEntityModifiers();
+        	 playerOnline.clearUpdateHandlers();
         	 this.clearScene();
         	 
         	// ------------------------------------------ TEXT ---------------------------------------------------------------------
@@ -632,7 +646,50 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 gameHUD.detachSelf();
         	 gameHUD.dispose(); 
         	 
+        	 hurt1.clearEntityModifiers();
+        	 hurt1.detachSelf();
+        	 hurt1.dispose();
+        	 hurt2.clearEntityModifiers();
+        	 hurt2.detachSelf();
+        	 hurt2.dispose();
+        	 hurt3.clearEntityModifiers();
+        	 hurt3.detachSelf();
+        	 hurt3.dispose();
+        	 
+        	// ------------------------------------------ PLAYERS -----------------------------------------------------------------------
+        	 player.clearEntityModifiers();
+        	 player.clearUpdateHandlers();
+        	 playerOnline.clearEntityModifiers();
+        	 playerOnline.clearUpdateHandlers();
+        	 
+        	 scoreText.clearEntityModifiers();
+        	 scoreText.clearUpdateHandlers();
+        	 lifeText.clearEntityModifiers();
+        	 lifeText.clearUpdateHandlers();
+        	 timeText.clearEntityModifiers();
+        	 timeText.clearUpdateHandlers();
+        	 
         	 this.clearScene();
+        	 
+        	 sps.clearUpdateHandlers();
+        	 sps.getParticleEmitter().reset();
+        	 sps.reset();
+        	 
+        	 sps2.clearUpdateHandlers();
+        	 sps2.getParticleEmitter().reset();
+        	 sps2.reset();
+        	 
+        	 sps3.clearUpdateHandlers();
+        	 sps3.getParticleEmitter().reset();
+        	 sps3.reset();
+        	 
+        	 sps4.clearUpdateHandlers();
+        	 sps4.getParticleEmitter().reset();
+        	 sps4.reset();
+        	 
+        	 sps5.clearUpdateHandlers();
+        	 sps5.getParticleEmitter().reset();
+        	 sps5.reset();
         	 
     		 System.gc();
     	 }
@@ -672,6 +729,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	     if (ResourcesManager.getInstance().getAR() == false)
 	     {
 	    	 this.getBackground().setColor(Color.BLACK);
+	    	 
+			// create RADIAL BLUR SHADER !
+			 /*engine.getShaderProgramManager().loadShaderProgram(RadialBlur.getShaderProgram());
+			 sceneSprite.setShaderProgram(RadialBlur.getShaderProgram());*/
+			 
 	    	 this.attachChild(sceneSprite);
 	     }
 	     else

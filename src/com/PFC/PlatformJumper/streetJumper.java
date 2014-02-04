@@ -133,12 +133,12 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 
 	private void initMessagePool()
 	{
-	        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER, movePlayerServerMessage.class);
-	        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_PLAYER_SELECTED, PlayerSelectedServerMessage.class);
-	        this.mMessagePool.registerMessage(FLAG_MESSAGE_CLIENT_PLAYER_SELECTED_CLIENT, PlayerSelectedClientServerMessage.class);
-	        this.mMessagePool.registerMessage(FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT, MovePlayerClientServerMessage.class);
-	        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_PLAYER, PlayerServer.class);
-	        this.mMessagePool.registerMessage(FLAG_MESSAGE_CLIENT_PLAYER, PlayerClient.class);
+        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER, movePlayerServerMessage.class);
+        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_PLAYER_SELECTED, PlayerSelectedServerMessage.class);
+        this.mMessagePool.registerMessage(FLAG_MESSAGE_CLIENT_PLAYER_SELECTED_CLIENT, PlayerSelectedClientServerMessage.class);
+        this.mMessagePool.registerMessage(FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT, MovePlayerClientServerMessage.class);
+        this.mMessagePool.registerMessage(FLAG_MESSAGE_SERVER_PLAYER, PlayerServer.class);
+        this.mMessagePool.registerMessage(FLAG_MESSAGE_CLIENT_PLAYER, PlayerClient.class);
 	}
 
 	
@@ -214,7 +214,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer != null)
 	         	{
 	         		final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER);
-	         		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 1.9f);
+	         		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 2.1f);
 	         		streetJumper.this.mSocketServer.sendBroadcastServerMessage(movePlayerServerMessage);
 	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerServerMessage);
 	         	}
@@ -223,7 +223,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer == null)
 	         	{
 	         		final MovePlayerClientServerMessage movePlayerClientServerMessage = (MovePlayerClientServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT);
-	         		movePlayerClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 1.9f);
+	         		movePlayerClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 2.1f);
 	         		streetJumper.this.mServerConnector.sendClientMessage(movePlayerClientServerMessage);
 	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerClientServerMessage);
 	         	}
@@ -279,9 +279,9 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	@Override
     protected Dialog onCreateDialog(final int pID) 
 	{
-            switch(pID)
-            {
-                    case DIALOG_SHOW_SERVER_IP_ID:
+        switch(pID)
+        {
+            case DIALOG_SHOW_SERVER_IP_ID:
 				try 
 				{
 					return new AlertDialog.Builder(this)
@@ -309,69 +309,71 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                     })
                     .create();
 				}
-                    case DIALOG_ENTER_SERVER_IP_ID:
-                            final EditText ipEditText = new EditText(this);
-                            return new AlertDialog.Builder(this)
-                            .setIcon(android.R.drawable.ic_dialog_info)
-                            .setTitle("Enter Server-IP ...")
-                            .setCancelable(false)
-                            .setView(ipEditText)
-                            .setPositiveButton("Connect", new OnClickListener() 
-                            {
-                                public void onClick(final DialogInterface pDialog, final int pWhich) 
-                                {
-                                        streetJumper.this.mServerIP = ipEditText.getText().toString();
-                                        streetJumper.this.initClient();
-                                }
-                            })
-                            .setNegativeButton(android.R.string.cancel, new OnClickListener() 
-                            {
-                                @Override
-                                public void onClick(final DialogInterface pDialog, final int pWhich) 
-                                {
-                                	streetJumper.this.finish();
-                                }
-                            })
-                            .create();
-                    case DIALOG_CHOOSE_SERVER_OR_CLIENT_ID:
-                            return new AlertDialog.Builder(this)
-                            .setIcon(android.R.drawable.ic_dialog_info)
-                            .setTitle("Be Server or Client ...")
-                            .setCancelable(false)
-                            .setPositiveButton("Client", new OnClickListener() 
-                            {
-                                @SuppressWarnings("deprecation")
-								@Override
-                                public void onClick(final DialogInterface pDialog, final int pWhich) 
-                                {
-                                	streetJumper.this.showDialog(DIALOG_ENTER_SERVER_IP_ID);
-                                }
-                            })
-                            .setNeutralButton("Server", new OnClickListener() 
-                            {
-                                @SuppressWarnings("deprecation")
-								@Override
-                                public void onClick(final DialogInterface pDialog, final int pWhich)
-                                {
-                                	streetJumper.this.initServer();
-                                    streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
-                                }
-                            })
-                            .setNegativeButton("Both", new OnClickListener() 
-                            {
-                                @SuppressWarnings("deprecation")
-								@Override
-                                public void onClick(final DialogInterface pDialog, final int pWhich)
-                                {
-                                	streetJumper.this.initServer();
-                                	streetJumper.this.showDialog(DIALOG_ENTER_SERVER_IP_ID);
-                                	streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
-                                }
-                            })
-                            .create();
-                    default:
-                            return super.onCreateDialog(pID);
-            }
+				
+             case DIALOG_ENTER_SERVER_IP_ID:
+                final EditText ipEditText = new EditText(this);
+                return new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle("Enter Server-IP ...")
+                .setCancelable(false)
+                .setView(ipEditText)
+                .setPositiveButton("Connect", new OnClickListener() 
+                {
+                    public void onClick(final DialogInterface pDialog, final int pWhich) 
+                    {
+                            streetJumper.this.mServerIP = ipEditText.getText().toString();
+                            streetJumper.this.initClient();
+                    }
+                })
+                .setNegativeButton(android.R.string.cancel, new OnClickListener() 
+                {
+                    @Override
+                    public void onClick(final DialogInterface pDialog, final int pWhich) 
+                    {
+                    	streetJumper.this.finish();
+                    }
+                })
+                .create();
+                
+             case DIALOG_CHOOSE_SERVER_OR_CLIENT_ID:
+                return new AlertDialog.Builder(this)
+                .setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle("Be Server or Client ...")
+                .setCancelable(false)
+                .setPositiveButton("Client", new OnClickListener() 
+                {
+                    @SuppressWarnings("deprecation")
+					@Override
+                    public void onClick(final DialogInterface pDialog, final int pWhich) 
+                    {
+                    	streetJumper.this.showDialog(DIALOG_ENTER_SERVER_IP_ID);
+                    }
+                })
+                .setNeutralButton("Server", new OnClickListener() 
+                {
+                    @SuppressWarnings("deprecation")
+					@Override
+                    public void onClick(final DialogInterface pDialog, final int pWhich)
+                    {
+                    	streetJumper.this.initServer();
+                        streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
+                    }
+                })
+                .setNegativeButton("Both", new OnClickListener() 
+                {
+                    @SuppressWarnings("deprecation")
+					@Override
+                    public void onClick(final DialogInterface pDialog, final int pWhich)
+                    {
+                    	streetJumper.this.initServer();
+                    	streetJumper.this.showDialog(DIALOG_ENTER_SERVER_IP_ID);
+                    	streetJumper.this.showDialog(DIALOG_SHOW_SERVER_IP_ID);
+                    }
+                })
+                .create();
+            default:
+            	return super.onCreateDialog(pID);
+        }
     }
 
 	@SuppressWarnings("deprecation")

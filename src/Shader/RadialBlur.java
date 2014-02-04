@@ -13,6 +13,8 @@ public class RadialBlur extends Object
 {
     
     private static final RadialBlur INSTANCE = new RadialBlur();
+    public static int centerX = 1000;
+    public static int centerY = 240;
 
     public RadialBlur() 
     {
@@ -148,6 +150,7 @@ public class RadialBlur extends Object
 
 			GLES20.glUniformMatrix4fv(RadialBlurShaderProgram.sUniformModelViewPositionMatrixLocation, 1, false, pGLState.getModelViewProjectionGLMatrix(), 0);
 			GLES20.glUniform1i(RadialBlurShaderProgram.sUniformTexture0Location, 0);
+			GLES20.glUniform1i(RadialBlurShaderProgram.sUniformRadialBlurCenterLocation, centerX);
 		}
 
 		@Override
