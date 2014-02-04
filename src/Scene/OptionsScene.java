@@ -115,7 +115,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		       	     	final IMenuItem player1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER1_SEL, resourcesManager.player1, vbom), 1.2f, 1);
 		       	     	menuChildScene.addMenuItem(player1Sel);
 			       	    //menuChildScene.buildAnimations();
-		       	     	player1Sel.setPosition(player1Sel.getX() + 800 , player1Sel.getY() + 160);
+		       	     	player1Sel.setPosition(player1Sel.getX() + 825 , player1Sel.getY() + 160);
 		        		break;
 		        		
 		        	case 1:
@@ -130,7 +130,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		createScene();	        		
 		       	     	final IMenuItem player2Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER2_SEL, resourcesManager.player2, vbom), 1.2f, 1);
 		       	     	menuChildScene.addMenuItem(player2Sel);
-		       	     	player2Sel.setPosition(player2Sel.getX() + 800 , player2Sel.getY() + 160);
+		       	     	player2Sel.setPosition(player2Sel.getX() + 825 , player2Sel.getY() + 160);
 		        		break;
 		        		
 		        	case 2:
@@ -145,7 +145,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		createScene();	        		
 		       	     	final IMenuItem player3Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER3_SEL, resourcesManager.player3, vbom), 1.2f, 1);
 		       	     	menuChildScene.addMenuItem(player3Sel);
-		       	     	player3Sel.setPosition(player3Sel.getX() + 800 , player3Sel.getY() + 160);
+		       	     	player3Sel.setPosition(player3Sel.getX() + 825 , player3Sel.getY() + 160);
 		        		break;
 		        		
 		        	case 3:
@@ -160,7 +160,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		createScene();      		
 		       	     	final IMenuItem player4Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER4_SEL, resourcesManager.player4, vbom), 1.2f, 1);
 		       	     	menuChildScene.addMenuItem(player4Sel);
-		       	     	player4Sel.setPosition(player4Sel.getX() + 800 , player4Sel.getY() + 160);
+		       	     	player4Sel.setPosition(player4Sel.getX() + 825 , player4Sel.getY() + 160);
 		        		break;
 		        		
 		        	default:
