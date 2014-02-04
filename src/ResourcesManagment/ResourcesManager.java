@@ -278,6 +278,10 @@ public class ResourcesManager
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/options_menu/");
     	ARSel = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "ar.png");
     	optionsBack = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "BlankPanel-1.png");
+    	player1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "player1.png");
+		player2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "player2.png");		        		
+		player3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "player3.png");
+		player4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "player4.png");
     	
     	try
     	{
