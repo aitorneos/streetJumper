@@ -214,6 +214,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_KEY_BLUE = "keyBlue";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_KEY_RED = "keyRed";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SWITCH_GREEN_OFF = "switchGreenOff";	
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GRASS = "grass";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TILE_GRASS = "tileGrass";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GRASS_MAIN = "grassMain";
 
 	// ---------------------- METHODS ----------------------------------------------------------------------------------------------------------
 	
@@ -1780,6 +1783,33 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    //levelObject.setSize(width, height);
 	                }
 		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GRASS))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.grass, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("grass");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GRASS_MAIN))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.grass_main, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("grassMain");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TILE_GRASS))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.tile_grass, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("tileGrass");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TRONC_SMALL))
 	                {
 	                    levelObject = new Sprite(x, y, resourcesManager.troncSmall, vbom);
@@ -2012,7 +2042,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	    camera.setChaseEntity(null);
 		
 	    // Set background to Black color (usually) and remove player HUD
-		 setBackground(new Background(Color.RED));
+	    this.getBackground().setColor(Color.RED);
 		 camera.setHUD(null);
 		 
 		 // Clear some features not more needed
@@ -2322,7 +2352,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
             	// ----------------------------- WATER-----------------------------------------------------------------------------
             	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("waterSynthetic"))
             	{
-            		displayGameOverText(2);
+            		displayGameOverText(ResourcesManager.getInstance().getLevelComplete() + 1);
             	}
             	
             	// ----------------------------- BOXES -----------------------------------------------------------------------------

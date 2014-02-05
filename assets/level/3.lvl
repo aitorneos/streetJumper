@@ -7,8 +7,8 @@
 	<entity x="18"  y="30"  width="60"  height="60"  type="platform" />
 	<entity x="144"  y="30"  width="60"  height="60"  type="platform" />
 	<entity x="272"  y="30"  width="60"  height="60"  type="platform" />
-	<entity x="251"  y="350"  width="60"  height="60"  type="platformSmall" />
-	<entity x="401"  y="380"  width="60"  height="60"  type="platformSmall" />
+	<entity x="251"  y="350"  width="60"  height="60"  type="grassMain" />
+	<entity x="401"  y="380"  width="60"  height="60"  type="grassMain" />
 	<entity x="161"  y="80"  width="60"  height="60"  type="troncSmall" />
 	<entity x="221"  y="150"  width="60"  height="60"  type="troncSmall" />
 	<entity x="70"  y="430"  width="60"  height="60"  type="keyBlue" />
@@ -27,14 +27,14 @@
 	<entity x="481"  y="175"  width="60"  height="60"  type="coin" />
 	<entity x="708"  y="175"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="720"  y="360"  width="60"  height="60"  type="troncPlatform" />
-	<entity x="549"  y="250"  width="60"  height="60"  type="platformSmall" />
+	<entity x="549"  y="250"  width="60"  height="60"  type="grassMain" />
 	<entity x="690"  y="425"  width="60"  height="60"  type="coin_gold" />
 	<entity x="760"  y="425"  width="60"  height="60"  type="coin_gold" />
 	<entity x="895"  y="400"  width="60"  height="60"  type="troncSmall" />
 	<entity x="909"  y="457"  width="60"  height="60"  type="coin" />
-	<entity x="1022"  y="381"  width="60"  height="60"  type="bush" />
-	<entity x="1162"  y="313"  width="60"  height="60"  type="bush" />
-	<entity x="1307"  y="231"  width="60"  height="60"  type="bush" />
+	<entity x="1032"  y="360"  width="60"  height="60"  type="tileGrass" />
+	<entity x="1182"  y="290"  width="60"  height="60"  type="tileGrass" />
+	<entity x="1330"  y="210"  width="60"  height="60"  type="tileGrass" />
 	<entity x="1405"  y="1"  width="60"  height="60"  type="platform" />
 	<entity x="1529"  y="1"  width="60"  height="60"  type="platform" />
 	<entity x="1655"  y="1"  width="60"  height="60"  type="platform" />
@@ -51,7 +51,8 @@
 	<entity x="1038"  y="423"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="1880"  y="80"  width="60"  height="60"  type="cradle" />
 	<entity x="940"  y="20"  width="60"  height="60"  type="waterSynthetic" />
-	<entity x="1095"  y="20"  width="60"  height="60"  type="waterSynthetic" />
-	<entity x="1250"  y="20"  width="60"  height="60"  type="waterSynthetic" />
+	<entity x="1085"  y="20"  width="60"  height="60"  type="waterSynthetic" />
+	<entity x="1230"  y="20"  width="60"  height="60"  type="waterSynthetic" />
+	<entity x="1375"  y="20"  width="60"  height="60"  type="waterSynthetic" />
 	
 </level>

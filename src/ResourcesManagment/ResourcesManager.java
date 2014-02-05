@@ -103,6 +103,9 @@ public class ResourcesManager
     public ITextureRegion platform_dirtLeft_region;
     public ITextureRegion platform_dirtRight_region;
     public ITextureRegion platform_dirtHalf_region;
+    public ITextureRegion grass;
+    public ITextureRegion tile_grass;
+    public ITextureRegion grass_main;
     public ITextureRegion arrowLeft;
     public ITextureRegion rock;
     public ITextureRegion sand;
@@ -487,6 +490,9 @@ public class ResourcesManager
         waterSynthetic = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "waterSynthetic.png");
         mineExplosion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "explosion.png");
         rainFire = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "spark.png");
+        grass = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "grass.png");
+        grass_main = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "grass_main.png");
+        tile_grass = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "tile_grass.png");
         
      // --------------------------- HUD LOADING-------------------------------------------------------------------------------------------------------
  
@@ -914,6 +920,27 @@ public class ResourcesManager
     	{
     		gameTextureAtlas.unload();
         	gameTextureAtlas.clearTextureAtlasSources();
+        	font.unload();
+        	loadingFont.unload();
+        	waterSynthetic = null;
+        	grass = null;
+        	grass_main = null;
+        	tile_grass = null;
+        	cradle = null;
+        	mountainPlatform = null;
+        	bigTree = null;
+        	platform = null;
+        	platformSmall = null;
+        	troncPlatform = null;
+        	troncSmall = null;
+        	bush = null;
+        	key_blue = null;
+        	key_red = null;
+        	switch_green_off = null;
+        	coin_silver = null;
+        	coin_bronze = null;
+        	coin_gold = null;
+        	starHUD = null;
     	}
     	
     }
