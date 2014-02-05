@@ -103,14 +103,7 @@ public abstract class PlayerOnline extends AnimatedSprite
 				{
 					setAc(false);
 				}
-				
-				if (levelID == 2)
-				{
-					if (SceneManager.getInstance().getGameScene().playerSpecial.sps.getY() >= getY())
-					{
-						
-					}
-				}
+			
 			}
 		});
 	}

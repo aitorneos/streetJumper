@@ -479,13 +479,14 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         SceneManager.getInstance().getGameScene().playerOnline = new PlayerOnline(pX, pY, this.getVertexBufferObjectManager(), camera, SceneManager.getInstance().getGameScene().physicsWorld)
         {	
         };
-        SceneManager.getInstance().getGameScene().playerOnline.setSize(60, 60);
-        scene.attachChild(SceneManager.getInstance().getGameScene().playerOnline);
+        if (resourcesManager.getLevelComplete() == 1) SceneManager.getInstance().getGameScene().playerOnline.setSize(75, 75);
+        if (resourcesManager.getLevelComplete() == 2 || resourcesManager.getLevelComplete() == 3) SceneManager.getInstance().getGameScene().playerOnline.setSize(90, 90);
         
         try 
         {
             resourcesManager.gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
             resourcesManager.gameTextureAtlas.load();
+            scene.attachChild(SceneManager.getInstance().getGameScene().playerOnline);
         } 
         catch (final TextureAtlasBuilderException e)
         {
@@ -645,19 +646,19 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	@Override
     public void onAccelerationChanged(AccelerationData pAccelerationData)
     {
-    	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().player.getAc() == false && (pAccelerationData.getX() > 0.5 || pAccelerationData.getX() < -0.5 ))
+    	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().player.getAc() == false && (pAccelerationData.getX() > 0.25 || pAccelerationData.getX() < -0.25 ))
     	{
     		this.enableAccelerationSensor(this);
-    		if (SceneManager.getInstance().getGameScene() != null && pAccelerationData.getX() > 0.0f)
+    		if (pAccelerationData.getX() > 0.0f)
         	{
-            	SceneManager.getInstance().getGameScene().player.body.setLinearVelocity((float) (pAccelerationData.getX()*1.5), SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
+            	SceneManager.getInstance().getGameScene().player.body.setLinearVelocity((float) (pAccelerationData.getX()*2.5f), SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
             	SceneManager.getInstance().getGameScene().player.setFlippedHorizontal(false);
             	
         	}  
         	
-        	if (SceneManager.getInstance().getGameScene() != null && pAccelerationData.getX() < 0.0f)
+        	if (pAccelerationData.getX() < 0.0f)
         	{ 
-        		SceneManager.getInstance().getGameScene().player.body.setLinearVelocity((float) (pAccelerationData.getX()*1.5), SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
+        		SceneManager.getInstance().getGameScene().player.body.setLinearVelocity((float) (pAccelerationData.getX()*2.5f), SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y);
             	SceneManager.getInstance().getGameScene().player.setFlippedHorizontal(true);
             	
         	}    	
