@@ -2042,7 +2042,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	    camera.setChaseEntity(null);
 		
 	    // Set background to Black color (usually) and remove player HUD
-	    this.getBackground().setColor(Color.RED);
 		 camera.setHUD(null);
 		 
 		 // Clear some features not more needed
@@ -2052,11 +2051,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		 gameHUD.clearUpdateHandlers();
 		 disposeScene(levelID);
 		 
+		 this.setBackground(new Background(Color.RED));
+		 
 		 // Write the message
 		 ResourcesManager.getInstance().loadGameFonts();
 		 attachChild(new Text(camera.getCenterX(), camera.getCenterY(), resourcesManager.loadingFont, "GAME OVER... ! ", vbom));
 		 
-		 engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+		 engine.registerUpdateHandler(new TimerHandler(2.0f, new ITimerCallback()
          {                                    
              public void onTimePassed(final TimerHandler pTimerHandler)
              {
@@ -2352,7 +2353,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
             	// ----------------------------- WATER-----------------------------------------------------------------------------
             	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("waterSynthetic"))
             	{
-            		displayGameOverText(ResourcesManager.getInstance().getLevelComplete() + 1);
+            		displayGameOverText(ResourcesManager.getInstance().getLevelComplete());
             	}
             	
             	// ----------------------------- BOXES -----------------------------------------------------------------------------
