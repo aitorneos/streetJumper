@@ -728,8 +728,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 
 	     if (ResourcesManager.getInstance().getAR() == false)
 	     {
-	    	 this.getBackground().setColor(Color.BLACK);
-	    	 
+	    	 if (ResourcesManager.getInstance().getLevelComplete() == 2 || ResourcesManager.getInstance().getLevelComplete() == 3)this.getBackground().setColor(Color.BLACK);
+	    	 if (ResourcesManager.getInstance().getLevelComplete() == 1) this.getBackground().setColor(Color.TRANSPARENT);
 			// create RADIAL BLUR SHADER !
 			 /*engine.getShaderProgramManager().loadShaderProgram(RadialBlur.getShaderProgram());
 			 sceneSprite.setShaderProgram(RadialBlur.getShaderProgram());*/
