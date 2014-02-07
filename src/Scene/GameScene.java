@@ -304,7 +304,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		 levelCompleteWindow = new LevelCompleteWindow(vbom);
 		 loadLevel(ResourcesManager.getInstance().getLevelComplete());
 		 setOnSceneTouchListener(this);
+		 
 		 controlAc = 0;
+		 ResourcesManager.getInstance().controlLoaded = true;
 		
 		 if (ResourcesManager.getInstance().getLevelComplete() == 1)
 		 {
