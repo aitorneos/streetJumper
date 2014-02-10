@@ -30,8 +30,8 @@ public class WaterSurfaceEntity extends Entity
         public Sprite RenderTextureBackgroundSprite, back, dis;
         private static float secondsElapsed;
        
-        float Frequency = 300f; // bigger = more waves per pixels
-        float Amplitude = 0.015f; // bigger = higher waves
+        float Frequency = 50f; // bigger = more waves per pixels
+        float Amplitude = 0.025f; // bigger = higher waves
         float speedMultiplicator = 5f;
  
         public WaterSurfaceEntity(float pX, float pY, Sprite pBackground, Sprite pDis, Engine pEngine) 

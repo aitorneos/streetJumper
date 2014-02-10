@@ -164,6 +164,7 @@ public class ResourcesManager
     public ITextureRegion stalactitaLeft;
     public ITextureRegion stalactitaRight;
     public ITextureRegion waterShader;
+    public ITextureRegion waterDis;
     public ITexture waterDisplacement;
     public ITiledTextureRegion switcher;
     public ITiledTextureRegion springboarder;
@@ -494,6 +495,9 @@ public class ResourcesManager
         grass_main = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "grass_main.png");
         tile_grass = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "tile_grass.png");
         
+        keyHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyBlue.png");
+        keyGreenHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyRed.png");
+        
      // --------------------------- HUD LOADING-------------------------------------------------------------------------------------------------------
  
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level1/");
@@ -503,8 +507,6 @@ public class ResourcesManager
         coin_bronze = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin_bronze.png");
         complete_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "levelCompleteWindow.png");
         complete_stars_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "star.png", 2, 1);
-        keyHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyYellow.png");
-        keyGreenHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyGreen.png");
         
         // --------------------------- PLAYER SELECTION LOADING-------------------------------------------------------------------------------------------------------
         
@@ -518,6 +520,11 @@ public class ResourcesManager
         if (playerSelected == 1) playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player2.png", 3, 1);
         if (playerSelected == 2) playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player3.png", 3, 1);
         if (playerSelected == 3) playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player4.png", 3, 1);
+        
+        // --------------------------- SHADERS TEXTURES-------------------------------------------------------------------------------------------------------
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/Shading_Textures/");
+        waterShader = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "water4.png");
+        waterDis = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "waterdisplacement.png");
         
      // --------------------------- LOAD TEXTURE ATLAS AND TEXTURE REGIONS -------------------------------------------------------------------------------------
         try 
@@ -865,6 +872,7 @@ public class ResourcesManager
         	gameTextureAtlas.clearTextureAtlasSources();
         	font.unload();
         	loadingFont.unload();
+        	waterDisplacement.unload();
         	player_region = null;
         	platform1_region = null;
         	platform2_region = null;

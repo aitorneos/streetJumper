@@ -3,7 +3,9 @@ package Scene;
 //---------------------------------- JAVA && TEXTURES IMPORTS ------------------------------------------------------
 import java.io.IOException;
 import java.util.Iterator;
+
 import javax.microedition.khronos.opengles.GL10;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -33,6 +35,7 @@ import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
+
 //---------------------------------- PARTICLE SYSTEM && NETWORK ------------------------------------------------------
 import particleSystem.FireParticleSystem;
 import particleSystem.waterExplosion;
@@ -56,7 +59,9 @@ import ResourcesManagment.SceneManager.SceneType;
 import Scene.LevelCompleteWindow.StarsCount;
 import Shader.RadialBlur;
 import Shader.WaterMaskEffectShader;
+import Shader.WaterSurfaceEntity;
 import Timers.playTimer;
+
 
 //---------------------------------- INNER && ANONIMOUS CLASES ------------------------------------------------------
 import com.PFC.PlatformJumper.streetJumper;
@@ -169,6 +174,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 final Sprite keyG = new Sprite(65, 340, resourcesManager.keyGreenHUD, vbom);
 	 final Sprite key = new Sprite(30, 340, resourcesManager.keyHUD, vbom);
 	 Sprite water;
+	 Sprite waterDis;
 	 Sprite kY;
 	 Sprite kG;
 	 private boolean playSound = false;
@@ -396,6 +402,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 
 			 ps5 = new waterParticleSystem();
 			 attachChild (sps5 = ps5.build(engine, 1700, 500, ResourcesManager.getInstance().rainFire));
+			 
+			// create WATER SHADER !
+			 water = new Sprite(0, 0, ResourcesManager.getInstance().waterShader, vbom);
+			 waterDis = new Sprite(0, 0, ResourcesManager.getInstance().waterDis, vbom);
+			 water.setSize(1000, 500);
+			 attachChild(new WaterSurfaceEntity(1350, 200, water, waterDis, engine));
 			 			 
 			 // Create and initialize timer options an update
 			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
@@ -1841,7 +1853,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            if (player.collidesWith(this))
 	                            {
 	                            	player.hasKey = true;
-	                     	    	//gameHUD.attachChild(key);
+	                            	player.hasKey = true;
+	                            	final Sprite keyBlue = new Sprite(30, 340, resourcesManager.keyHUD, vbom);
+	                     	    	gameHUD.attachChild(keyBlue);
 	                                this.setVisible(false);
 	                                this.setIgnoreUpdate(true);
 	                            }
@@ -1862,7 +1876,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            if (player.collidesWith(this))
 	                            {
 	                            	player.hasGreenKey = true;
-	                     	    	//gameHUD.attachChild(key);
+	                            	player.hasGreenKey = true;
+	                            	final Sprite keyRed = new Sprite(65, 340, resourcesManager.keyGreenHUD, vbom);
+	                     	    	gameHUD.attachChild(keyRed);
 	                                this.setVisible(false);
 	                                this.setIgnoreUpdate(true);
 	                            }
@@ -1871,15 +1887,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    };
 	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
 	                } 
-		            
-		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_KEY_RED))
-	                {
-	                    levelObject = new Sprite(x, y, resourcesManager.key_red, vbom);
-	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
-	                    body.setUserData("keyRed");
-	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
-	                    //levelObject.setSize(width, height);
-	                }
 		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SWITCH_GREEN_OFF))
 	                {
@@ -1962,7 +1969,109 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    };
 	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
 	                    //levelObject.setSize(width, height);
-	                } 
+	                }
+		            
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_LEVEL_COMPLETE))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.cradle, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.hasKey && player.hasGreenKey) 
+	                            {
+	                            	this.setVisible(true);
+	                            }
+	                            else
+	                            {
+	                            	this.setVisible(false);
+	                            }
+	                            
+	                            if (player.collidesWith(this) && player.hasKey && player.hasGreenKey)
+	                            {
+	                            	
+	                            	if (score <= 35 && score >= 30)
+	                            	{
+	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+	                            		player.body.setLinearVelocity(0, 0);
+	                            		levelCompleteWindow.display(StarsCount.ONE, GameScene.this, camera);
+	   	                                this.setIgnoreUpdate(true);
+	   	                                ResourcesManager.getInstance().setLevelComplete(2);
+	   	                                
+	   	                                // Clear Scenary 1 Graphics ...
+	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+	   	        		                {                                    
+	   	        		                    @SuppressWarnings("deprecation")
+											public void onTimePassed(final TimerHandler pTimerHandler)
+	   	        		                    {
+	   	        		                        pTimerHandler.reset();
+	   	        		                        
+	   	        		                        detachChild(levelCompleteWindow);
+	   	    	                            	disposeScene(1);
+		   	    	                 			
+	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
+	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
+	   	        		                    }
+	   	        		                }));
+	                            	}
+	                            	
+	                            	else if (score > 35 && score < 45)
+	                            	{
+	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+	                            		player.body.setLinearVelocity(0, 0);
+	                            		levelCompleteWindow.display(StarsCount.TWO, GameScene.this, camera);
+	   	                                this.setIgnoreUpdate(true);
+	   	                                ResourcesManager.getInstance().setLevelComplete(2);
+	   	                                
+	   	                                // Clear Scenary 1 Graphics ...
+	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+	   	        		                {                                    
+	   	        		                    @SuppressWarnings("deprecation")
+											public void onTimePassed(final TimerHandler pTimerHandler)
+	   	        		                    {
+	   	        		                        pTimerHandler.reset();
+	   	        		                        
+	   	        		                        detachChild(levelCompleteWindow);
+	   	    	                            	disposeScene(1);
+		   	    	                 			
+	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
+	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
+	   	        		                    }
+	   	        		                }));
+	                            	}
+	                            	
+	                            	else
+	                            	{
+	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+	                            		player.body.setLinearVelocity(0, 0);
+	                            		levelCompleteWindow.display(StarsCount.THREE, GameScene.this, camera);
+	   	                                this.setIgnoreUpdate(true);
+	   	                                ResourcesManager.getInstance().setLevelComplete(2);
+	   	                                
+	   	                                // Clear Scenary 1 Graphics ...
+	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+	   	        		                {                                    
+	   	        		                    @SuppressWarnings("deprecation")
+											public void onTimePassed(final TimerHandler pTimerHandler)
+	   	        		                    {
+	   	        		                        pTimerHandler.reset();
+	   	        		                        
+	   	        		                        detachChild(levelCompleteWindow);
+	   	    	                            	disposeScene(1);
+		   	    	                 			
+	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
+	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
+	   	        		                    }
+	   	        		                }));
+	                            	}
+	                            	
+	                            	firstTouch = false;
+	                            }
+	                        }
+	                    };
+	                }
+	                
 		            
 		            else
 	                {
