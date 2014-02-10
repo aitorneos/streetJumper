@@ -43,7 +43,7 @@ import particleSystem.waterParticleSystem;
 import Animated_Features.SpringBoarder;
 import Animated_Features.Switcher;
 import Enemies.Enemy;
-import Enemies.slimeEnemy;
+import Enemies.RinoEnemy;
 import Network.ClientMessageFlags;
 import Network.ServerMessageFlags;
 import Players.Player;
@@ -107,12 +107,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	public Player player;
 	public PlayerOnline playerOnline;
 	public PlayerSpecial playerSpecial;
+	public RinoEnemy rEnemy;
 	private Enemy enemy;
 	private Switcher switcher;
 	private Switcher switcher2;
 	private SpringBoarder springboarder;
 	private SpringBoarder springboarder2;
-	private slimeEnemy slimeEnemy;
+	private RinoEnemy slimeEnemy;
 	waterParticleSystem ps;
 	waterParticleSystem ps2;
 	waterParticleSystem ps3;
@@ -223,6 +224,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GRASS = "grass";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TILE_GRASS = "tileGrass";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GRASS_MAIN = "grassMain";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_RINO = "RinoEnemy";
 
 	// ---------------------- METHODS ----------------------------------------------------------------------------------------------------------
 	
@@ -384,6 +386,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		 else if (ResourcesManager.getInstance().getLevelComplete() == 3)
 		 {
 			 player.setRunning();
+			 rEnemy.setRunning();
+			 rEnemy.body.setLinearVelocity(2.0f, 0.0f);
 			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
 			 ResourcesManager.getInstance().getSceneMusic().play();
 			 
@@ -403,11 +407,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 ps5 = new waterParticleSystem();
 			 attachChild (sps5 = ps5.build(engine, 1700, 500, ResourcesManager.getInstance().rainFire));
 			 
-			// create WATER SHADER !
-			 water = new Sprite(0, 0, ResourcesManager.getInstance().waterShader, vbom);
+			 // create WATER SHADER !
+			 /*water = new Sprite(0, 0, ResourcesManager.getInstance().waterShader, vbom);
 			 waterDis = new Sprite(0, 0, ResourcesManager.getInstance().waterDis, vbom);
 			 water.setSize(1000, 500);
-			 attachChild(new WaterSurfaceEntity(1350, 200, water, waterDis, engine));
+			 attachChild(new WaterSurfaceEntity(1350, 200, water, waterDis, engine));*/
 			 			 
 			 // Create and initialize timer options an update
 			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
@@ -963,7 +967,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SLIME_ENEMY))
 	                {
-	                	slimeEnemy = new slimeEnemy(x, y, vbom, camera,  physicsWorld)
+	                	slimeEnemy = new RinoEnemy(x, y, vbom, camera,  physicsWorld)
 	                    {
 	                    	
 	                    };
@@ -1731,6 +1735,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    };
 	                    levelObject = playerOnline;
 	                    levelObject.setVisible(false);
+	                    levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_RINO))
+	                {
+	                    rEnemy = new RinoEnemy(x, y, vbom, camera,  physicsWorld)
+	                    {
+	                        @Override
+	                        public void onDie()
+	                        {
+	                        }
+	                    };
+	                    levelObject = rEnemy;
 	                    levelObject.setSize(width, height);
 	                }
 		            

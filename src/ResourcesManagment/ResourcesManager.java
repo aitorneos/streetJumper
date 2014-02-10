@@ -145,8 +145,6 @@ public class ResourcesManager
     
     // ------------------------------------------ ENEMIES ------------------------------------------------------------
     public ITiledTextureRegion flyEnemy;
-    public ITiledTextureRegion pinguinEnemy;
-    public ITiledTextureRegion pinguinEnemyAttack;
     public ITextureRegion spike;
     
     // ---------------------------------------------- KEYS AND DOORS ------------------------------------------------------
@@ -189,6 +187,7 @@ public class ResourcesManager
     
     public ITiledTextureRegion player_region;
     public ITiledTextureRegion playerOnline_region;
+    public ITiledTextureRegion rinoEnemy;
     public int playerSelected = 0;
     public float playerVelocity = 0;
     
@@ -349,8 +348,6 @@ public class ResourcesManager
         // ------------------------------------ ENEMIES ----------------------------------------------------------------------------------------------------------
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/enemies/");
         flyEnemy = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "fly_normal.png", 3, 1);
-        pinguinEnemy = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "pinguinNormal.png", 3, 1);
-        pinguinEnemyAttack = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "pinguinAttack.png", 3, 1);
         
      // --------------------------- PLAYER SELECTION LOADING-------------------------------------------------------------------------------------------------------
         
@@ -497,6 +494,7 @@ public class ResourcesManager
         
         keyHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyBlue.png");
         keyGreenHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyRed.png");
+        rinoEnemy = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "enemy.png", 4, 1);
         
      // --------------------------- HUD LOADING-------------------------------------------------------------------------------------------------------
  
