@@ -70,7 +70,7 @@ public class RinoEnemy extends AnimatedSprite
 				}
 				
 				// Update enemy's movement
-				if (getX() >= 515 && body.getLinearVelocity().x > 0)
+				if (getX() >= 550 && body.getLinearVelocity().x > 0)
 				{
 					setFlippedHorizontal(true);
 					body.setLinearVelocity(-2.0f, 0.0f);
@@ -80,6 +80,12 @@ public class RinoEnemy extends AnimatedSprite
 				{
 					setFlippedHorizontal(false);
 					body.setLinearVelocity(2.0f, 0.0f);
+				}
+				
+				if (body.getLinearVelocity().x < 1.8f)
+				{
+					setFlippedHorizontal(true);
+					body.setLinearVelocity(-2.0f, 0.0f);
 				}
 				
 	        }

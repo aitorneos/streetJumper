@@ -26,7 +26,7 @@
 	<entity x="584"  y="60"  width="60"  height="60"  type="mountainPlatform" />
 	<entity x="775"  y="60"  width="60"  height="60"  type="mountainPlatform" />
 	<entity x="841"  y="250"  width="60"  height="60"  type="bigTree" />
-	<entity x="616"  y="175"  width="60"  height="60"  type="switchGreenOff" />
+	<entity x="626"  y="175"  width="60"  height="60"  type="switchGreenOff" />
 	<entity x="350"  y="175"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="414"  y="175"  width="60"  height="60"  type="coin" />
 	<entity x="481"  y="175"  width="60"  height="60"  type="coin" />
