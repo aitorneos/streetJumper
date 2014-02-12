@@ -172,8 +172,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 Sprite hurt1;
 	 Sprite hurt2;
 	 Sprite hurt3;
-	 final Sprite keyG = new Sprite(65, 340, resourcesManager.keyGreenHUD, vbom);
-	 final Sprite key = new Sprite(30, 340, resourcesManager.keyHUD, vbom);
 	 Sprite water;
 	 Sprite waterDis;
 	 Sprite kY;
@@ -1150,6 +1148,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            if (player.collidesWith(this))
 	                            {
 	                            	player.hasKey = true;
+	                            	final Sprite key = new Sprite(30, 340, resourcesManager.keyHUD, vbom);
 	                     	    	gameHUD.attachChild(key);
 	                                this.setVisible(false);
 	                                this.setIgnoreUpdate(true);
@@ -1171,6 +1170,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            if (player.collidesWith(this))
 	                            {
 	                            	player.hasGreenKey = true;
+	                           	 	final Sprite keyG = new Sprite(65, 340, resourcesManager.keyGreenHUD, vbom);
 	                     	    	gameHUD.attachChild(keyG);
 	                                this.setVisible(false);
 	                                this.setIgnoreUpdate(true);
@@ -2025,9 +2025,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	   	        		                        pTimerHandler.reset();
 	   	        		                        
 	   	        		                        detachChild(levelCompleteWindow);
-	   	    	                            	disposeScene(1);
+	   	    	                            	disposeScene(3);
 		   	    	                 			
-	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
+	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 4);
 	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
 	   	        		                    }
 	   	        		                }));
@@ -2050,9 +2050,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	   	        		                        pTimerHandler.reset();
 	   	        		                        
 	   	        		                        detachChild(levelCompleteWindow);
-	   	    	                            	disposeScene(1);
+	   	    	                            	disposeScene(3);
 		   	    	                 			
-	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
+	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 4);
 	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
 	   	        		                    }
 	   	        		                }));
@@ -2075,9 +2075,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	   	        		                        pTimerHandler.reset();
 	   	        		                        
 	   	        		                        detachChild(levelCompleteWindow);
-	   	    	                            	disposeScene(1);
+	   	    	                            	disposeScene(3);
 		   	    	                 			
-	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 2);
+	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 4);
 	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
 	   	        		                    }
 	   	        		                }));
@@ -2096,6 +2096,44 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                }
 
 	                levelObject.setCullingEnabled(true);
+
+	                return levelObject;
+	            }
+	        });
+        	
+    		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
+        }
+        
+        else if (levelID == 4)
+        {
+        	final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
+            final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0, 0.01f, 0.5f);
+            levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(LevelConstants.TAG_LEVEL)
+    	    {
+    	        public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException 
+    	        {
+    	            final int width = SAXUtils.getIntAttributeOrThrow(pAttributes, LevelConstants.TAG_LEVEL_ATTRIBUTE_WIDTH);
+    	            final int height = SAXUtils.getIntAttributeOrThrow(pAttributes, LevelConstants.TAG_LEVEL_ATTRIBUTE_HEIGHT);
+    		        camera.setBounds(0, 0, width, height); // here we set camera bounds
+    		        camera.setBoundsEnabled(true);
+    		
+    		        return GameScene.this;
+    	        }
+            });
+            
+        	levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(TAG_ENTITY)
+		    {
+		        public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException
+		        {
+		            final int x = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_X);
+		            final int y = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_Y);
+		            final int width = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_WIDTH);
+		            final int height = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_HEIGHT);
+		            final String type = SAXUtils.getAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_TYPE);
+		            
+		            final Sprite levelObject = null;
+		            
+		            levelObject.setCullingEnabled(true);
 
 	                return levelObject;
 	            }
@@ -2442,7 +2480,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
                 			ResourcesManager.getInstance().getKeySound().play();
                 			playSound = true;
                 		}
-                		gameHUD.detachChild(key);
+                		//gameHUD.detachChild(key);
                 		kY.setAlpha(1.0f);
             		}
             		
@@ -2457,7 +2495,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
                 			ResourcesManager.getInstance().getKeySound().play();
                 			playSoundGreen = true;
                 		}
-                		gameHUD.detachChild(keyG);
+                		//gameHUD.detachChild(keyG);
                 		kG.setAlpha(1.0f);
             		}
             	}

@@ -176,7 +176,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	        case LEVEL_SEL:
 	        	
 	        	// Assign level selected to resources manager variable
-	        	ResourcesManager.getInstance().setLevelComplete((ResourcesManager.getInstance().getLevelComplete() % 3) + 1);
+	        	ResourcesManager.getInstance().setLevelComplete((ResourcesManager.getInstance().getLevelComplete() % 4) + 1);
 	            
 	        default:
 	            return false;
