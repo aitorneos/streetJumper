@@ -125,11 +125,14 @@ public class ResourcesManager
     public ITextureRegion bigTree;
     public ITextureRegion troncPlatform;
     public ITextureRegion troncSmall;
-    public ITextureRegion bush;
-    public ITextureRegion key_blue;
-    public ITextureRegion key_red;
-    public ITextureRegion switch_green_off;
-    
+    public ITextureRegion cradlePlatform1;
+    public ITextureRegion cradlePlatform2;
+    public ITextureRegion cradlePlatform3;
+    public ITextureRegion cradlePlatform4;
+    public ITextureRegion cradlePlatform5;
+    public ITextureRegion expulsor;
+    public ITextureRegion mineral;
+    public ITextureRegion mushroomTree;
     
     // --------------------------------------- COINS ---------------------------------------------------------------
     public ITextureRegion coin_silver;
@@ -142,6 +145,10 @@ public class ResourcesManager
     public ITextureRegion cactus;
     public ITextureRegion snowHill;
     public ITextureRegion waterSynthetic;
+    public ITextureRegion bush;
+    public ITextureRegion key_blue;
+    public ITextureRegion key_red;
+    public ITextureRegion switch_green_off;
     
     // ------------------------------------------ ENEMIES ------------------------------------------------------------
     public ITiledTextureRegion flyEnemy;
@@ -551,9 +558,26 @@ public class ResourcesManager
     	gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
         scene_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "background.png");
         
+        // --------------------------------------- PLATFORMS LEVEL 4 -------------------------------------------------------------------------------------
+        cradlePlatform1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "cradlePlatform1.png");
+        cradlePlatform2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "cradlePlatform2.png");
+        cradlePlatform3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "cradlePlatform3.png");
+        cradlePlatform4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "cradlePlatform4.png");
+        cradlePlatform5 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "cradlePlatform5.png");
+        expulsor = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "expulsor.png");
+        mineral = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "mineral.png");
+        mushroomTree = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "mushroomTree.png");
+        
+        
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level1/");
         complete_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "levelCompleteWindow.png");
         complete_stars_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "star.png", 2, 1);
+        
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/Players/");
+        if (playerSelected == 0) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player.png", 3, 1);
+        if (playerSelected == 1) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player2.png", 3, 1);
+        if (playerSelected == 2) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player3.png", 3, 1);
+        if (playerSelected == 3) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player4.png", 3, 1);
         
         try 
         {
@@ -918,7 +942,25 @@ public class ResourcesManager
         	{   
         		e.printStackTrace();
         	}
-    	}  
+    	} 
+    	
+    	else if (this.level == 4)
+    	{
+    		// LOAD JUMP SOUND
+        	try 
+        	{    
+        		this.jump = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "jump.ogg");
+        		//this.explosion.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
+    	}
     }
     
     

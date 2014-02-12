@@ -114,6 +114,20 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	private SpringBoarder springboarder;
 	private SpringBoarder springboarder2;
 	private RinoEnemy slimeEnemy;
+	
+	
+	//Sprites
+	Sprite hurt1;
+	Sprite hurt2;
+	Sprite hurt3;
+	Sprite water;
+	Sprite waterDis;
+	Sprite kY;
+	Sprite kG;
+	private boolean playSound = false;
+	private boolean playSoundGreen = false;
+	private LevelCompleteWindow levelCompleteWindow;
+	public boolean isJumping = false;
 	waterParticleSystem ps;
 	waterParticleSystem ps2;
 	waterParticleSystem ps3;
@@ -167,19 +181,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	// Enemies Types Definitions
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_FLY_ENEMY = "flyEnemy_region";
 	private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SLIME_ENEMY = "slimeEnemy_region";
-	
-	//Sprites
-	 Sprite hurt1;
-	 Sprite hurt2;
-	 Sprite hurt3;
-	 Sprite water;
-	 Sprite waterDis;
-	 Sprite kY;
-	 Sprite kG;
-	 private boolean playSound = false;
-	 private boolean playSoundGreen = false;
-	 private LevelCompleteWindow levelCompleteWindow;
-	 public boolean isJumping = false;
 	 
 	 // ---------------------------- LEVEL_2 VARIABLES ---------------------------------------------------------------
 	 
@@ -187,7 +188,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK = "rock";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SAND = "sand";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_HALF_BIG_PLATFORM = "rockHalfBigPlatform";
-	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOMB = "bomb";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOX_EXPLOSIVE_ALT = "boxExposiveAlt";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOX_ITEM_ALT = "boxItemAlt";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOX_WARNING = "boxWarning";
@@ -204,7 +204,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SUN = "sun";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BUTTON_YELLOW = "buttonYellow";
 	 
-	 Text nBombs = new Text(40, 300, resourcesManager.font, "+ 1", new TextOptions(HorizontalAlign.LEFT), vbom);
 	 
 	// ---------------------------- LEVEL 3 VARIABLES ---------------------------------------------------------------
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE = "cradle";
@@ -223,6 +222,17 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_TILE_GRASS = "tileGrass";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GRASS_MAIN = "grassMain";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_RINO = "RinoEnemy";
+	 
+	 
+	// ---------------------------- LEVEL 4 VARIABLES ---------------------------------------------------------------
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE1 = "cradle1";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE2 = "cradle2";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE3 = "cradle3";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE4 = "cradle4";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE5 = "cradle5";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_EXPULSOR = "expulsor";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MINERAL = "mineral";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MUSHROOM_TREE = "mushroomTree";
 
 	// ---------------------- METHODS ----------------------------------------------------------------------------------------------------------
 	
@@ -423,6 +433,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		       }
 		     );
 			 engine.registerUpdateHandler(playT);	
+		 }
+		 
+		 else if (ResourcesManager.getInstance().getLevelComplete() == 4)
+		 {
+			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
+			 player.setRunning();
 		 }
     }
 
@@ -1602,27 +1618,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    //levelObject.setSize(width, height);
 	                }
 	                
-	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOMB))
-	                {
-	                	levelObject = new Sprite(x, y, resourcesManager.bomb, vbom)
-	                    {
-	                        @Override
-	                        protected void onManagedUpdate(float pSecondsElapsed) 
-	                        {
-	                            super.onManagedUpdate(pSecondsElapsed);
-	                            if (player.collidesWith(this))
-	                            {
-	                                this.setVisible(false);
-	                        		gameHUD.attachChild(nBombs);
-	                                this.setIgnoreUpdate(true);
-	                            }
-	                           
-	                        }
-	                    };
-	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.1f)));
-	                    //levelObject.setSize(width, height);
-	                }
-	                
 	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOX_EXPLOSIVE_ALT))
 	                {
 	                    levelObject = new Sprite(x, y, resourcesManager.boxExplosiveAlt, vbom);
@@ -2131,7 +2126,93 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		            final int height = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_HEIGHT);
 		            final String type = SAXUtils.getAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_TYPE);
 		            
-		            final Sprite levelObject = null;
+		            final Sprite levelObject;
+		            
+		            if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER))
+	                {
+	                    player = new Player(x, y, vbom, camera,  physicsWorld)
+	                    {
+	                        @Override
+	                        public void onDie()
+	                        {
+	                            if (!gameOverDisplayed)
+	                    	    {
+	                    	        displayGameOverText(3);
+	                    	    }
+	                        }
+	                    };
+	                    levelObject = player;
+	                    levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE1))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.cradlePlatform1, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("cradle1");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE2))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.cradlePlatform2, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("cradle2");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE3))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.cradlePlatform3, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("cradle3");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE4))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.cradlePlatform4, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("cradle4");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE5))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.cradlePlatform5, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("cradle5");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_EXPULSOR))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.expulsor, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("expulsor");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MINERAL))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.mineral, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("mineral");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MUSHROOM_TREE))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.mushroomTree, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("mushroomTree");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else
+	                {
+	                    throw new IllegalArgumentException();
+	                }
 		            
 		            levelObject.setCullingEnabled(true);
 
