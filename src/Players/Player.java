@@ -33,6 +33,7 @@ public abstract class Player extends AnimatedSprite
 	public int time = 80;
 	private boolean mineColision;
 	private boolean spikesColision;
+	private boolean RinoColision;
 	private boolean enemy;
 	private boolean slimeE;
 	private boolean stopAccelerometer;
@@ -56,6 +57,7 @@ public abstract class Player extends AnimatedSprite
 		canRun = false;
 		spikesColision = false;
 		stopAccelerometer = false;
+		RinoColision = false;
 		colideAscensor = false;
 		waterColision = false;
 		boxTouched = false;
@@ -249,4 +251,14 @@ public abstract class Player extends AnimatedSprite
 	{
 		this.boxTouched = box;
 	}	
+	
+	public boolean getRinoColision()
+	{
+		return (this.RinoColision);
+	}
+	
+	public void setRinoColision(boolean colision)
+	{
+		this.RinoColision = colision;
+	}
 }

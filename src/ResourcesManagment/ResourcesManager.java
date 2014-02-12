@@ -176,9 +176,11 @@ public class ResourcesManager
     
     //Sound and effects
     private Sound explosion;
+    private Sound jump;
     private Sound coin;
     private Sound machine;
     private Sound spikeS;
+    private Sound gorilla;
     private Sound flySound;
     private Sound openK;
     private Music backgroundMusic;
@@ -736,6 +738,21 @@ public class ResourcesManager
         	{
         	    e.printStackTrace();
         	}
+        	
+        	// LOAD JUMP SOUND
+        	try 
+        	{    
+        		this.jump = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "jump.ogg");
+        		//this.explosion.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
     		
     	}
     	else if (this.level == 2)
@@ -804,6 +821,21 @@ public class ResourcesManager
         	{   
         		e.printStackTrace();
         	}
+        	
+        	// LOAD JUMP SOUND
+        	try 
+        	{    
+        		this.jump = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "jump.ogg");
+        		//this.explosion.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
     		
     	}
     	else if (this.level == 3)
@@ -842,10 +874,40 @@ public class ResourcesManager
         		e.printStackTrace();
         	}
         	
+        	// LOAD GORILLA SOUND
+        	try 
+        	{    
+        		this.gorilla = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "Strong_Punch-Mike.ogg");
+        		//this.explosion.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
+        	
         	// LOAD MINE EXPLOSION SOUND EFFECT
         	try 
         	{    
         		this.explosion = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "explosion.ogg");
+        		//this.explosion.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
+        	
+        	// LOAD JUMP SOUND
+        	try 
+        	{    
+        		this.jump = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "jump.ogg");
         		//this.explosion.setLoaded(true);
         	} 
         	catch (IllegalStateException e) 
@@ -1082,5 +1144,15 @@ public class ResourcesManager
 	public Sound getMachineSound()
 	{
 		return (this.machine);
+	}
+	
+	public Sound getJumpSound()
+	{
+		return (this.jump);
+	}
+	
+	public Sound getGorillaSound()
+	{
+		return (this.gorilla);
 	}
 }

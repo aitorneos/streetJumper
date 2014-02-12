@@ -2195,6 +2195,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		if (pSceneTouchEvent.isActionDown())
 	    {
 			this.isJumping = true;
+			ResourcesManager.getInstance().getJumpSound().play();
 			player.jump();        
 	    }
 		
@@ -2639,6 +2640,68 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
             	}
             	
             	//------------------------------------------ LEVEL 3 --------------------------------------------------------------------------------------
+            	
+            	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("RinoEnemy"))
+            	{
+            		if (player.getRinoColision() == false)
+            		{
+            			player.setRinoColision(true);
+            			player.life = player.life - 1;
+                        if (player.life == 2) gameHUD.detachChild(hurt3);
+                        if (player.life == 1) gameHUD.detachChild(hurt2);
+                        if (player.life == 0) gameHUD.detachChild(hurt1);
+                        
+                        ResourcesManager.getInstance().getGorillaSound().play();
+                        
+                        // Control Impulse and direction
+    	            	if (player.body.getLinearVelocity().x > 0)
+    	            	{
+    	            		player.body.applyLinearImpulse(-50.0f, 20.0f, player.body.getPosition().x - 5, player.body.getPosition().y);
+    	            	}
+    	            	
+    	            	else if (player.body.getLinearVelocity().x < 0)
+    	            	{
+    	            		player.body.applyLinearImpulse(50.0f, 20.0f, player.body.getPosition().x + 5, player.body.getPosition().y);
+
+    	            	}
+    	            	
+    	            	else
+    	            	{
+    	            		
+    	            		player.body.setLinearVelocity(player.body.getLinearVelocity().x, player.body.getLinearVelocity().y);
+    	            	}
+    	            	
+    	            	// DO flickering while period of time after touching the spikes 
+    		       		flicker = new playTimer(0.1f , new playTimer.ITimerCallback()
+    		       	    {
+    		            	boolean visible = false;
+    		       	        @Override
+    		       	        public void onTick()
+    		       	        {
+    		       	            player.setVisible(visible);
+    		       	            visible = !visible;
+    		       	        }
+    		       	      }
+    		       	    );
+    		       		engine.registerUpdateHandler(flicker);
+    		       		
+    	                engine.registerUpdateHandler(new TimerHandler(1.0f, new ITimerCallback()
+    	                {                                    
+    	                    public void onTimePassed(final TimerHandler pTimerHandler)
+    	                    {
+    	                        pTimerHandler.reset();
+    	                        flicker.pause();
+    	                        flicker.reset();
+    	                        if (player.isVisible() == false) player.setVisible(true);
+    	                        engine.unregisterUpdateHandler(pTimerHandler);
+    	                        engine.unregisterUpdateHandler(flicker);
+    	                        
+    	                    }
+    	                }));
+    	                
+            		}
+            	}
+            	
             	 // Contact Player ------> MINES (EXPLOSION) 
 	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("switchGreenOff"))
 	            {
@@ -2826,6 +2889,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    }
 	                }));
 
+	            }
+	            
+	            if(x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("RinoEnemy"))
+	            {
+	            	engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+	                {                                    
+	                    public void onTimePassed(final TimerHandler pTimerHandler)
+	                    {
+	                        pTimerHandler.reset();
+	                        player.setRinoColision(false);
+	                        engine.unregisterUpdateHandler(pTimerHandler); 
+	                    }
+	                }));
 	            }
 	        }
 	        
