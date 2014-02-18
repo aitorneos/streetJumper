@@ -471,10 +471,10 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
     	final Scene scene = this.mEngine.getScene();
     	
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/Players/");
-    	if (playerID == 0 && resourcesManager.controlLoaded == false) resourcesManager.playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(resourcesManager.gameTextureAtlas, this, "player.png", 3, 1);
-        if (playerID == 1 && resourcesManager.controlLoaded == false) resourcesManager.playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(resourcesManager.gameTextureAtlas, this, "player2.png", 3, 1);
-        if (playerID == 2 && resourcesManager.controlLoaded == false) resourcesManager.playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(resourcesManager.gameTextureAtlas, this, "player3.png", 3, 1);
-        if (playerID == 3 && resourcesManager.controlLoaded == false) resourcesManager.playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(resourcesManager.gameTextureAtlas, this, "player4.png", 3, 1);
+    	if (playerID == 0 && resourcesManager.controlLoaded == true) resourcesManager.playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(resourcesManager.gameTextureAtlas, this, "player.png", 3, 1);
+        if (playerID == 1 && resourcesManager.controlLoaded == true) resourcesManager.playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(resourcesManager.gameTextureAtlas, this, "player2.png", 3, 1);
+        if (playerID == 2 && resourcesManager.controlLoaded == true) resourcesManager.playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(resourcesManager.gameTextureAtlas, this, "player3.png", 3, 1);
+        if (playerID == 3 && resourcesManager.controlLoaded == true) resourcesManager.playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(resourcesManager.gameTextureAtlas, this, "player4.png", 3, 1);
         
         SceneManager.getInstance().getGameScene().playerOnline = new PlayerOnline(pX, pY, this.getVertexBufferObjectManager(), camera, SceneManager.getInstance().getGameScene().physicsWorld)
         {	

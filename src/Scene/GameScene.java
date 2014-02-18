@@ -485,6 +485,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
     	 camera.setCenter(400, 240);
     	 camera.setChaseEntity(null);
     	 
+    	 ResourcesManager.getInstance().controlLoaded = false;
+    	 
     	 if (levelID == 1)
     	 {
     		 ResourcesManager.getInstance().unloadGameTextures(levelID);
