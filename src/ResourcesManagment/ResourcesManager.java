@@ -572,6 +572,13 @@ public class ResourcesManager
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level1/");
         complete_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "levelCompleteWindow.png");
         complete_stars_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "star.png", 2, 1);
+        coin_silver = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin_silver.png");
+        coin_gold = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin_gold.png");
+        coin_bronze = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin_bronze.png");
+        hurtHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "heart.png");
+        
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level3/");
+        key_blue = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "key_blue.png");
         
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/Players/");
         if (playerSelected == 0) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player.png", 3, 1);
@@ -611,6 +618,11 @@ public class ResourcesManager
 	  else if (this.getLevelComplete() == 3)
 	  {
 		  this.loadWalkDaWalkOneFont();
+	  }
+	  
+	  else if (this.getLevelComplete() == 4)
+	  {
+		  this.loadBodieMFHollyFont();
 	  }
     }
     
@@ -960,6 +972,21 @@ public class ResourcesManager
         	{   
         		e.printStackTrace();
         	}
+        	
+        	// LOAD COIN COLLISION SOUND EFFECT
+        	try 
+        	{    
+        		this.coin = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "moneda.ogg");
+        		//this.coin.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
     	}
     }
     
@@ -1079,6 +1106,14 @@ public class ResourcesManager
         	coin_bronze = null;
         	coin_gold = null;
         	starHUD = null;
+    	}
+    	
+    	else if (levelID == 4)
+    	{
+    		gameTextureAtlas.unload();
+        	gameTextureAtlas.clearTextureAtlasSources();
+        	font.unload();
+        	loadingFont.unload();
     	}
     	
     }

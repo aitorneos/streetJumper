@@ -36,6 +36,7 @@ import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
 
+
 //---------------------------------- PARTICLE SYSTEM && NETWORK ------------------------------------------------------
 import particleSystem.FireParticleSystem;
 import particleSystem.waterExplosion;
@@ -61,6 +62,7 @@ import Shader.RadialBlur;
 import Shader.WaterMaskEffectShader;
 import Shader.WaterSurfaceEntity;
 import Timers.playTimer;
+
 
 
 //---------------------------------- INNER && ANONIMOUS CLASES ------------------------------------------------------
@@ -300,6 +302,26 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		    gameHUD.attachChild(hurt3);
 	    }
 	    
+	    else if (ResourcesManager.getInstance().getLevelComplete() == 4)
+	    {
+	    	// CREATE SCORE TEXT
+		    scoreText = new Text(155, 450, resourcesManager.font, "Score: 0", new TextOptions(HorizontalAlign.LEFT), vbom);
+		    lifeText = new Text(70, 390, resourcesManager.font, "Life:", new TextOptions(HorizontalAlign.LEFT), vbom);
+		    timeText = new Text(660, 40, resourcesManager.font, "TIME:80", new TextOptions(HorizontalAlign.LEFT), vbom);
+		    scoreText.setSkewCenter(0, 0);    
+		    gameHUD.attachChild(scoreText);
+		    gameHUD.attachChild(lifeText);
+		    gameHUD.attachChild(timeText);
+		    
+		    // Put Initial Life (hurts)
+		    hurt1 = new Sprite(165, 390, resourcesManager.hurtHUD, vbom);
+			hurt2 = new Sprite(205, 390, resourcesManager.hurtHUD, vbom);
+			hurt3 = new Sprite(245, 390, resourcesManager.hurtHUD, vbom);
+		    gameHUD.attachChild(hurt1);
+		    gameHUD.attachChild(hurt2);
+		    gameHUD.attachChild(hurt3);
+	    }
+	    
 	    camera.setHUD(gameHUD);
 	}
 	
@@ -462,6 +484,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	{
         		disposeScene(3);
         	}
+    		
+        	else if (ResourcesManager.getInstance().getLevelComplete() == 4)
+        	{
+        		disposeScene(4);
+        	}
         	SceneManager.getInstance().loadMenuScene(engine);
     	}
     }
@@ -601,8 +628,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 gameHUD.detachChild(scoreText);
         	 gameHUD.detachChild(lifeText);
         	 gameHUD.detachChild(timeText);
-        	 gameHUD.detachChild(player);
-        	 gameHUD.detachChild(enemy);
         	 gameHUD.detachChildren();
         	 gameHUD.detachSelf();
         	 gameHUD.dispose(); 
@@ -677,8 +702,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 gameHUD.detachChild(scoreText);
         	 gameHUD.detachChild(lifeText);
         	 gameHUD.detachChild(timeText);
-        	 gameHUD.detachChild(player);
-        	 gameHUD.detachChild(enemy);
         	 gameHUD.detachChildren();
         	 gameHUD.detachSelf();
         	 gameHUD.dispose(); 
@@ -729,6 +752,60 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 sps5.reset();
         	 
     		 System.gc();
+    	 }
+    	 
+    	 else if (levelID == 4)
+    	 {
+    		 ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+    		 ResourcesManager.getInstance().unloadGameTextures(levelID);
+        	 ResourcesManager.getInstance().unloadGameSounds();
+
+        	 // code responsible for disposing scene
+        	 // removing all game scene objects.
+        	 
+        	// --------------------------------------- SCENE SPRITES ---------------------------------------------------------------
+
+        	this.clearTouchAreas();
+         	this.clearUpdateHandlers();
+         	this.clearChildScene();
+         	this.detachSelf();
+         	this.dispose();
+    		 
+    		// ------------------------------------------ HUD -----------------------------------------------------------------------
+        	 gameHUD.clearChildScene();
+        	 gameHUD.clearEntityModifiers();
+        	 gameHUD.clearTouchAreas();
+        	 gameHUD.clearUpdateHandlers();
+        	 gameHUD.detachChild(hurt1);
+        	 gameHUD.detachChild(hurt2);
+        	 gameHUD.detachChild(hurt3);
+        	 gameHUD.detachChild(scoreText);
+        	 gameHUD.detachChild(lifeText);
+        	 gameHUD.detachChild(timeText);
+        	 gameHUD.detachChildren();
+        	 gameHUD.detachSelf();
+        	 gameHUD.dispose(); 
+        	 
+        	 hurt1.clearEntityModifiers();
+        	 hurt1.detachSelf();
+        	 hurt1.dispose();
+        	 hurt2.clearEntityModifiers();
+        	 hurt2.detachSelf();
+        	 hurt2.dispose();
+        	 hurt3.clearEntityModifiers();
+        	 hurt3.detachSelf();
+        	 hurt3.dispose();
+        	 
+        	 scoreText.clearEntityModifiers();
+        	 scoreText.clearUpdateHandlers();
+        	 lifeText.clearEntityModifiers();
+        	 lifeText.clearUpdateHandlers();
+        	 timeText.clearEntityModifiers();
+        	 timeText.clearUpdateHandlers();
+        	 
+        	 this.clearScene();
+        	 
+        	 System.gc();
     	 }
     }
     
@@ -2011,7 +2088,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.ONE, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
-	   	                                ResourcesManager.getInstance().setLevelComplete(2);
+	   	                                ResourcesManager.getInstance().setLevelComplete(4);
 	   	                                
 	   	                                // Clear Scenary 1 Graphics ...
 	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
@@ -2036,7 +2113,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.TWO, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
-	   	                                ResourcesManager.getInstance().setLevelComplete(2);
+	   	                                ResourcesManager.getInstance().setLevelComplete(4);
 	   	                                
 	   	                                // Clear Scenary 1 Graphics ...
 	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
@@ -2061,7 +2138,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.THREE, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
-	   	                                ResourcesManager.getInstance().setLevelComplete(2);
+	   	                                ResourcesManager.getInstance().setLevelComplete(4);
 	   	                                
 	   	                                // Clear Scenary 1 Graphics ...
 	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
@@ -2210,6 +2287,95 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    body.setUserData("mushroomTree");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
 		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.coin_silver, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                                addToScore(3);
+	                                ResourcesManager.getInstance().getCoinSound().play();
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                    //levelObject.setSize(width, height);
+	                } 
+	                
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN_GOLD))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.coin_gold, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                                addToScore(5);
+	                                ResourcesManager.getInstance().getCoinSound().play();
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                    //levelObject.setSize(width, height);
+	                } 
+		            
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN_BRONZE))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.coin_bronze, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                                addToScore(1);
+	                                ResourcesManager.getInstance().getCoinSound().play();
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_KEY_BLUE))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.key_blue, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                            	player.hasKey = true;
+	                            	player.hasKey = true;
+	                            	final Sprite keyBlue = new Sprite(30, 340, resourcesManager.keyHUD, vbom);
+	                     	    	gameHUD.attachChild(keyBlue);
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                } 
 		            
 		            else
 	                {
