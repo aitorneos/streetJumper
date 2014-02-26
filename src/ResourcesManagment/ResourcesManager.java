@@ -687,10 +687,10 @@ public class ResourcesManager
     	FontFactory.setAssetBasePath("font/");
         final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "Ming in Bling.ttf", 75, true, Color.LTGRAY, 4, Color.RED);
+        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "Ming in Bling.ttf", 75, true, Color.LTGRAY, 4, Color.DKGRAY);
         font.load(); 
         
-        loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "Ming in Bling.ttf", 100, true, Color.LTGRAY , 3, Color.RED);
+        loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "Ming in Bling.ttf", 100, true, Color.LTGRAY , 3, Color.DKGRAY);
         loadingFont.load(); 
     }
     // ------------------------------------- LOAD AUDIO (SOUND && MUSIC) ------------------------------------------------------------------

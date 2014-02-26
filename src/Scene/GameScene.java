@@ -461,6 +461,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		 {
 			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
 			 player.setRunning();
+			 
+			// Create and initialize timer options an update
+			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
+		     {
+		         @Override
+		         public void onTick()
+		         {
+		            if (player.time > 0) player.time = player.time - 1;
+		            timeText.setText("Time: " + player.time);
+		         }
+		       }
+		     );
+			 engine.registerUpdateHandler(playT);	
 		 }
     }
 
