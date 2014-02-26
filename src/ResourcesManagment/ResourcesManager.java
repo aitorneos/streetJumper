@@ -579,6 +579,7 @@ public class ResourcesManager
         
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level3/");
         key_blue = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "key_blue.png");
+        keyHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyBlue.png");
         
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/Players/");
         if (playerSelected == 0) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player.png", 3, 1);
@@ -604,27 +605,28 @@ public class ResourcesManager
         this.loadToonFont();
     }
     
-    public void loadGameFonts()
-    {
-	  if (this.getLevelComplete() == 1)
-	  {
-		  this.loadBodieMFHollyFont();
-	  }
-	  
-	  else if (this.getLevelComplete() == 2)
-	  {
-		  this.loadBurnstowFont();
-	  }
-	  else if (this.getLevelComplete() == 3)
-	  {
-		  this.loadWalkDaWalkOneFont();
-	  }
-	  
-	  else if (this.getLevelComplete() == 4)
-	  {
-		  this.loadBodieMFHollyFont();
-	  }
-    }
+	public void loadGameFonts()
+	{
+		if (this.getLevelComplete() == 1)
+		{
+			this.loadBodieMFHollyFont();
+		}
+		  
+		else if (this.getLevelComplete() == 2)
+		{
+			 this.loadBurnstowFont();
+		}
+		
+		else if (this.getLevelComplete() == 3)
+		{
+			this.loadWalkDaWalkOneFont();
+		}
+		  
+		else if (this.getLevelComplete() == 4)
+		{
+			this.loadBlackbookTwoFont();
+		}
+	}
     
     private void loadToonFont()
     {
@@ -677,6 +679,18 @@ public class ResourcesManager
         font.load(); 
         
         loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "orange juice 2.0.ttf", 100, true, Color.LTGRAY , 1, Color.GREEN);
+        loadingFont.load(); 
+    }
+    
+    private void loadBlackbookTwoFont()
+    {
+    	FontFactory.setAssetBasePath("font/");
+        final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
+        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "Ming in Bling.ttf", 75, true, Color.LTGRAY, 4, Color.RED);
+        font.load(); 
+        
+        loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "Ming in Bling.ttf", 100, true, Color.LTGRAY , 3, Color.RED);
         loadingFont.load(); 
     }
     // ------------------------------------- LOAD AUDIO (SOUND && MUSIC) ------------------------------------------------------------------
