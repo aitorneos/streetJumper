@@ -972,6 +972,25 @@ public class ResourcesManager
     	
     	else if (this.level == 4)
     	{
+    		
+    		// LOAD GAME SCENE BACKGROUND MUSIC
+        	try 
+        	{
+				this.backgroundMusic = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity.getApplicationContext(),"POL-boring-cavern-short.ogg");
+			} 
+        	catch (IllegalStateException e) 
+        	{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+        	catch (IOException e) 
+        	{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	    this.backgroundMusic.setVolume(0.25f, 0.25f);
+    	    this.backgroundMusic.setLooping(true);
+    	    
     		// LOAD JUMP SOUND
         	try 
         	{    
@@ -992,6 +1011,21 @@ public class ResourcesManager
         	{    
         		this.coin = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "moneda.ogg");
         		//this.coin.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
+        	
+        	// LOAD SPIKE COLISION SOUND EFFECT
+        	try 
+        	{    
+        		this.spikeS = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "spike.ogg");
+        		//this.explosion.setLoaded(true);
         	} 
         	catch (IllegalStateException e) 
         	{   
@@ -1143,13 +1177,20 @@ public class ResourcesManager
         	this.openK.stop();
         	this.spikeS.stop();
     	}
+    	
     	else if (this.level == 2)
     	{
     		this.backgroundMusic.stop();
         	this.coin.stop();
         	this.explosion.stop();
     	}
+    	
     	else if (this.level == 3)
+    	{
+    		this.backgroundMusic.stop();
+    	}
+    	
+    	else if (this.level == 4)
     	{
     		this.backgroundMusic.stop();
     	}

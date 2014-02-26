@@ -346,6 +346,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		 controlAc = 0;
 		 ResourcesManager.getInstance().controlLoaded = true;
 		
+		 // -------------------- LEVEL 1 -------------------------------------------------------------------------------------------
 		 if (ResourcesManager.getInstance().getLevelComplete() == 1)
 		 {
 			 player.setRunning();
@@ -390,6 +391,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 engine.registerUpdateHandler(playT);	
 		 }
 		 
+		// -------------------- LEVEL 2 -------------------------------------------------------------------------------------------
 		 else if (ResourcesManager.getInstance().getLevelComplete() == 2)
 		 {
 			 player.setRunning();
@@ -413,6 +415,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 engine.registerUpdateHandler(playT);	
 		 }
 		 
+		// -------------------- LEVEL 3 -------------------------------------------------------------------------------------------
 		 else if (ResourcesManager.getInstance().getLevelComplete() == 3)
 		 {
 			 player.setRunning();
@@ -457,9 +460,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 engine.registerUpdateHandler(playT);	
 		 }
 		 
+		// -------------------- LEVEL 4 -------------------------------------------------------------------------------------------
 		 else if (ResourcesManager.getInstance().getLevelComplete() == 4)
 		 {
 			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
+			 ResourcesManager.getInstance().getSceneMusic().play();
 			 player.setRunning();
 			 
 			// Create and initialize timer options an update
@@ -3030,7 +3035,72 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		                    }
 		                }));
 	            	}
-	            }           	
+	            }  
+	            
+	            
+	          //------------------------------------------ LEVEL 4 --------------------------------------------------------------------------------------
+	          
+	            // Contact player - SPIKES
+	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("mineral") && x1.getBody().getPosition().y > x2.getBody().getPosition().y + 2.0f)
+	            {
+
+	            	if (player.getSpikesColision() == false)
+	            	{
+	            		player.setSpikesColision(true);
+	            		ResourcesManager.getInstance().getSpikeSound().play();
+	            		// Control Impulse and direction
+		            	if (player.body.getLinearVelocity().x > 0)
+		            	{
+		            		player.body.setLinearVelocity(-20, 0);
+		            		player.body.applyLinearImpulse(-30.0f, 10.0f, player.body.getPosition().x - 20, player.body.getPosition().y);
+		            	}
+		            	
+		            	else if (player.body.getLinearVelocity().x < 0)
+		            	{
+		            		player.body.setLinearVelocity(20, 0);
+		            		player.body.applyLinearImpulse(30.0f, 10.0f, player.body.getPosition().x + 20, player.body.getPosition().y);
+
+		            	}
+		            	
+		            	else
+		            	{
+		            		
+		            		player.body.setLinearVelocity(player.body.getLinearVelocity().x, player.body.getLinearVelocity().y);
+		            	}
+	            		
+		            	player.life = player.life - 1;
+                        if (player.life == 2) gameHUD.detachChild(hurt3);
+                        if (player.life == 1) gameHUD.detachChild(hurt2);
+                        if (player.life == 0) gameHUD.detachChild(hurt1);
+                        
+		            	// DO flickering while period of time after touching the spikes 
+			       		flicker = new playTimer(0.1f , new playTimer.ITimerCallback()
+			       	    {
+			            	boolean visible = false;
+			       	        @Override
+			       	        public void onTick()
+			       	        {
+			       	            player.setVisible(visible);
+			       	            visible = !visible;
+			       	        }
+			       	      }
+			       	    );
+			       		engine.registerUpdateHandler(flicker);
+
+		                engine.registerUpdateHandler(new TimerHandler(1.0f, new ITimerCallback()
+		                {                                    
+		                    public void onTimePassed(final TimerHandler pTimerHandler)
+		                    {
+		                        pTimerHandler.reset();
+		                        flicker.pause();
+		                        flicker.reset();
+		                        if (player.isVisible() == false) player.setVisible(true);
+		                        engine.unregisterUpdateHandler(pTimerHandler);
+		                        engine.unregisterUpdateHandler(flicker);
+		                    }
+		                }));
+	            	}
+	            }
             	
 	        }
 
@@ -3161,6 +3231,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    {
 	                        pTimerHandler.reset();
 	                        player.setRinoColision(false);
+	                        engine.unregisterUpdateHandler(pTimerHandler); 
+	                    }
+	                }));
+	            }
+	            
+	            if (x1.getBody().getUserData().equals("mineral") && x2.getBody().getUserData().equals("player"))
+	            {
+	            	engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+	                {                                    
+	                    public void onTimePassed(final TimerHandler pTimerHandler)
+	                    {
+	                        pTimerHandler.reset();
+	                        player.setSpikesColision(false);
 	                        engine.unregisterUpdateHandler(pTimerHandler); 
 	                    }
 	                }));
