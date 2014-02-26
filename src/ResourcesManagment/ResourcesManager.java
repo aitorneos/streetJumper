@@ -687,7 +687,7 @@ public class ResourcesManager
     	FontFactory.setAssetBasePath("font/");
         final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "Ming in Bling.ttf", 75, true, Color.LTGRAY, 4, Color.DKGRAY);
+        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "Ming in Bling.ttf", 75, true, Color.DKGRAY, 4, Color.BLACK);
         font.load(); 
         
         loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "Ming in Bling.ttf", 100, true, Color.LTGRAY , 3, Color.DKGRAY);
