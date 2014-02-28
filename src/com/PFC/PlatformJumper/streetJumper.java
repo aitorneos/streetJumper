@@ -173,9 +173,6 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 		configChooserOptions.setRequestedDepthSize(16);
 		this.showDialog(DIALOG_CHOOSE_SERVER_OR_CLIENT_ID);
 	    return engineOptions;
-    	
-        /*final Camera camera = new Camera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-        return new EngineOptions(true, ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), camera);*/
     }
 	
 	
@@ -214,7 +211,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer != null)
 	         	{
 	         		final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER);
-	         		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 2.1f);
+	         		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 3.0f);
 	         		streetJumper.this.mSocketServer.sendBroadcastServerMessage(movePlayerServerMessage);
 	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerServerMessage);
 	         	}
@@ -223,7 +220,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer == null)
 	         	{
 	         		final MovePlayerClientServerMessage movePlayerClientServerMessage = (MovePlayerClientServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT);
-	         		movePlayerClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 2.1f);
+	         		movePlayerClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 3.0f);
 	         		streetJumper.this.mServerConnector.sendClientMessage(movePlayerClientServerMessage);
 	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerClientServerMessage);
 	         	}

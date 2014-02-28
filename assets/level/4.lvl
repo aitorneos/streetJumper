@@ -16,9 +16,9 @@
 	<entity x="1105"  y="204"  width="60"  height="60"  type="cradle5" />
 	<entity x="1275"  y="275"  width="60"  height="60"  type="cradle5" />
 	<entity x="1459"  y="338"  width="60"  height="60"  type="cradle5" />
-	<entity x="1543"  y="100"  width="60"  height="60"  type="cradle4" />
-	<entity x="1725"  y="264"  width="60"  height="60"  type="expulsor" />
-	<entity x="1675"  y="257"  width="60"  height="60"  type="mineral" />
+	<entity x="1700"  y="100"  width="60"  height="60"  type="cradle4" />
+	<entity x="1850"  y="264"  width="60"  height="60"  type="expulsor" />
+	<entity x="1775"  y="257"  width="60"  height="60"  type="mineral" />
 	<entity x="1876"  y="343"  width="60"  height="60"  type="cradle2" />
 	<entity x="90"  y="359"  width="60"  height="60"  type="coin_gold" />
 	<entity x="155"  y="358"  width="60"  height="60"  type="coin_gold" />

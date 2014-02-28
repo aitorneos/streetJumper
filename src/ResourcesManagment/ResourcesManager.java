@@ -180,6 +180,7 @@ public class ResourcesManager
     public ITextureRegion fireDrop;
     public ITextureRegion mineExplosion;
     public ITextureRegion rainFire;
+    public ITextureRegion expulsorParticle;
     
     //Sound and effects
     private Sound explosion;
@@ -567,6 +568,7 @@ public class ResourcesManager
         expulsor = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "expulsor.png");
         mineral = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "mineral.png");
         mushroomTree = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "mushroomTree.png");
+        expulsorParticle = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "expulsorParticle.png");
         
         
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level1/");

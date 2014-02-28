@@ -37,8 +37,10 @@ import org.xml.sax.Attributes;
 
 
 
+
 //---------------------------------- PARTICLE SYSTEM && NETWORK ------------------------------------------------------
 import particleSystem.FireParticleSystem;
+import particleSystem.expulsorParticleSystem;
 import particleSystem.waterExplosion;
 import particleSystem.waterParticleSystem;
 import Animated_Features.SpringBoarder;
@@ -62,6 +64,7 @@ import Shader.RadialBlur;
 import Shader.WaterMaskEffectShader;
 import Shader.WaterSurfaceEntity;
 import Timers.playTimer;
+
 
 
 
@@ -130,16 +133,22 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	private boolean playSoundGreen = false;
 	private LevelCompleteWindow levelCompleteWindow;
 	public boolean isJumping = false;
+	
+	// Particle systems
 	waterParticleSystem ps;
 	waterParticleSystem ps2;
 	waterParticleSystem ps3;
 	waterParticleSystem ps4;
 	waterParticleSystem ps5;
+	expulsorParticleSystem eps1;
+	expulsorParticleSystem eps2;
 	SpriteParticleSystem sps;
 	SpriteParticleSystem sps2;
 	SpriteParticleSystem sps3;
 	SpriteParticleSystem sps4;
 	SpriteParticleSystem sps5;
+	SpriteParticleSystem ex1;
+	SpriteParticleSystem ex2;
 	FireParticleSystem explosion;
 	FireParticleSystem explosion2;
 	waterExplosion wp;
@@ -466,6 +475,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
 			 ResourcesManager.getInstance().getSceneMusic().play();
 			 player.setRunning();
+			 
+			// Put expulsor particles system
+			 eps1 = new expulsorParticleSystem();
+			 attachChild (ex1 = eps1.build(engine, 1010, 160));
+			 
+			 eps2 = new expulsorParticleSystem();
+			 attachChild (ex2 = eps2.build(engine, 1850, 275));
 			 
 			// Create and initialize timer options an update
 			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
@@ -3073,30 +3089,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
                         if (player.life == 1) gameHUD.detachChild(hurt2);
                         if (player.life == 0) gameHUD.detachChild(hurt1);
                         
-		            	// DO flickering while period of time after touching the spikes 
-			       		flicker = new playTimer(0.1f , new playTimer.ITimerCallback()
-			       	    {
-			            	boolean visible = false;
-			       	        @Override
-			       	        public void onTick()
-			       	        {
-			       	            player.setVisible(visible);
-			       	            visible = !visible;
-			       	        }
-			       	      }
-			       	    );
-			       		engine.registerUpdateHandler(flicker);
 
 		                engine.registerUpdateHandler(new TimerHandler(1.0f, new ITimerCallback()
 		                {                                    
 		                    public void onTimePassed(final TimerHandler pTimerHandler)
 		                    {
 		                        pTimerHandler.reset();
-		                        flicker.pause();
-		                        flicker.reset();
 		                        if (player.isVisible() == false) player.setVisible(true);
 		                        engine.unregisterUpdateHandler(pTimerHandler);
-		                        engine.unregisterUpdateHandler(flicker);
 		                    }
 		                }));
 	            	}
@@ -3236,9 +3236,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                }));
 	            }
 	            
-	            if (x1.getBody().getUserData().equals("mineral") && x2.getBody().getUserData().equals("player"))
+	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("mineral"))
 	            {
-	            	engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+	            	engine.registerUpdateHandler(new TimerHandler(2.0f, new ITimerCallback()
 	                {                                    
 	                    public void onTimePassed(final TimerHandler pTimerHandler)
 	                    {
