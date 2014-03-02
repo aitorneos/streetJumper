@@ -97,6 +97,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	private Text scoreText;
 	private Text lifeText;
 	private Text timeText;
+	private Text warningText;
 	private int score = 0;
 	public boolean firstTouch = false;
 	public PhysicsWorld physicsWorld;
@@ -410,6 +411,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 wp = new waterExplosion();
 			 waterEx = wp.build(engine, 1800 , 150);
 			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
+			 warningText = new Text(400, 240, resourcesManager.font, "Switcher Activated!\nSearch It", new TextOptions(HorizontalAlign.CENTER), vbom);
+			 warningText.setColor(android.graphics.Color.BLACK);
+			 
 			// Create and initialize timer options an update
 			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
 		     {
@@ -475,6 +479,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
 			 ResourcesManager.getInstance().getSceneMusic().play();
 			 player.setRunning();
+			 warningText = new Text(400, 240, resourcesManager.font, "Switcher Activated!\nSearch It", new TextOptions(HorizontalAlign.CENTER), vbom);
+			 warningText.setColor(android.graphics.Color.WHITE);
 			 
 			// Put expulsor particles system
 			 eps1 = new expulsorParticleSystem();
@@ -1653,8 +1659,20 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		                            if (player.collidesWith(this))
 		                            {
 		                                player.switch1Touched = true;
-		                            }
-		                           
+		                                if (resourcesManager.getLevelComplete() == 2)
+		                     	    	{
+		                     	    		gameHUD.attachChild(warningText);
+			                     	    	engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+			        		                {                                    
+			        		                    public void onTimePassed(final TimerHandler pTimerHandler)
+			        		                    {
+			        		                        pTimerHandler.reset();
+			        		                        engine.unregisterUpdateHandler(pTimerHandler);  
+			        		                        gameHUD.detachChild(warningText);
+			        		                    }
+			        		                }));	
+		                     	    	}
+		                            }  
 		                        }
 		       			 };
 		       			 levelObject = switcher;
@@ -2402,6 +2420,21 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            	player.hasKey = true;
 	                            	final Sprite keyBlue = new Sprite(30, 340, resourcesManager.keyHUD, vbom);
 	                     	    	gameHUD.attachChild(keyBlue);
+	                     	    	
+	                     	    	if (resourcesManager.getLevelComplete() == 4)
+	                     	    	{
+	                     	    		gameHUD.attachChild(warningText);
+		                     	    	engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+		        		                {                                    
+		        		                    public void onTimePassed(final TimerHandler pTimerHandler)
+		        		                    {
+		        		                        pTimerHandler.reset();
+		        		                        engine.unregisterUpdateHandler(pTimerHandler);  
+		        		                        gameHUD.detachChild(warningText);
+		        		                    }
+		        		                }));	
+	                     	    	}
+	                     	    	
 	                                this.setVisible(false);
 	                                switcher.setVisible(true);
 	                                this.setIgnoreUpdate(true);
