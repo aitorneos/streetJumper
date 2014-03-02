@@ -34,31 +34,29 @@ public class expulsorParticleSystem implements ParticleSystemFactory
 
 	    //Max & min rate are the maximum particles per second and the minimum particles per second.
 	    final float maxRate = 25;
-	    final float minRate = 12;
+	    final float minRate = 0;
 
 	    //This variable determines the maximum particles in the particle system.
-	    final int maxParticles = 30;
+	    final int maxParticles = 25;
 
 	    //Particle emitter which will set all of the particles at a ertain point when they are initialized.
 	    final CircleParticleEmitter circleParticleEmtitter = new CircleParticleEmitter(particlesXSpawn, particlesYSpawn, 1.0f);
 	    
 	    //Creating the particle system.
 		particleSystem = new SpriteParticleSystem (circleParticleEmtitter, maxRate, minRate, maxParticles, ResourcesManager.getInstance().expulsorParticle.deepCopy(), vbom);
-
-		particleSystem.addParticleInitializer(new RotationParticleInitializer<Sprite>(0.0f, 180.0f));
 		
 		//And now, lets create the initiallizers and modifiers.
 	    //Velocity initiallizer - will pick a random velocity from -20 to 20 on the x & y axes. Play around with this value.
-	    particleSystem.addParticleInitializer(new VelocityParticleInitializer<Sprite>(-50, 50, 0, 75));
+	    particleSystem.addParticleInitializer(new VelocityParticleInitializer<Sprite>(-75, 75, 0, 75));
 
 	    //Acceleration initializer - gives all the particles the earth gravity (so they accelerate down).
 	    particleSystem.addParticleInitializer(new GravityParticleInitializer<Sprite>());
 
 	    //And now, adding an alpha modifier, so particles slowly fade out. This makes a particle go from alpha = 1 to alpha = 0 in 3 seconds, starting exactly when the particle is spawned.
-	    particleSystem.addParticleModifier(new AlphaParticleModifier<Sprite>(1, 0, 0, 0));
+	    particleSystem.addParticleModifier(new AlphaParticleModifier<Sprite>(0, 1, 0, 0));
 
 	    //Lastly, expire modifier. Make particles die after 3 seconds - their alpha reached 0.
-	    particleSystem.addParticleInitializer(new ExpireParticleInitializer<Sprite>(1.5f));  
+	    particleSystem.addParticleInitializer(new ExpireParticleInitializer<Sprite>(3.0f));  
 	    
 	    return particleSystem;
 }

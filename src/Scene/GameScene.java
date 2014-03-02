@@ -478,10 +478,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 
 			// Put expulsor particles system
 			 eps1 = new expulsorParticleSystem();
-			 attachChild (ex1 = eps1.build(engine, 1010, 160));
+			 attachChild (ex1 = eps1.build(engine, 1010, 190));
 			 
 			 eps2 = new expulsorParticleSystem();
-			 attachChild (ex2 = eps2.build(engine, 1850, 275));
+			 attachChild (ex2 = eps2.build(engine, 1850, 305));
 			 
 			// Create and initialize timer options an update
 			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
@@ -2403,6 +2403,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            	final Sprite keyBlue = new Sprite(30, 340, resourcesManager.keyHUD, vbom);
 	                     	    	gameHUD.attachChild(keyBlue);
 	                                this.setVisible(false);
+	                                switcher.setVisible(true);
 	                                this.setIgnoreUpdate(true);
 	                            }
 	                           
@@ -2410,6 +2411,25 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    };
 	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
 	                } 
+		            
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_SWITCHER))
+	                {
+	                	switcher = new Switcher(x, y, vbom, camera,  physicsWorld)
+		       			 {
+		       				 @Override
+		                        protected void onManagedUpdate(float pSecondsElapsed) 
+		                        {
+		                            super.onManagedUpdate(pSecondsElapsed);
+		                            if (player.collidesWith(this))
+		                            {
+		                                player.switch1Touched = true;
+		                            }
+		                           
+		                        }
+		       			 };
+		       			 levelObject = switcher;
+	                     levelObject.setVisible(false);
+	                }
 		            
 		            else
 	                {
@@ -2829,8 +2849,16 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
             	// ----------------------------- SWITCHER -----------------------------------------------------------------------------
             	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("switcher") || x1.getBody().getUserData().equals("switcher") && x2.getBody().getUserData().equals("player"))
             	{
-            		switcher.setRunning();
-            		switcher2.setRunning();
+            		if (resourcesManager.getLevelComplete() == 2)
+            		{
+            			switcher.setRunning();
+                		switcher2.setRunning();
+            		}
+            		
+            		else if (resourcesManager.getLevelComplete() == 4)
+            		{
+            			switcher.setRunning();
+            		}
             	}
             	
             	// ----------------------------- DESERT MINE -----------------------------------------------------------------------------
@@ -3068,13 +3096,13 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		            	if (player.body.getLinearVelocity().x > 0)
 		            	{
 		            		player.body.setLinearVelocity(-20, 0);
-		            		player.body.applyLinearImpulse(-30.0f, 10.0f, player.body.getPosition().x - 20, player.body.getPosition().y);
+		            		player.body.applyLinearImpulse(-15.0f, 10.0f, player.body.getPosition().x - 20, player.body.getPosition().y);
 		            	}
 		            	
 		            	else if (player.body.getLinearVelocity().x < 0)
 		            	{
 		            		player.body.setLinearVelocity(20, 0);
-		            		player.body.applyLinearImpulse(30.0f, 10.0f, player.body.getPosition().x + 20, player.body.getPosition().y);
+		            		player.body.applyLinearImpulse(15.0f, 10.0f, player.body.getPosition().x + 20, player.body.getPosition().y);
 
 		            	}
 		            	

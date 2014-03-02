@@ -53,5 +53,6 @@
 	<entity x="1654"  y="350"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="1715"  y="350"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="1890"  y="441"  width="60"  height="60"  type="keyBlue" />
+	<entity x="810" y="175" width="75" height="75" type="switcher"/>
 	
 </level>

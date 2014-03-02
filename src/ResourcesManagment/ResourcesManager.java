@@ -579,6 +579,9 @@ public class ResourcesManager
         coin_bronze = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "coin_bronze.png");
         hurtHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "heart.png");
         
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level2/");
+        switcher = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "switcher.png", 3, 1);
+        
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level3/");
         key_blue = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "key_blue.png");
         keyHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyBlue.png");
