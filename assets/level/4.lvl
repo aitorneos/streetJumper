@@ -14,8 +14,11 @@
 	<entity x="991"  y="63"  width="60"  height="60"  type="cradle3" />
 	<entity x="1010"  y="150"  width="60"  height="60"  type="expulsor" />
 	<entity x="1105"  y="204"  width="60"  height="60"  type="cradle5" />
+	<entity x="1150"  y="255"  width="60"  height="60"  type="mineral" />
 	<entity x="1275"  y="275"  width="60"  height="60"  type="cradle5" />
+	<entity x="1305"  y="325"  width="60"  height="60"  type="mineral" />
 	<entity x="1459"  y="338"  width="60"  height="60"  type="cradle5" />
+	<entity x="1500"  y="390"  width="60"  height="60"  type="mineral" />
 	<entity x="1700"  y="100"  width="60"  height="60"  type="cradle4" />
 	<entity x="1850"  y="264"  width="60"  height="60"  type="expulsor" />
 	<entity x="1775"  y="257"  width="60"  height="60"  type="mineral" />

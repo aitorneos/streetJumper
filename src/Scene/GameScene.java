@@ -412,7 +412,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 waterEx = wp.build(engine, 1800 , 150);
 			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
 			 warningText = new Text(400, 240, resourcesManager.font, "Switcher Activated!\nSearch It", new TextOptions(HorizontalAlign.CENTER), vbom);
-			 warningText.setColor(android.graphics.Color.BLACK);
+			 warningText.setColor(android.graphics.Color.LTGRAY);
 			 
 			// Create and initialize timer options an update
 			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
@@ -1659,19 +1659,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		                            if (player.collidesWith(this))
 		                            {
 		                                player.switch1Touched = true;
-		                                if (resourcesManager.getLevelComplete() == 2)
-		                     	    	{
-		                     	    		gameHUD.attachChild(warningText);
-			                     	    	engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
-			        		                {                                    
-			        		                    public void onTimePassed(final TimerHandler pTimerHandler)
-			        		                    {
-			        		                        pTimerHandler.reset();
-			        		                        engine.unregisterUpdateHandler(pTimerHandler);  
-			        		                        gameHUD.detachChild(warningText);
-			        		                    }
-			        		                }));	
-		                     	    	}
 		                            }  
 		                        }
 		       			 };
@@ -2424,12 +2411,29 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                     	    	if (resourcesManager.getLevelComplete() == 4)
 	                     	    	{
 	                     	    		gameHUD.attachChild(warningText);
+	                     	    		
+	                     	    		// DO flickering while period of time after touching the spikes 
+	                		       		flicker = new playTimer(0.25f , new playTimer.ITimerCallback()
+	                		       	    {
+	                		            	boolean visible = false;
+	                		       	        @Override
+	                		       	        public void onTick()
+	                		       	        {
+	                		       	            warningText.setVisible(visible);
+	                		       	            visible = !visible;
+	                		       	        }
+	                		       	      }
+	                		       	    );
+	                		       		engine.registerUpdateHandler(flicker);
+	                		       		
 		                     	    	engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
 		        		                {                                    
 		        		                    public void onTimePassed(final TimerHandler pTimerHandler)
 		        		                    {
 		        		                        pTimerHandler.reset();
-		        		                        engine.unregisterUpdateHandler(pTimerHandler);  
+		        		                        flicker.reset();
+		        		                        flicker.pause();
+		        		                        engine.unregisterUpdateHandler(pTimerHandler);   
 		        		                        gameHUD.detachChild(warningText);
 		        		                    }
 		        		                }));	
@@ -2886,7 +2890,35 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
             		{
             			switcher.setRunning();
                 		switcher2.setRunning();
-            		}
+
+                    	gameHUD.attachChild(warningText);
+         	    		
+         	    		// DO flickering while period of time after touching the spikes 
+    		       		flicker = new playTimer(0.25f , new playTimer.ITimerCallback()
+    		       	    {
+    		            	boolean visible = false;
+    		       	        @Override
+    		       	        public void onTick()
+    		       	        {
+    		       	            warningText.setVisible(visible);
+    		       	            visible = !visible;
+    		       	        }
+    		       	      }
+    		       	    );
+    		       		engine.registerUpdateHandler(flicker);
+    		       		
+             	    	engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+		                {                                    
+		                    public void onTimePassed(final TimerHandler pTimerHandler)
+		                    {
+		                        pTimerHandler.reset();
+		                        flicker.reset();
+		                        flicker.pause();
+		                        engine.unregisterUpdateHandler(pTimerHandler);  
+		                        gameHUD.detachChild(warningText);
+		                    }
+		                }));	
+             	    }
             		
             		else if (resourcesManager.getLevelComplete() == 4)
             		{
