@@ -17,7 +17,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	
 	private MenuScene menuChildScene;
 	private int player_sel = 0;
-	private int levelSel = 0;
+	private int levelSel = 1;
 	
 	private final int MENU_PLAYER_SEL = 0;
 	private final int PLAYER1_SEL = 1;
@@ -67,6 +67,10 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	     player.setPosition(player.getX() + 195 , player.getY() - 190);
 	     arSel.setPosition(arSel.getX() + 205 , arSel.getY() - 165);
 	     levelSel.setPosition(levelSel.getX() + 205, levelSel.getY() - 165);
+	     
+	 	final IMenuItem level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_1, vbom), 1, 1);
+     	menuChildScene.addMenuItem(level1Sel);
+     	level1Sel.setPosition(level1Sel.getX() + 900 , level1Sel.getY());
  
 	     menuChildScene.setOnMenuItemClickListener(this);
 	     setChildScene(menuChildScene);
@@ -117,7 +121,9 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		
 		        		player_sel = 1;
 		        		ResourcesManager.getInstance().controlLoaded = true;
-		        		resourcesManager.playerSelected = 0;
+		        		resourcesManager.playerSelected = 0; 
+		        		menuChildScene.clearChildScene();
+		        		createScene();	    
 		       	     	final IMenuItem player1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER1_SEL, resourcesManager.player1, vbom), 1.2f, 1);
 		       	     	menuChildScene.addMenuItem(player1Sel);
 		       	     	player1Sel.setPosition(player1Sel.getX() + 875 , player1Sel.getY() + 160);
