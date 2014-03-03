@@ -122,6 +122,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	Sprite waterDis;
 	Sprite kY;
 	Sprite kG;
+	Sprite bomb;
 	private boolean playSound = false;
 	private boolean playSoundGreen = false;
 	private LevelCompleteWindow levelCompleteWindow;
@@ -472,6 +473,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
 			 ResourcesManager.getInstance().getSceneMusic().play();
 			 player.setRunning();
+			 createBombSpriteControl();
 			 warningText = new Text(400, 240, resourcesManager.font, "Switcher Activated!\nSearch It", new TextOptions(HorizontalAlign.CENTER), vbom);
 			 warningText.setColor(android.graphics.Color.WHITE);
 			 
@@ -2249,7 +2251,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                        {
 	                            if (!gameOverDisplayed)
 	                    	    {
-	                    	        displayGameOverText(3);
+	                    	        displayGameOverText(4);
 	                    	    }
 	                        }
 	                    };
@@ -2323,7 +2325,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOMB))
 	                {
-		            	levelObject = new Sprite(x, y, resourcesManager.bomb, vbom)
+		            	bomb = new Sprite(x, y, resourcesManager.bomb, vbom)
 	                    {
 	                        @Override
 	                        protected void onManagedUpdate(float pSecondsElapsed) 
@@ -2339,6 +2341,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                           
 	                        }
 	                    };
+	                    
+	                    levelObject = bomb;
 	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
 	                }
 
@@ -3460,5 +3464,26 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
             }
         }));
 	}*/
+	
+	private void createBombSpriteControl()
+	{
+		Sprite bombControl = new Sprite(50, 50, resourcesManager.bomb, vbom)
+		{			
+		      @Override
+		      public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) 
+		      {
+		          // Set bomb position to actual player position 
+		    	  
+		    	  //Launch granade to a unique direction and velocity
+
+		    	  
+		    	  return true;
+		
+		      }	
+		};
+		bombControl.setColor(android.graphics.Color.LTGRAY);
+		gameHUD.attachChild(bombControl);
+
+	}
 	
 }
