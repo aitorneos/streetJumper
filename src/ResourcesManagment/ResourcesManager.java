@@ -578,6 +578,7 @@ public class ResourcesManager
         mineral = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "mineral.png");
         mushroomTree = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "mushroomTree.png");
         expulsorParticle = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "expulsorParticle.png");
+        bomb = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bomb.png");
         
         
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level1/");

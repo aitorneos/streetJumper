@@ -3,9 +3,7 @@ package Scene;
 //---------------------------------- JAVA && TEXTURES IMPORTS ------------------------------------------------------
 import java.io.IOException;
 import java.util.Iterator;
-
 import javax.microedition.khronos.opengles.GL10;
-
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -35,9 +33,6 @@ import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
-
-
-
 //---------------------------------- PARTICLE SYSTEM && NETWORK ------------------------------------------------------
 import particleSystem.FireParticleSystem;
 import particleSystem.expulsorParticleSystem;
@@ -64,9 +59,6 @@ import Shader.RadialBlur;
 import Shader.WaterMaskEffectShader;
 import Shader.WaterSurfaceEntity;
 import Timers.playTimer;
-
-
-
 
 //---------------------------------- INNER && ANONIMOUS CLASES ------------------------------------------------------
 import com.PFC.PlatformJumper.streetJumper;
@@ -245,6 +237,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_EXPULSOR = "expulsor";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MINERAL = "mineral";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MUSHROOM_TREE = "mushroomTree";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOMB = "bomb";
 
 	// ---------------------- METHODS ----------------------------------------------------------------------------------------------------------
 	
@@ -2217,6 +2210,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
     		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
         }
         
+        // ------------------------------------ LEVEL 4 ------------------------------------------------------------------------------------------------------
         else if (levelID == 4)
         {
         	final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
@@ -2326,6 +2320,28 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    body.setUserData("mushroomTree");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
 		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOMB))
+	                {
+		            	levelObject = new Sprite(x, y, resourcesManager.bomb, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                            	final Text nBombs = new Text(40, 300, resourcesManager.font, "+1", new TextOptions(HorizontalAlign.LEFT), vbom);
+	                            	gameHUD.attachChild(nBombs);
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                }
+
 		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_COIN))
 	                {

@@ -5,6 +5,7 @@
 
 	<entity x="375"  y="100"  width="60"  height="60"  type="cradle4" />
 	<entity x="404"  y="261"  width="60"  height="60"  type="mineral" />
+	<entity x="300"  y="275"  width="60"  height="60"  type="bomb" />
 	<entity x="231"  y="264"  width="60"  height="60"  type="mineral" />
 	<entity x="70"  y="200"  width="60"  height="60"  type="cradle5" />
 	<entity x="675"  y="200"  width="60"  height="60"  type="cradle1" />
@@ -15,6 +16,7 @@
 	<entity x="1010"  y="150"  width="60"  height="60"  type="expulsor" />
 	<entity x="1105"  y="204"  width="60"  height="60"  type="cradle5" />
 	<entity x="1150"  y="255"  width="60"  height="60"  type="mineral" />
+	<entity x="1100"  y="250"  width="60"  height="60"  type="bomb" />
 	<entity x="1275"  y="275"  width="60"  height="60"  type="cradle5" />
 	<entity x="1305"  y="325"  width="60"  height="60"  type="mineral" />
 	<entity x="1459"  y="338"  width="60"  height="60"  type="cradle5" />
@@ -23,23 +25,27 @@
 	<entity x="1850"  y="264"  width="60"  height="60"  type="expulsor" />
 	<entity x="1775"  y="257"  width="60"  height="60"  type="mineral" />
 	<entity x="1876"  y="343"  width="60"  height="60"  type="cradle2" />
-	<entity x="90"  y="359"  width="60"  height="60"  type="coin_gold" />
-	<entity x="155"  y="358"  width="60"  height="60"  type="coin_gold" />
-	<entity x="253"  y="359"  width="60"  height="60"  type="coin_bronze" />
-	<entity x="327"  y="359"  width="60"  height="60"  type="coin_bronze" />
-	<entity x="426"  y="354"  width="60"  height="60"  type="coin" />
-	<entity x="490"  y="354"  width="60"  height="60"  type="coin" />
+	
+	
+	<entity x="110"  y="320"  width="60"  height="60"  type="coin_gold" />
+	<entity x="175"  y="320"  width="60"  height="60"  type="coin_gold" />
+	<entity x="260"  y="340"  width="60"  height="60"  type="coin_bronze" />
+	<entity x="335"  y="340"  width="60"  height="60"  type="coin_bronze" />
+	<entity x="445"  y="324"  width="60"  height="60"  type="coin" />
+	<entity x="510"  y="324"  width="60"  height="60"  type="coin" />
 	<entity x="690"  y="390"  width="60"  height="60"  type="coin_gold" />
+	<entity x="690"  y="360"  width="60"  height="60"  type="coin_gold" />
 	<entity x="865"  y="410"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="796"  y="202"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="849"  y="202"  width="60"  height="60"  type="coin_bronze" />
-	<entity x="101"  y="423"  width="60"  height="60"  type="coin" />
-	<entity x="165"  y="421"  width="60"  height="60"  type="coin" />
-	<entity x="265"  y="420"  width="60"  height="60"  type="coin" />
-	<entity x="337"  y="421"  width="60"  height="60"  type="coin" />
-	<entity x="427"  y="422"  width="60"  height="60"  type="coin_bronze" />
-	<entity x="490"  y="421"  width="60"  height="60"  type="coin_bronze" />
+	<entity x="110"  y="380"  width="60"  height="60"  type="coin" />
+	<entity x="175"  y="380"  width="60"  height="60"  type="coin" />
+	<entity x="265"  y="400"  width="60"  height="60"  type="coin" />
+	<entity x="337"  y="400"  width="60"  height="60"  type="coin" />
+	<entity x="445"  y="400"  width="60"  height="60"  type="coin_bronze" />
+	<entity x="510"  y="400"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="640"  y="390"  width="60"  height="60"  type="coin" />
+	<entity x="640"  y="360"  width="60"  height="60"  type="coin" />
 	<entity x="965"  y="155"  width="60"  height="60"  type="coin_gold" />
 	<entity x="1014"  y="155"  width="60"  height="60"  type="coin_gold" />
 	<entity x="965"  y="205"  width="60"  height="60"  type="coin_bronze" />
@@ -55,6 +61,8 @@
 	<entity x="1593"  y="350"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="1654"  y="350"  width="60"  height="60"  type="coin_bronze" />
 	<entity x="1715"  y="350"  width="60"  height="60"  type="coin_bronze" />
+	
+	
 	<entity x="1890"  y="441"  width="60"  height="60"  type="keyBlue" />
 	<entity x="810" y="175" width="75" height="75" type="switcher"/>
 	
