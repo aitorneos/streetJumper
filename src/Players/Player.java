@@ -42,6 +42,7 @@ public abstract class Player extends AnimatedSprite
 	private boolean boxTouched;
 	public boolean switch1Touched;
 	public boolean switch2Touched;
+	public int hasBombs;
 
 	
 	// ---------------------------------------------
@@ -66,6 +67,7 @@ public abstract class Player extends AnimatedSprite
 		levelID = ResourcesManager.getInstance().getLevelComplete();
 		footContacts = 0;
 		impulse = 0;
+		hasBombs = 0;
 		createPhysics(camera, physicsWorld);
 		camera.setChaseEntity(this);
 	}

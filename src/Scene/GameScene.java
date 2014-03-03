@@ -3,7 +3,9 @@ package Scene;
 //---------------------------------- JAVA && TEXTURES IMPORTS ------------------------------------------------------
 import java.io.IOException;
 import java.util.Iterator;
+
 import javax.microedition.khronos.opengles.GL10;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -33,11 +35,13 @@ import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
+
 //---------------------------------- PARTICLE SYSTEM && NETWORK ------------------------------------------------------
 import particleSystem.FireParticleSystem;
 import particleSystem.expulsorParticleSystem;
 import particleSystem.waterExplosion;
 import particleSystem.waterParticleSystem;
+import Animated_Features.Bomb;
 import Animated_Features.SpringBoarder;
 import Animated_Features.Switcher;
 import Enemies.Enemy;
@@ -59,6 +63,7 @@ import Shader.RadialBlur;
 import Shader.WaterMaskEffectShader;
 import Shader.WaterSurfaceEntity;
 import Timers.playTimer;
+
 
 //---------------------------------- INNER && ANONIMOUS CLASES ------------------------------------------------------
 import com.PFC.PlatformJumper.streetJumper;
@@ -2335,6 +2340,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            {
 	                            	final Text nBombs = new Text(40, 300, resourcesManager.font, "+1", new TextOptions(HorizontalAlign.LEFT), vbom);
 	                            	gameHUD.attachChild(nBombs);
+	                            	player.hasBombs++;
 	                                this.setVisible(false);
 	                                this.setIgnoreUpdate(true);
 	                            }
@@ -3467,23 +3473,28 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	
 	private void createBombSpriteControl()
 	{
-		Sprite bombControl = new Sprite(50, 50, resourcesManager.bomb, vbom)
+		Sprite bombControl = new Sprite(60, 60, resourcesManager.bombHUD, vbom)
 		{			
-		      @Override
-		      public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) 
-		      {
-		          // Set bomb position to actual player position 
+	      @Override
+	      public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) 
+	      {
+	    	  if (pSceneTouchEvent.isActionDown() && player.hasBombs > 0)
+	    	  {
+	    		  // Set bomb position to actual player position 
+		    	  Bomb bombLaunched = new Bomb(player.getX(), player.getY(), vbom, camera, physicsWorld);
+		    	  SceneManager.getInstance().getGameScene().attachChild(bombLaunched);
+		    	  bombLaunched.setVisible(true);
 		    	  
 		    	  //Launch granade to a unique direction and velocity
-
-		    	  
-		    	  return true;
-		
-		      }	
+		    	  bombLaunched.body.applyLinearImpulse(10.0f, 10.0f, 10.0f, 10.0f);
+	    	  }
+	    	  return true;
+	
+	      }	
 		};
+		this.registerTouchArea(bombControl);
 		bombControl.setColor(android.graphics.Color.LTGRAY);
 		gameHUD.attachChild(bombControl);
-
 	}
 	
 }

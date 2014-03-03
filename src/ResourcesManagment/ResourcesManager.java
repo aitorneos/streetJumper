@@ -143,6 +143,7 @@ public class ResourcesManager
     public ITextureRegion coin_gold;
     public ITextureRegion coin_bronze;
     public ITextureRegion bomb;
+    public ITextureRegion bombHUD;
     public ITextureRegion boxExplosiveAlt;
     public ITextureRegion boxItemAlt;
     public ITextureRegion boxWarning;
@@ -579,6 +580,7 @@ public class ResourcesManager
         mushroomTree = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "mushroomTree.png");
         expulsorParticle = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "expulsorParticle.png");
         bomb = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bomb.png");
+        bombHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bombHUD.png");
         
         
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level1/");
