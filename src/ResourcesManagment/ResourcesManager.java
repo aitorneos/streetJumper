@@ -77,6 +77,10 @@ public class ResourcesManager
 	public ITextureRegion player2;
 	public ITextureRegion player3;
 	public ITextureRegion player4;
+	public ITextureRegion level_1;
+	public ITextureRegion level_2;
+	public ITextureRegion level_3;
+	public ITextureRegion level_4;
 	public ITiledTextureRegion playerSecondary;
 	public ITextureRegion ARSel;
 	public ITextureRegion optionsBack;
@@ -302,6 +306,11 @@ public class ResourcesManager
 		player2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "player2.png");		        		
 		player3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "player3.png");
 		player4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "player4.png");
+		
+		level_1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_1.png");
+		level_2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_2.png");
+		level_3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_3.png");
+		level_4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_4.png");
     	
     	try
     	{

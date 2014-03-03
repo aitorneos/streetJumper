@@ -17,12 +17,19 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	
 	private MenuScene menuChildScene;
 	private int player_sel = 0;
+	private int levelSel = 0;
 	
 	private final int MENU_PLAYER_SEL = 0;
 	private final int PLAYER1_SEL = 1;
 	private final int PLAYER2_SEL = 2;
 	private final int PLAYER3_SEL = 3;
 	private final int PLAYER4_SEL = 4;
+	
+	private final int LEVEL1_SEL = 7;
+	private final int LEVEL2_SEL = 8;
+	private final int LEVEL3_SEL = 9;
+	private final int LEVEL4_SEL = 10;
+	
 	private final int AR_SEL = 5;
 	private final int LEVEL_SEL = 6;
 	
@@ -110,11 +117,9 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		
 		        		player_sel = 1;
 		        		ResourcesManager.getInstance().controlLoaded = true;
-		        		//resourcesManager.playerOnlineSelected = 0;
 		        		resourcesManager.playerSelected = 0;
 		       	     	final IMenuItem player1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER1_SEL, resourcesManager.player1, vbom), 1.2f, 1);
 		       	     	menuChildScene.addMenuItem(player1Sel);
-			       	    //menuChildScene.buildAnimations();
 		       	     	player1Sel.setPosition(player1Sel.getX() + 875 , player1Sel.getY() + 160);
 		        		break;
 		        		
@@ -123,9 +128,6 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		player_sel = 2;
 		        		resourcesManager.playerSelected = 1;
 		        		ResourcesManager.getInstance().controlLoaded = true;
-		        		//resourcesManager.playerOnlineSelected = 1;
-		        		
-		        		// UNLOAD previous texture !!!
 		        		menuChildScene.clearChildScene();
 		        		createScene();	        		
 		       	     	final IMenuItem player2Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER2_SEL, resourcesManager.player2, vbom), 1.2f, 1);
@@ -138,9 +140,6 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		player_sel = 3;
 		        		resourcesManager.playerSelected = 2;
 		        		ResourcesManager.getInstance().controlLoaded = true;
-		        		//resourcesManager.playerOnlineSelected = 2;
-		        		
-		        		// UNLOAD previous texture !!!
 		        		menuChildScene.clearChildScene();
 		        		createScene();	        		
 		       	     	final IMenuItem player3Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER3_SEL, resourcesManager.player3, vbom), 1.2f, 1);
@@ -153,9 +152,6 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		player_sel = 0;
 		        		resourcesManager.playerSelected = 3;
 		        		ResourcesManager.getInstance().controlLoaded = true;
-		        		//resourcesManager.playerOnlineSelected = 3;
-		        		
-		        		// UNLOAD previous texture !!!
 		        		menuChildScene.clearChildScene();
 		        		createScene();      		
 		       	     	final IMenuItem player4Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER4_SEL, resourcesManager.player4, vbom), 1.2f, 1);
@@ -174,6 +170,50 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
     			return true;
 	        			
 	        case LEVEL_SEL:
+	        	
+	        	switch(levelSel)
+	        	{
+	        	
+		        	case 0:
+		        		
+		        		levelSel = 1;
+		        		final IMenuItem level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_1, vbom), 1, 1);
+		       	     	menuChildScene.addMenuItem(level1Sel);
+		       	     	level1Sel.setPosition(level1Sel.getX() + 900 , level1Sel.getY());
+		        		
+		        		break;
+		        		
+		        	case 1:
+		        		
+		        		levelSel = 2;
+		        		final IMenuItem level2Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL2_SEL, resourcesManager.level_2, vbom), 1, 1);
+		       	     	menuChildScene.addMenuItem(level2Sel);
+		       	     	level2Sel.setPosition(level2Sel.getX() + 900 , level2Sel.getY());
+		        		
+		        		break;
+		        		
+		        	case 2:
+		        		
+		        		levelSel = 3;
+		        		final IMenuItem level3Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL3_SEL, resourcesManager.level_3, vbom), 1, 1);
+		       	     	menuChildScene.addMenuItem(level3Sel);
+		       	     	level3Sel.setPosition(level3Sel.getX() + 900 , level3Sel.getY());
+		        		
+		        		break;
+		        		
+		        	case 3:
+		        		
+		        		levelSel = 0;
+		        		final IMenuItem level4Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL4_SEL, resourcesManager.level_4, vbom), 1, 1);
+		       	     	menuChildScene.addMenuItem(level4Sel);
+		       	     	level4Sel.setPosition(level4Sel.getX() + 900 , level4Sel.getY());
+		        		
+		        		break;
+		        		
+		        	default: 
+		        		break;
+	        	
+	        	}
 	        	
 	        	// Assign level selected to resources manager variable
 	        	ResourcesManager.getInstance().setLevelComplete((ResourcesManager.getInstance().getLevelComplete() % 4) + 1);
