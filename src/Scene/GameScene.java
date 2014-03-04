@@ -3496,10 +3496,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    public void onTimePassed(final TimerHandler pTimerHandler)
 	                    {
 	                        pTimerHandler.reset();
+	                        
+	                        bombLaunched.body.setActive(false);
+	                        physicsWorld.destroyBody(bombLaunched.body);
 	                        SceneManager.getInstance().getGameScene().detachChild(bombLaunched);
 	                        explosion = new FireParticleSystem();
 	                        SceneManager.getInstance().getGameScene().attachChild (explosion.build(engine, bombLaunched.getX(), bombLaunched.getY()));
 	                        resourcesManager.getExplosionSound().play();
+	                        
 	                        engine.unregisterUpdateHandler(pTimerHandler); 
 	                    }
 	              }));
