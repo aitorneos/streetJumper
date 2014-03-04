@@ -3481,19 +3481,42 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	    	  if (pSceneTouchEvent.isActionDown() && player.hasBombs > 0)
 	    	  {
 	    		  // Set bomb position to actual player position 
-		    	  Bomb bombLaunched = new Bomb(player.getX(), player.getY(), vbom, camera, physicsWorld);
+		    	  final Bomb bombLaunched = new Bomb(player.getX(), player.getY(), vbom, camera, physicsWorld);
 		    	  SceneManager.getInstance().getGameScene().attachChild(bombLaunched);
 		    	  bombLaunched.setVisible(true);
 		    	  
 		    	  //Launch granade to a unique direction and velocity
 		    	  bombLaunched.body.applyLinearImpulse(10.0f, 10.0f, 10.0f, 10.0f);
+		    	  
+		    	  player.hasBombs--;
+		    	  
+		    	  // Remove grenade and execute explosion -----> particle system (like mines)
+		    	  engine.registerUpdateHandler(new TimerHandler(2.0f, new ITimerCallback()
+	              {                                    
+	                    public void onTimePassed(final TimerHandler pTimerHandler)
+	                    {
+	                        pTimerHandler.reset();
+	                        SceneManager.getInstance().getGameScene().detachChild(bombLaunched);
+	                        explosion = new FireParticleSystem();
+	                        SceneManager.getInstance().getGameScene().attachChild (explosion.build(engine, bombLaunched.getX(), bombLaunched.getY()));
+	                        resourcesManager.getExplosionSound().play();
+	                        engine.unregisterUpdateHandler(pTimerHandler); 
+	                    }
+	              }));
+		    	  engine.registerUpdateHandler(new TimerHandler(3.5f, new ITimerCallback()
+	              {                                    
+	                    public void onTimePassed(final TimerHandler pTimerHandler)
+	                    {
+	                        pTimerHandler.reset();
+	                        SceneManager.getInstance().getGameScene().detachChild (explosion.getParticleSystem());
+	                        engine.unregisterUpdateHandler(pTimerHandler); 
+	                    }
+	              }));
 	    	  }
 	    	  return true;
-	
 	      }	
 		};
 		this.registerTouchArea(bombControl);
-		bombControl.setColor(android.graphics.Color.LTGRAY);
 		gameHUD.attachChild(bombControl);
 	}
 	

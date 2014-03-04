@@ -581,6 +581,7 @@ public class ResourcesManager
         expulsorParticle = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "expulsorParticle.png");
         bomb = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bomb.png");
         bombHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bombHUD.png");
+        mineExplosion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "explosion.png");
         
         
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level1/");
@@ -1007,6 +1008,21 @@ public class ResourcesManager
 			}
     	    this.backgroundMusic.setVolume(0.25f, 0.25f);
     	    this.backgroundMusic.setLooping(true);
+    	    
+    	 // LOAD MINE EXPLOSION SOUND EFFECT
+        	try 
+        	{    
+        		this.explosion = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "explosion.ogg");
+        		//this.explosion.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
     	    
     		// LOAD JUMP SOUND
         	try 
