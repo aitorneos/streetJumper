@@ -35,7 +35,6 @@ import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
-
 //---------------------------------- PARTICLE SYSTEM && NETWORK ------------------------------------------------------
 import particleSystem.FireParticleSystem;
 import particleSystem.expulsorParticleSystem;
@@ -63,7 +62,6 @@ import Shader.RadialBlur;
 import Shader.WaterMaskEffectShader;
 import Shader.WaterSurfaceEntity;
 import Timers.playTimer;
-
 
 //---------------------------------- INNER && ANONIMOUS CLASES ------------------------------------------------------
 import com.PFC.PlatformJumper.streetJumper;
@@ -153,6 +151,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	waterExplosion wp;
 	SpriteParticleSystem waterEx;
 	waterExplosion drop;
+	Text nBombs;
 	//private float playerVelocity = 0f;
 	
 	private static final String TAG_ENTITY = "entity";
@@ -481,6 +480,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 createBombSpriteControl();
 			 warningText = new Text(400, 240, resourcesManager.font, "Switcher Activated!\nSearch It", new TextOptions(HorizontalAlign.CENTER), vbom);
 			 warningText.setColor(android.graphics.Color.WHITE);
+		   	 nBombs = new Text(40, 300, resourcesManager.font, "+" + player.hasBombs, new TextOptions(HorizontalAlign.LEFT), vbom);
 			 
 			// Put expulsor particles system
 			 eps1 = new expulsorParticleSystem();
@@ -2339,7 +2339,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            if (player.collidesWith(this))
 	                            {
 	                            	player.hasBombs++;
-	                            	final Text nBombs = new Text(40, 300, resourcesManager.font, "+"+player.hasBombs, new TextOptions(HorizontalAlign.LEFT), vbom);
+	                            	gameHUD.detachChild(nBombs);         	
+	                            	nBombs = new Text(40, 300, resourcesManager.font, "+" + player.hasBombs, new TextOptions(HorizontalAlign.LEFT), vbom);
 	                            	gameHUD.attachChild(nBombs);
 	                                this.setVisible(false);
 	                                this.setIgnoreUpdate(true);
@@ -3489,6 +3490,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		    	  bombLaunched.body.applyLinearImpulse(10.0f, 10.0f, 10.0f, 10.0f);
 		    	  
 		    	  player.hasBombs--;
+		    	  gameHUD.detachChild(nBombs);
+		    	  nBombs = new Text(40, 300, resourcesManager.font, "+" + player.hasBombs, new TextOptions(HorizontalAlign.LEFT), vbom);
+              	  gameHUD.attachChild(nBombs);
 		    	  
 		    	  // Remove grenade and execute explosion -----> particle system (like mines)
 		    	  engine.registerUpdateHandler(new TimerHandler(2.0f, new ITimerCallback()
