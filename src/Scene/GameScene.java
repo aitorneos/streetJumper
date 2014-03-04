@@ -2338,9 +2338,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            super.onManagedUpdate(pSecondsElapsed);
 	                            if (player.collidesWith(this))
 	                            {
-	                            	final Text nBombs = new Text(40, 300, resourcesManager.font, "+1", new TextOptions(HorizontalAlign.LEFT), vbom);
-	                            	gameHUD.attachChild(nBombs);
 	                            	player.hasBombs++;
+	                            	final Text nBombs = new Text(40, 300, resourcesManager.font, "+"+player.hasBombs, new TextOptions(HorizontalAlign.LEFT), vbom);
+	                            	gameHUD.attachChild(nBombs);
 	                                this.setVisible(false);
 	                                this.setIgnoreUpdate(true);
 	                            }
@@ -3473,7 +3473,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	
 	private void createBombSpriteControl()
 	{
-		Sprite bombControl = new Sprite(60, 60, resourcesManager.bombHUD, vbom)
+		Sprite bombControl = new Sprite(75, 75, resourcesManager.bombHUD, vbom)
 		{			
 	      @Override
 	      public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, final float pTouchAreaLocalX, final float pTouchAreaLocalY) 
@@ -3520,7 +3520,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	    	  return true;
 	      }	
 		};
-		this.registerTouchArea(bombControl);
+		gameHUD.registerTouchArea(bombControl);
 		gameHUD.attachChild(bombControl);
 	}
 	
