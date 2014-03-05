@@ -3265,7 +3265,99 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	           **/
 	          
 	            // Contact player - Mineral
-	            if (x1.getBody().getUserData().equals("player") && (x2.getBody().getUserData().equals("mineral") || x2.getBody().getUserData().equals("mineral2") || x2.getBody().getUserData().equals("mineral3")) && x1.getBody().getPosition().y > x2.getBody().getPosition().y + 2.0f)
+	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("mineral") && x1.getBody().getPosition().y > x2.getBody().getPosition().y + 2.0f)
+	            {
+
+	            	if (player.getSpikesColision() == false)
+	            	{
+	            		player.setSpikesColision(true);
+	            		ResourcesManager.getInstance().getSpikeSound().play();
+	            		// Control Impulse and direction
+		            	if (player.body.getLinearVelocity().x > 0)
+		            	{
+		            		player.body.setLinearVelocity(-20, 0);
+		            		player.body.applyLinearImpulse(-15.0f, 10.0f, player.body.getPosition().x - 20, player.body.getPosition().y);
+		            	}
+		            	
+		            	else if (player.body.getLinearVelocity().x < 0)
+		            	{
+		            		player.body.setLinearVelocity(20, 0);
+		            		player.body.applyLinearImpulse(15.0f, 10.0f, player.body.getPosition().x + 20, player.body.getPosition().y);
+
+		            	}
+		            	
+		            	else
+		            	{
+		            		
+		            		player.body.setLinearVelocity(player.body.getLinearVelocity().x, player.body.getLinearVelocity().y);
+		            	}
+	            		
+		            	player.life = player.life - 1;
+                        if (player.life == 2) gameHUD.detachChild(hurt3);
+                        if (player.life == 1) gameHUD.detachChild(hurt2);
+                        if (player.life == 0) gameHUD.detachChild(hurt1);
+                        
+
+		                engine.registerUpdateHandler(new TimerHandler(1.0f, new ITimerCallback()
+		                {                                    
+		                    public void onTimePassed(final TimerHandler pTimerHandler)
+		                    {
+		                        pTimerHandler.reset();
+		                        if (player.isVisible() == false) player.setVisible(true);
+		                        engine.unregisterUpdateHandler(pTimerHandler);
+		                    }
+		                }));
+	            	}
+	            }
+	            
+	            // Contact player - Mineral 2
+	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("mineral2") && x1.getBody().getPosition().y > x2.getBody().getPosition().y + 0.5f)
+	            {
+
+	            	if (player.getSpikesColision() == false)
+	            	{
+	            		player.setSpikesColision(true);
+	            		ResourcesManager.getInstance().getSpikeSound().play();
+	            		// Control Impulse and direction
+		            	if (player.body.getLinearVelocity().x > 0)
+		            	{
+		            		player.body.setLinearVelocity(-20, 0);
+		            		player.body.applyLinearImpulse(-15.0f, 10.0f, player.body.getPosition().x - 20, player.body.getPosition().y);
+		            	}
+		            	
+		            	else if (player.body.getLinearVelocity().x < 0)
+		            	{
+		            		player.body.setLinearVelocity(20, 0);
+		            		player.body.applyLinearImpulse(15.0f, 10.0f, player.body.getPosition().x + 20, player.body.getPosition().y);
+
+		            	}
+		            	
+		            	else
+		            	{
+		            		
+		            		player.body.setLinearVelocity(player.body.getLinearVelocity().x, player.body.getLinearVelocity().y);
+		            	}
+	            		
+		            	player.life = player.life - 1;
+                        if (player.life == 2) gameHUD.detachChild(hurt3);
+                        if (player.life == 1) gameHUD.detachChild(hurt2);
+                        if (player.life == 0) gameHUD.detachChild(hurt1);
+                        
+
+		                engine.registerUpdateHandler(new TimerHandler(1.0f, new ITimerCallback()
+		                {                                    
+		                    public void onTimePassed(final TimerHandler pTimerHandler)
+		                    {
+		                        pTimerHandler.reset();
+		                        if (player.isVisible() == false) player.setVisible(true);
+		                        engine.unregisterUpdateHandler(pTimerHandler);
+		                    }
+		                }));
+	            	}
+	            }
+	            
+	            // Contact player - Mineral 3
+	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("mineral3") && x1.getBody().getPosition().y > x2.getBody().getPosition().y)
 	            {
 
 	            	if (player.getSpikesColision() == false)
@@ -3505,7 +3597,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                }));
 	            }
 	            
-	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("mineral"))
+	            
+	            //-------------------------------------- LEVEL 4 -------------------------------------------------------------------------------
+	            if (x1.getBody().getUserData().equals("player") && (x2.getBody().getUserData().equals("mineral") || x2.getBody().getUserData().equals("mineral2") || x2.getBody().getUserData().equals("mineral3")))
 	            {
 	            	engine.registerUpdateHandler(new TimerHandler(2.0f, new ITimerCallback()
 	                {                                    
