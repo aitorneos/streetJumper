@@ -241,6 +241,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE5 = "cradle5";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_EXPULSOR = "expulsor";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MINERAL = "mineral";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MINERAL2 = "mineral2";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MINERAL3 = "mineral3";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MUSHROOM_TREE = "mushroomTree";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOMB = "bomb";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ENEMY1 = "enemy1";
@@ -489,7 +491,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
 			 ResourcesManager.getInstance().getSceneMusic().play();
 			 player.setRunning();
-			 nomo.body.setLinearVelocity(1.5f, 0.0f);
+			 zombie.body.setLinearVelocity(-1.5f, 0.0f);
 			 
 			 createBombSpriteControl();
 			 warningText = new Text(400, 240, resourcesManager.font, "Switcher Activated!\nSearch It", new TextOptions(HorizontalAlign.CENTER), vbom);
@@ -2363,6 +2365,22 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
 		            }
 		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MINERAL2))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.mineral2, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("mineral2");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MINERAL3))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.mineral3, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("mineral3");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ENEMY1))
 		            {
 		            	zombie = new ZombiEnemy(x, y, vbom, camera,  physicsWorld)
@@ -3247,7 +3265,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	           **/
 	          
 	            // Contact player - Mineral
-	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("mineral") && x1.getBody().getPosition().y > x2.getBody().getPosition().y + 2.0f)
+	            if (x1.getBody().getUserData().equals("player") && (x2.getBody().getUserData().equals("mineral") || x2.getBody().getUserData().equals("mineral2") || x2.getBody().getUserData().equals("mineral3")) && x1.getBody().getPosition().y > x2.getBody().getPosition().y + 2.0f)
 	            {
 
 	            	if (player.getSpikesColision() == false)

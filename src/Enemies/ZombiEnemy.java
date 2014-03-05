@@ -63,19 +63,14 @@ public class ZombiEnemy extends Sprite
 				}
 				
 				// Update enemy's movement
-				if (getX() >= 1700 && body.getLinearVelocity().x > 0)
+				if (getX() >= 1700 && body.getLinearVelocity().x >= 0)
 				{
 					body.setLinearVelocity(-1.5f, 0.0f);
 				}
 				
-				if (getX() <= 1600 && body.getLinearVelocity().x < 0)
+				if (getX() <= 1625 && body.getLinearVelocity().x <= 0)
 				{
 					body.setLinearVelocity(1.5f, 0.0f);
-				}
-				
-				if (body.getLinearVelocity().x == 0)
-				{
-					body.setLinearVelocity(-1.5f, 0.0f);
 				}
 				
 	        }

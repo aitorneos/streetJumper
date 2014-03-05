@@ -138,6 +138,8 @@ public class ResourcesManager
     public ITextureRegion cradlePlatform5;
     public ITextureRegion expulsor;
     public ITextureRegion mineral;
+    public ITextureRegion mineral2;
+    public ITextureRegion mineral3;
     public ITextureRegion mushroomTree;
     
     // --------------------------------------- COINS ---------------------------------------------------------------
@@ -579,6 +581,8 @@ public class ResourcesManager
         cradlePlatform5 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "cradlePlatform5.png");
         expulsor = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "expulsor.png");
         mineral = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "mineral.png");
+        mineral2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "mineral2.png");
+        mineral3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "mineral3.png");
         mushroomTree = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "mushroomTree.png");
         expulsorParticle = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "expulsorParticle.png");
         bomb = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bomb.png");
