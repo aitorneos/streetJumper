@@ -3,9 +3,7 @@ package Scene;
 //---------------------------------- JAVA && TEXTURES IMPORTS ------------------------------------------------------
 import java.io.IOException;
 import java.util.Iterator;
-
 import javax.microedition.khronos.opengles.GL10;
-
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -35,8 +33,6 @@ import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
-
-
 //---------------------------------- PARTICLE SYSTEM && NETWORK ------------------------------------------------------
 import particleSystem.FireParticleSystem;
 import particleSystem.expulsorParticleSystem;
@@ -62,12 +58,8 @@ import ResourcesManagment.SceneManager.SceneType;
 
 //---------------------------------- SHADERS && TIMERS ------------------------------------------------------
 import Scene.LevelCompleteWindow.StarsCount;
-import Shader.RadialBlur;
 import Shader.WaterMaskEffectShader;
-import Shader.WaterSurfaceEntity;
 import Timers.playTimer;
-
-
 
 //---------------------------------- INNER && ANONIMOUS CLASES ------------------------------------------------------
 import com.PFC.PlatformJumper.streetJumper;
@@ -116,6 +108,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	public PlayerSpecial playerSpecial;
 	public RinoEnemy rEnemy;
 	private Enemy enemy;
+	private ZombiEnemy zombie;
+	private NomoEnemy nomo;
 	private Switcher switcher;
 	private Switcher switcher2;
 	private SpringBoarder springboarder;
@@ -254,6 +248,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 
 	// ---------------------- METHODS ----------------------------------------------------------------------------------------------------------
 	
+	 /**
+	  * METHOD TO CREATE GAME/CAMERA HUD 
+	  **/
 	private void createHUD()
 	{
 	    gameHUD = new HUD();
@@ -341,6 +338,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	    camera.setHUD(gameHUD);
 	}
 	
+	/**
+	 * METHOD RESPONSABLE OF CREATE ALL GENERAL SCENE PHYSICS
+	 **/
 	private void createPhysics()
 	{
 		physicsWorld = new FixedStepPhysicsWorld(60, new Vector2(0, -18.0f), false); 
@@ -350,6 +350,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	
 	@SuppressWarnings("deprecation")
 	@Override
+	/**
+	 * METHOD TO CREATE MAIN GAME SCENARIOS
+	 * @see Scene.BaseScene#createScene()
+	 **/
     public void createScene()
     {
 		 createBackground();
@@ -460,10 +464,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 attachChild (sps5 = ps5.build(engine, 1700, 500, ResourcesManager.getInstance().rainFire));
 			 
 			 // create WATER SHADER !
-			 /*water = new Sprite(0, 0, ResourcesManager.getInstance().waterShader, vbom);
+			 /**water = new Sprite(0, 0, ResourcesManager.getInstance().waterShader, vbom);
 			 waterDis = new Sprite(0, 0, ResourcesManager.getInstance().waterDis, vbom);
 			 water.setSize(1000, 500);
-			 attachChild(new WaterSurfaceEntity(1350, 200, water, waterDis, engine));*/
+			 attachChild(new WaterSurfaceEntity(1350, 200, water, waterDis, engine));**/
 			 			 
 			 // Create and initialize timer options an update
 			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
@@ -485,6 +489,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
 			 ResourcesManager.getInstance().getSceneMusic().play();
 			 player.setRunning();
+			 nomo.body.setLinearVelocity(1.5f, 0.0f);
+			 
 			 createBombSpriteControl();
 			 warningText = new Text(400, 240, resourcesManager.font, "Switcher Activated!\nSearch It", new TextOptions(HorizontalAlign.CENTER), vbom);
 			 warningText.setColor(android.graphics.Color.WHITE);
@@ -513,7 +519,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
     }
 
 	/**
-     * On exit SCENE
+     * On exit SCENE METHOD
      **/
     @Override
     public void onBackKeyPressed()
@@ -542,7 +548,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
     }
 
     /**
-     * Function returns scene type definition
+     * METHOD FOR GET SCENE DATA CONSTANT TYPE
      **/
     @Override
     public SceneType getSceneType()
@@ -551,7 +557,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
     }
 
     /**
-     * Function for disposing scene
+     * METHOD RESPONSABLE OF DISPOSING GAME SCENE
      **/
     @Override
     public void disposeScene(int levelID)
@@ -572,6 +578,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 
         	// --------------------------------------- SCENE SPRITES ---------------------------------------------------------------
         	this.clearChildScene();
+        	this.clearTouchAreas();
         	this.clearScene();
         	this.detachSelf();
         	this.dispose();
@@ -604,16 +611,16 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 engine.unregisterUpdateHandler(flicker);
         	 ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
         	 ResourcesManager.getInstance().font.unload();
+        	 ResourcesManager.getInstance().loadingFont.unload();
         	 
         	 // ---------------------------------------------- SPRITES -------------------------------------------------------------------
         	 player.clearEntityModifiers();
         	 player.clearUpdateHandlers();
-        	 //player.removePhysics(physicsWorld, this);
         	 playerOnline.clearEntityModifiers();
         	 playerOnline.clearUpdateHandlers();
         	 enemy.clearEntityModifiers();
         	 enemy.clearUpdateHandlers();
-        	 //enemy.removePhysics(physicsWorld, this);
+        	 
         	 hurt1.clearEntityModifiers();
         	 hurt1.detachSelf();
         	 hurt1.dispose();
@@ -659,9 +666,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 
         	// --------------------------------------- SCENE SPRITES ---------------------------------------------------------------
 
-        	this.clearTouchAreas();
-         	this.clearUpdateHandlers();
          	this.clearChildScene();
+         	this.clearTouchAreas();
+         	this.clearScene();
          	this.detachSelf();
          	this.dispose();
     		 
@@ -702,7 +709,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 playerSpecial.clearUpdateHandlers();
         	 playerOnline.clearEntityModifiers();
         	 playerOnline.clearUpdateHandlers();
-        	 this.clearScene();
         	 
         	// ------------------------------------------ TEXT ---------------------------------------------------------------------
         	 scoreText.clearEntityModifiers();
@@ -733,9 +739,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 
         	// --------------------------------------- SCENE SPRITES ---------------------------------------------------------------
 
-        	this.clearTouchAreas();
-         	this.clearUpdateHandlers();
          	this.clearChildScene();
+         	this.clearTouchAreas();
+         	this.clearScene();
          	this.detachSelf();
          	this.dispose();
     		 
@@ -769,6 +775,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 player.clearUpdateHandlers();
         	 playerOnline.clearEntityModifiers();
         	 playerOnline.clearUpdateHandlers();
+        	 rEnemy.clearEntityModifiers();
+        	 rEnemy.clearUpdateHandlers();
         	 
         	 scoreText.clearEntityModifiers();
         	 scoreText.clearUpdateHandlers();
@@ -776,8 +784,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 lifeText.clearUpdateHandlers();
         	 timeText.clearEntityModifiers();
         	 timeText.clearUpdateHandlers();
-        	 
-        	 this.clearScene();
         	 
         	 sps.clearUpdateHandlers();
         	 sps.getParticleEmitter().reset();
@@ -813,9 +819,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 
         	// --------------------------------------- SCENE SPRITES ---------------------------------------------------------------
 
-        	this.clearTouchAreas();
-         	this.clearUpdateHandlers();
          	this.clearChildScene();
+         	this.clearTouchAreas();
+         	this.clearScene();
          	this.detachSelf();
          	this.dispose();
     		 
@@ -844,6 +850,15 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 hurt3.detachSelf();
         	 hurt3.dispose();
         	 
+        	 player.clearEntityModifiers();
+        	 player.clearUpdateHandlers();
+        	 zombie.clearEntityModifiers();
+        	 zombie.clearUpdateHandlers();
+        	 nomo.clearEntityModifiers();
+        	 nomo.clearUpdateHandlers();
+        	 
+        	 // ----------------------------------------------------- TEXT ----------------------------------------------------------------------------------
+        	 
         	 scoreText.clearEntityModifiers();
         	 scoreText.clearUpdateHandlers();
         	 lifeText.clearEntityModifiers();
@@ -851,7 +866,20 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 timeText.clearEntityModifiers();
         	 timeText.clearUpdateHandlers();
         	 
-        	 this.clearScene();
+        	 nBombs.clearEntityModifiers();
+        	 nBombs.clearUpdateHandlers();
+        	 nBombs.detachSelf();
+        	 nBombs.dispose();
+        	 
+        	 // ---------------------------------------- PARTICLES --------------------------------------------------------------------------
+        	 
+        	 eps1.getParticleSystem().clearUpdateHandlers();
+        	 eps1.getParticleSystem().getParticleEmitter().reset();
+        	 eps1.getParticleSystem().reset();
+        	 
+        	 eps2.getParticleSystem().clearUpdateHandlers();
+        	 eps2.getParticleSystem().getParticleEmitter().reset();
+        	 eps2.getParticleSystem().reset();
         	 
         	 System.gc();
     	 }
@@ -2330,16 +2358,18 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ENEMY1))
 		            {
-		            	levelObject = new ZombiEnemy(x, y, vbom, camera,  physicsWorld)
+		            	zombie = new ZombiEnemy(x, y, vbom, camera,  physicsWorld)
 		            	{            		
 		            	};
+		            	levelObject = zombie;
 		            }
 		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ENEMY2))
 		            {
-		            	levelObject = new NomoEnemy(x, y, vbom, camera,  physicsWorld)
+		            	nomo = new NomoEnemy(x, y, vbom, camera,  physicsWorld)
 		            	{
 		            	};
+		            	levelObject = nomo;
 		            }
 		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MUSHROOM_TREE))
@@ -2629,7 +2659,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	    ContactListener contactListener = new ContactListener()
 	    {
 	    	
-	    	// BEGIN COLISION BETWEEN PLAYER AND ANY OF SCENE OBJECT
+	    	/**
+	    	 * BEGIN COLISION BETWEEN PLAYER AND ANY OF SCENE OBJECT
+	    	 * @see com.badlogic.gdx.physics.box2d.ContactListener#beginContact(com.badlogic.gdx.physics.box2d.Contact)
+	    	 **/
 	        public void beginContact(Contact contact)
 	        {
 	            final Fixture x1 = contact.getFixtureA();
@@ -2643,7 +2676,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                }
 	            }
 	            
-	            // ------------------------------------ LEVEL 1 ------------------------------------------------------------------------------------------------------
+	            /**
+	             * ------------------------------------ LEVEL 1 ------------------------------------------------------------------------------------------------------
+	             **/
 	            
 	            // Contact player - platform2 -----> dinamycBody (ascensor)
 	            if (x1.getBody().getUserData().equals("platform2") && x2.getBody().getUserData().equals("player") && x2.getBody().getPosition().y > x1.getBody().getPosition().y)
@@ -2890,7 +2925,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
             		}
             	}
             	
-            	// ------------------------------------- LEVEL 2 --------------------------------------------------------------------------
+            	/**
+            	 * ------------------------------------- LEVEL 2 --------------------------------------------------------------------------
+            	 **/
             	
             	// ----------------------------- SPRINGBOARDER-----------------------------------------------------------------------------
             	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("springboarder"))
@@ -3064,7 +3101,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
             		}
             	}
             	
-            	//------------------------------------------ LEVEL 3 --------------------------------------------------------------------------------------
+            	/**
+            	 * ------------------------------------------ LEVEL 3 --------------------------------------------------------------------------------------
+            	 **/
             	
             	if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("RinoEnemy"))
             	{
@@ -3196,9 +3235,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	            }  
 	            
 	            
-	          //------------------------------------------ LEVEL 4 --------------------------------------------------------------------------------------
+	          /**
+	           * ------------------------------------------ LEVEL 4 --------------------------------------------------------------------------------------
+	           **/
 	          
-	            // Contact player - SPIKES
+	            // Contact player - Mineral
 	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("mineral") && x1.getBody().getPosition().y > x2.getBody().getPosition().y + 2.0f)
 	            {
 
@@ -3244,9 +3285,84 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	            	}
 	            }
             	
+	            // Contact Player - Zombie Enemy
+	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("enemy1"))
+	            {
+	            	if (player.getEnemyColision() == false)
+	            	{
+	            		player.setEnemyColision(true);
+	            		ResourcesManager.getInstance().getFlySound().play();
+	            		// Control Impulse and direction
+		            	if (player.body.getLinearVelocity().x > 0)
+		            	{
+		            		player.body.applyLinearImpulse(-20.0f, -20.0f, player.body.getPosition().x - 5, player.body.getPosition().y);
+		            	}
+		            	
+		            	else if (player.body.getLinearVelocity().x < 0)
+		            	{
+		            		player.body.applyLinearImpulse(20.0f, -20.0f, player.body.getPosition().x + 5, player.body.getPosition().y);
+
+		            	}
+		            	
+		            	else
+		            	{
+		            		
+		            		player.body.setLinearVelocity(player.body.getLinearVelocity().x, player.body.getLinearVelocity().y);
+		            	}
+		            	
+		            	player.life = player.life - 1;
+                        if (player.life == 2) gameHUD.detachChild(hurt3);
+                        if (player.life == 1) gameHUD.detachChild(hurt2);
+                        if (player.life == 0) gameHUD.detachChild(hurt1);
+	            		
+		            	// DO flickering while period of time after touching the spikes 
+			       		flicker = new playTimer(0.1f , new playTimer.ITimerCallback()
+			       	    {
+			            	boolean visible = false;
+			       	        @Override
+			       	        public void onTick()
+			       	        {
+			       	            player.setVisible(visible);
+			       	            visible = !visible;
+			       	        }
+			       	      }
+			       	    );
+			       		engine.registerUpdateHandler(flicker);
+
+		                engine.registerUpdateHandler(new TimerHandler(1.0f, new ITimerCallback()
+		                {                                    
+		                    public void onTimePassed(final TimerHandler pTimerHandler)
+		                    {
+		                        pTimerHandler.reset();
+		                        flicker.pause();
+		                        flicker.reset();
+		                        if (player.isVisible() == false) player.setVisible(true);
+		                        engine.unregisterUpdateHandler(pTimerHandler);
+		                        engine.unregisterUpdateHandler(flicker);
+		                    }
+		                }));
+	            	}
+	            }
+	            
+	            if (x1.getBody().getUserData() != null && x2.getBody().getUserData() != null)
+	            {
+	                if (x2.getBody().getUserData().equals("bomb") || x1.getBody().getUserData().equals("bomb"))
+	                {
+	                    if (bomb.getX() > 1600 && bomb.getX() < 1800)
+	                    {
+	                    	// KILL zombie
+	                    	zombie.body.setActive(false);
+		                    physicsWorld.destroyBody(zombie.body);
+	                    	detachChild(zombie);
+	                    }
+	                }
+	            }
 	        }
 
-	        // END CONTACT COLISION BETWEEN PLAYER AND ANY OF PHYSICS SCENE OBJECT
+	        /**
+	         *END CONTACT COLISION BETWEEN PLAYER AND ANY OF PHYSICS SCENE OBJECT
+	         * @see com.badlogic.gdx.physics.box2d.ContactListener#endContact(com.badlogic.gdx.physics.box2d.Contact)
+	         **/
 	        public void endContact(Contact contact)
 	        {
 	            final Fixture x1 = contact.getFixtureA();
@@ -3260,9 +3376,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                }
 	            }
 	            
-	            /*
+	            /**
 	             * IN ALL CASES ----> WAITING TIME (3s) UNTIL IS ANOTHER COLISION.
-	             */
+	             **/
 	             
 	            if (x1.getBody().getUserData().equals("mine") && x2.getBody().getUserData().equals("player"))
 	            {
@@ -3390,6 +3506,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    }
 	                }));
 	            }
+	            
+	            if (x1.getBody().getUserData().equals("player") && x2.getBody().getUserData().equals("enemy1"))
+	            {
+	            	engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+	                {                                    
+	                    public void onTimePassed(final TimerHandler pTimerHandler)
+	                    {
+	                        pTimerHandler.reset();
+	                        player.setEnemyColision(false);
+	                        engine.unregisterUpdateHandler(pTimerHandler); 
+	                    }
+	                }));
+	            }
 	        }
 	        
 
@@ -3408,7 +3537,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	    return contactListener;
 	}
 	
-	protected void clearPhysicsWorld(PhysicsWorld physicsWorld)
+	private void clearPhysicsWorld(PhysicsWorld physicsWorld)
 	{
 		Iterator<Joint> allMyJoints = physicsWorld.getJoints();
 		while (allMyJoints.hasNext())

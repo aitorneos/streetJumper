@@ -1072,6 +1072,16 @@ public class ResourcesManager
         	{   
         		e.printStackTrace();
         	}
+        	
+        	// LOAD FLY ATTACK 
+        	try
+        	{
+        	    this.flySound = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(),"flyAttack.ogg");
+        	}
+        	catch (IOException e)
+        	{
+        	    e.printStackTrace();
+        	}
     	}
     }
     
