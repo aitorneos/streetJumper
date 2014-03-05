@@ -570,6 +570,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
     	 
     	 if (levelID == 1)
     	 {
+    		 ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
     		 ResourcesManager.getInstance().unloadGameTextures(levelID);
         	 ResourcesManager.getInstance().unloadGameSounds();
 
@@ -609,7 +610,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 // --------------------------------------------- TIMERS -------------------------------------------------------------------
         	 engine.unregisterUpdateHandler(playT);
         	 engine.unregisterUpdateHandler(flicker);
-        	 ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
         	 ResourcesManager.getInstance().font.unload();
         	 ResourcesManager.getInstance().loadingFont.unload();
         	 
@@ -691,6 +691,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 engine.unregisterUpdateHandler(playT);
         	 engine.unregisterUpdateHandler(flicker);
         	 ResourcesManager.getInstance().font.unload();
+        	 ResourcesManager.getInstance().loadingFont.unload();
         	 
         	 hurt1.clearEntityModifiers();
         	 hurt1.detachSelf();
@@ -744,6 +745,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
          	this.clearScene();
          	this.detachSelf();
          	this.dispose();
+         	
+         	 ResourcesManager.getInstance().loadingFont.unload();
+         	 ResourcesManager.getInstance().font.unload();
     		 
     		// ------------------------------------------ HUD -----------------------------------------------------------------------
         	 gameHUD.clearChildScene();
@@ -824,6 +828,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
          	this.clearScene();
          	this.detachSelf();
          	this.dispose();
+         	
+         	 ResourcesManager.getInstance().loadingFont.unload();
+         	 ResourcesManager.getInstance().font.unload();
     		 
     		// ------------------------------------------ HUD -----------------------------------------------------------------------
         	 gameHUD.clearChildScene();
@@ -3343,20 +3350,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		                }));
 	            	}
 	            }
-	            
-	            if (x1.getBody().getUserData() != null && x2.getBody().getUserData() != null)
-	            {
-	                if (x2.getBody().getUserData().equals("bomb") || x1.getBody().getUserData().equals("bomb"))
-	                {
-	                    if (bomb.getX() > 1600 && bomb.getX() < 1800)
-	                    {
-	                    	// KILL zombie
-	                    	zombie.body.setActive(false);
-		                    physicsWorld.destroyBody(zombie.body);
-	                    	detachChild(zombie);
-	                    }
-	                }
-	            }
 	        }
 
 	        /**
@@ -3646,7 +3639,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
               	  gameHUD.attachChild(nBombs);
 		    	  
 		    	  // Remove grenade and execute explosion -----> particle system (like mines)
-		    	  engine.registerUpdateHandler(new TimerHandler(2.0f, new ITimerCallback()
+		    	  engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
 	              {                                    
 	                    public void onTimePassed(final TimerHandler pTimerHandler)
 	                    {
@@ -3662,11 +3655,20 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                        engine.unregisterUpdateHandler(pTimerHandler); 
 	                    }
 	              }));
-		    	  engine.registerUpdateHandler(new TimerHandler(3.5f, new ITimerCallback()
+		    	  engine.registerUpdateHandler(new TimerHandler(4.5f, new ITimerCallback()
 	              {                                    
 	                    public void onTimePassed(final TimerHandler pTimerHandler)
 	                    {
 	                        pTimerHandler.reset();
+	                        
+	                        // KILL zombie
+	                        if (bombLaunched.getX() > 1500 && bombLaunched.getY() < 1900)
+	                        {
+		                    	zombie.body.setActive(false);
+			                    physicsWorld.destroyBody(zombie.body);
+			                    SceneManager.getInstance().getGameScene().detachChild(zombie);
+	                        }
+		                    
 	                        SceneManager.getInstance().getGameScene().detachChild (explosion.getParticleSystem());
 	                        engine.unregisterUpdateHandler(pTimerHandler); 
 	                    }
