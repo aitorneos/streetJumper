@@ -35,6 +35,8 @@ import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
+
+
 //---------------------------------- PARTICLE SYSTEM && NETWORK ------------------------------------------------------
 import particleSystem.FireParticleSystem;
 import particleSystem.expulsorParticleSystem;
@@ -44,7 +46,9 @@ import Animated_Features.Bomb;
 import Animated_Features.SpringBoarder;
 import Animated_Features.Switcher;
 import Enemies.Enemy;
+import Enemies.NomoEnemy;
 import Enemies.RinoEnemy;
+import Enemies.ZombiEnemy;
 import Network.ClientMessageFlags;
 import Network.ServerMessageFlags;
 import Players.Player;
@@ -62,6 +66,8 @@ import Shader.RadialBlur;
 import Shader.WaterMaskEffectShader;
 import Shader.WaterSurfaceEntity;
 import Timers.playTimer;
+
+
 
 //---------------------------------- INNER && ANONIMOUS CLASES ------------------------------------------------------
 import com.PFC.PlatformJumper.streetJumper;
@@ -243,6 +249,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MINERAL = "mineral";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MUSHROOM_TREE = "mushroomTree";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOMB = "bomb";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ENEMY1 = "enemy1";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ENEMY2 = "enemy2";
 
 	// ---------------------- METHODS ----------------------------------------------------------------------------------------------------------
 	
@@ -2318,6 +2326,20 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("mineral");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ENEMY1))
+		            {
+		            	levelObject = new ZombiEnemy(x, y, vbom, camera,  physicsWorld)
+		            	{            		
+		            	};
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ENEMY2))
+		            {
+		            	levelObject = new NomoEnemy(x, y, vbom, camera,  physicsWorld)
+		            	{
+		            	};
 		            }
 		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MUSHROOM_TREE))

@@ -78,6 +78,8 @@ public class ResourcesManager
 	public ITextureRegion player3;
 	public ITextureRegion player4;
 	public ITextureRegion level_1;
+	public ITextureRegion enemy1;
+	public ITextureRegion enemy2;
 	public ITextureRegion level_2;
 	public ITextureRegion level_3;
 	public ITextureRegion level_4;
@@ -582,6 +584,8 @@ public class ResourcesManager
         bomb = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bomb.png");
         bombHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "bombHUD.png");
         mineExplosion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "explosion.png");
+        enemy1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "enemy1.png");
+        enemy2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "enemy2.png");
         
         
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level1/");
