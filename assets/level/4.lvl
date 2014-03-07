@@ -20,7 +20,7 @@
 	<entity x="1150"  y="245"  width="60"  height="60"  type="mineral2" />
 	<entity x="1100"  y="250"  width="60"  height="60"  type="bomb" />
 	<entity x="1275"  y="275"  width="60"  height="60"  type="cradle5" />
-	<entity x="1310"  y="305"  width="60"  height="60"  type="mineral2" />
+	<entity x="1320"  y="310"  width="60"  height="60"  type="mineral2" />
 	<entity x="1459"  y="338"  width="60"  height="60"  type="cradle5" />
 	<entity x="1500"  y="375"  width="60"  height="60"  type="mineral3" />
 	<entity x="1700"  y="100"  width="60"  height="60"  type="cradle4" />

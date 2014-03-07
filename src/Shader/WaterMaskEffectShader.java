@@ -147,6 +147,12 @@ public class WaterMaskEffectShader extends Object
 	            GLES20.glEnableVertexAttribArray(ShaderProgramConstants.ATTRIBUTE_COLOR_LOCATION);
 	            super.unbind(pGLState);
 	    }
+	    
+	    @Override
+	    public void delete(final GLState pGLState)
+	    {
+	    	super.delete(pGLState);
+	    }
    
     }
 }

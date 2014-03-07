@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+
 //---------- ANDENGINE KERNEL IMPORTS -------------------------------------------------------------- //
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
@@ -50,6 +51,7 @@ import org.andengine.extension.multiplayer.adt.message.client.ClientMessage;
 import org.andengine.extension.multiplayer.adt.message.client.IClientMessage;
 import org.andengine.util.debug.Debug;
 
+
 //---------- NETWORK IMPORTS  -------------------------------------------------------------- //
 import Network.ConnectionCloseServerMessage;
 import Network.ServerMessageFlags;
@@ -60,10 +62,13 @@ import Network.ClientMessageFlags;
 import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
 import Timers.playTimer;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.pm.ConfigurationInfo;
 import android.util.SparseArray;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -200,35 +205,52 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	@Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
     {
-		// Every 0.15 SECONDS velocity && position are sended to CLIENT (twekeable)
-    	playTimer playT = new playTimer(0.15f, new playTimer.ITimerCallback()
-	    {
-	        @SuppressWarnings("deprecation")
-			@Override
-	         public void onTick()
-	         {
-	        	// Move SERVER player in CLIENT machine
-	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer != null)
-	         	{
-	         		final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER);
-	         		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 3.0f);
-	         		streetJumper.this.mSocketServer.sendBroadcastServerMessage(movePlayerServerMessage);
-	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerServerMessage);
-	         	}
-	         	
-	         	// Move Client player in SERVER machine
-	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer == null)
-	         	{
-	         		final MovePlayerClientServerMessage movePlayerClientServerMessage = (MovePlayerClientServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT);
-	         		movePlayerClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 3.0f);
-	         		streetJumper.this.mServerConnector.sendClientMessage(movePlayerClientServerMessage);
-	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerClientServerMessage);
-	         	}
-	         }
-	       }
-	     );
-		this.mEngine.registerUpdateHandler(playT);
-		SceneManager.getInstance().createSplashScene(pOnCreateSceneCallback);
+    	// Check if the system supports OpenGL ES 2.0.
+  	  final ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+  	  final ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
+  	  final boolean supportsEs2 = configurationInfo.reqGlEsVersion >= 0x20000;
+
+  	  if (supportsEs2)
+  	  {
+  	    // Request an OpenGL ES 2.0 compatible context.
+  		// Every 0.15 SECONDS velocity && position are sended to CLIENT (twekeable)
+      	playTimer playT = new playTimer(0.15f, new playTimer.ITimerCallback()
+  	    {
+  	        @SuppressWarnings("deprecation")
+  			@Override
+  	         public void onTick()
+  	         {
+  	        	// Move SERVER player in CLIENT machine
+  	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer != null)
+  	         	{
+  	         		final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER);
+  	         		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 3.0f);
+  	         		streetJumper.this.mSocketServer.sendBroadcastServerMessage(movePlayerServerMessage);
+  	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerServerMessage);
+  	         	}
+  	         	
+  	         	// Move Client player in SERVER machine
+  	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer == null)
+  	         	{
+  	         		final MovePlayerClientServerMessage movePlayerClientServerMessage = (MovePlayerClientServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT);
+  	         		movePlayerClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 3.0f);
+  	         		streetJumper.this.mServerConnector.sendClientMessage(movePlayerClientServerMessage);
+  	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerClientServerMessage);
+  	         	}
+  	         }
+  	       }
+  	     );
+  		this.mEngine.registerUpdateHandler(playT);
+  		SceneManager.getInstance().createSplashScene(pOnCreateSceneCallback);
+
+  	  }
+  	  else
+  	  {
+  	    // This is where you could create an OpenGL ES 1.x compatible
+  	    // renderer if you wanted to support both ES 1 and ES 2.
+  		  System.exit(2);
+
+  	  }
 		
     }
 

@@ -636,6 +636,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 // ------------------------------------------------ SHADERS --------------------------------------------------------------------
         	 water.clearEntityModifiers();
         	 water.clearUpdateHandlers();
+        	 engine.getShaderProgramManager().onDestroy();
         	 
         	// ------------------------------------------------ PARTICLE SYSTEM/S --------------------------------------------------------------------
         	 sps.clearUpdateHandlers();
@@ -726,6 +727,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 waterEx.reset();
         	 waterEx.detachSelf();
         	 waterEx.dispose();
+        	 detachChild(waterEx);
         	 playerSpecial.destroyBulletSystem();
         	 
         	 System.gc();
@@ -3743,8 +3745,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		    	  bombLaunched.setVisible(true);
 		    	  
 		    	  //Launch granade to a unique direction and velocity
-		    	  bombLaunched.body.applyLinearImpulse(10.0f, 10.0f, 10.0f, 10.0f);
+		    	  bombLaunched.body.applyLinearImpulse(5.0f, 10.0f, 5.0f, 10.0f);
 		    	  
+		    	  // Update HUD Text
 		    	  player.hasBombs--;
 		    	  gameHUD.detachChild(nBombs);
 		    	  nBombs = new Text(40, 300, resourcesManager.font, "+" + player.hasBombs, new TextOptions(HorizontalAlign.LEFT), vbom);
@@ -3774,7 +3777,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                        pTimerHandler.reset();
 	                        
 	                        // KILL zombie
-	                        if (bombLaunched.getX() > 1500 && bombLaunched.getY() < 1900)
+	                        if (bombLaunched.getX() > 1500 && bombLaunched.getY() < 1800)
 	                        {
 		                    	zombie.body.setActive(false);
 			                    physicsWorld.destroyBody(zombie.body);
