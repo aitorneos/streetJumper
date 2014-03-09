@@ -205,7 +205,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	@Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback)
     {
-    	// Check if the system supports OpenGL ES 2.0.
+		// Check if the system supports OpenGL ES 2.0.
   	  final ActivityManager activityManager = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
   	  final ConfigurationInfo configurationInfo = activityManager.getDeviceConfigurationInfo();
   	  final boolean supportsEs2 = configurationInfo.reqGlEsVersion >= 0x20000;
