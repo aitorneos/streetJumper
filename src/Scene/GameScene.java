@@ -1600,6 +1600,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            	controlAc = 1;
 	                            	if (score <= 35 && score >= 30)
 	                            	{
+	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
 	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.ONE, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
@@ -1624,6 +1625,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            	
 	                            	else if (score > 50 && score < 65)
 	                            	{
+	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
 	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.TWO, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
@@ -1648,6 +1650,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            	
 	                            	else
 	                            	{
+	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
 	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.THREE, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
