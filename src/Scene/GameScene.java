@@ -375,30 +375,37 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 enemy.setRunning();
 	         enemy.body.setLinearVelocity(0.5f, 0.0f);
 	         ResourcesManager.getInstance().getSceneMusic().play();
- 
-			// Put "font" snow raining
-			 ps = new waterParticleSystem();
-			 attachChild (sps = ps.build(engine, 400, 500, ResourcesManager.getInstance().waterDrop));
-
-			 ps2 = new waterParticleSystem();
-			 attachChild (sps2 = ps2.build(engine, 150, 500, ResourcesManager.getInstance().waterDrop));
-			 
-			 ps3 = new waterParticleSystem();
-			 attachChild (sps3 = ps3.build(engine, 800, 500, ResourcesManager.getInstance().waterDrop));
-			 
-			 ps4 = new waterParticleSystem();
-			 attachChild (sps4 = ps4.build(engine, 1240, 500, ResourcesManager.getInstance().waterDrop));
-			 
-			 // create WATER SHADER !
-			 water = new Sprite(0, 120, 2048, -240, ResourcesManager.getInstance().waterShader, vbom);
-			 water.setWidth(3000);
-			 WaterMaskEffectShader.setup(engine, ResourcesManager.getInstance().waterDisplacement, 0.0f, 4.0f);
-			 engine.getShaderProgramManager().loadShaderProgram(WaterMaskEffectShader.getShaderProgram());
-	         water.setShaderProgram(WaterMaskEffectShader.getShaderProgram());
-	         water.setVisible(true);
-	         water.setFlippedVertical(true);
-	         attachChild(water);
 	         ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
+ 
+	         if (resourcesManager.particlesActivated == true)
+	         {
+	        	// Put "font" snow raining
+				 ps = new waterParticleSystem();
+				 attachChild (sps = ps.build(engine, 400, 500, ResourcesManager.getInstance().waterDrop));
+
+				 ps2 = new waterParticleSystem();
+				 attachChild (sps2 = ps2.build(engine, 150, 500, ResourcesManager.getInstance().waterDrop));
+				 
+				 ps3 = new waterParticleSystem();
+				 attachChild (sps3 = ps3.build(engine, 800, 500, ResourcesManager.getInstance().waterDrop));
+				 
+				 ps4 = new waterParticleSystem();
+				 attachChild (sps4 = ps4.build(engine, 1240, 500, ResourcesManager.getInstance().waterDrop));
+	         }
+			 
+	         if (resourcesManager.shaderActivated == true)
+	         {
+	        	// create WATER SHADER !
+				 water = new Sprite(0, 120, 2048, -240, ResourcesManager.getInstance().waterShader, vbom);
+				 water.setWidth(3000);
+				 WaterMaskEffectShader.setup(engine, ResourcesManager.getInstance().waterDisplacement, 0.0f, 4.0f);
+				 engine.getShaderProgramManager().loadShaderProgram(WaterMaskEffectShader.getShaderProgram());
+		         water.setShaderProgram(WaterMaskEffectShader.getShaderProgram());
+		         water.setVisible(true);
+		         water.setFlippedVertical(true);
+		         attachChild(water);
+	         }
+	         
 	         // Create and initialize timer options an update
 			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
 		     {
@@ -449,21 +456,24 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
 			 ResourcesManager.getInstance().getSceneMusic().play();
 			 
-			// Put "font" fire raining
-			 ps = new waterParticleSystem();
-			 attachChild (sps = ps.build(engine, 300, 500, ResourcesManager.getInstance().rainFire));
+			 if (resourcesManager.particlesActivated == true)
+			 {
+				// Put "font" fire raining
+				 ps = new waterParticleSystem();
+				 attachChild (sps = ps.build(engine, 300, 500, ResourcesManager.getInstance().rainFire));
 
-			 ps2 = new waterParticleSystem();
-			 attachChild (sps2 = ps2.build(engine, 600, 500, ResourcesManager.getInstance().rainFire));
-			 
-			 ps3 = new waterParticleSystem();
-			 attachChild (sps3 = ps3.build(engine, 1000, 500, ResourcesManager.getInstance().rainFire));
-			 
-			 ps4 = new waterParticleSystem();
-			 attachChild (sps4 = ps4.build(engine, 1400, 500, ResourcesManager.getInstance().rainFire));
-			 
-			 ps5 = new waterParticleSystem();
-			 attachChild (sps5 = ps5.build(engine, 1700, 500, ResourcesManager.getInstance().rainFire));
+				 ps2 = new waterParticleSystem();
+				 attachChild (sps2 = ps2.build(engine, 600, 500, ResourcesManager.getInstance().rainFire));
+				 
+				 ps3 = new waterParticleSystem();
+				 attachChild (sps3 = ps3.build(engine, 1000, 500, ResourcesManager.getInstance().rainFire));
+				 
+				 ps4 = new waterParticleSystem();
+				 attachChild (sps4 = ps4.build(engine, 1400, 500, ResourcesManager.getInstance().rainFire));
+				 
+				 ps5 = new waterParticleSystem();
+				 attachChild (sps5 = ps5.build(engine, 1700, 500, ResourcesManager.getInstance().rainFire));
+			 }
 			 
 			 // create WATER SHADER !
 			 /**water = new Sprite(0, 0, ResourcesManager.getInstance().waterShader, vbom);
@@ -498,12 +508,15 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			 warningText.setColor(android.graphics.Color.WHITE);
 		   	 nBombs = new Text(40, 300, resourcesManager.font, "+" + player.hasBombs, new TextOptions(HorizontalAlign.LEFT), vbom);
 			 
-			// Put expulsor particles system
-			 eps1 = new expulsorParticleSystem();
-			 attachChild (ex1 = eps1.build(engine, 1010, 190));
-			 
-			 eps2 = new expulsorParticleSystem();
-			 attachChild (ex2 = eps2.build(engine, 1850, 305));
+		   	 if (resourcesManager.particlesActivated == true)
+		   	 {
+		   	// Put expulsor particles system
+				 eps1 = new expulsorParticleSystem();
+				 attachChild (ex1 = eps1.build(engine, 1010, 190));
+				 
+				 eps2 = new expulsorParticleSystem();
+				 attachChild (ex2 = eps2.build(engine, 1850, 305));
+		   	 }
 			 
 			// Create and initialize timer options an update
 			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
@@ -633,27 +646,33 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 hurt3.detachSelf();
         	 hurt3.dispose();
         	 
-        	 // ------------------------------------------------ SHADERS --------------------------------------------------------------------
-        	 water.clearEntityModifiers();
-        	 water.clearUpdateHandlers();
-        	 engine.getShaderProgramManager().onDestroy();
+        	 if (resourcesManager.shaderActivated == true)
+        	 {
+        		// ------------------------------------------------ SHADERS --------------------------------------------------------------------
+            	 water.clearEntityModifiers();
+            	 water.clearUpdateHandlers();
+            	 engine.getShaderProgramManager().onDestroy();
+        	 }
         	 
-        	// ------------------------------------------------ PARTICLE SYSTEM/S --------------------------------------------------------------------
-        	 sps.clearUpdateHandlers();
-        	 sps.getParticleEmitter().reset();
-        	 sps.reset();
-        	 
-        	 sps2.clearUpdateHandlers();
-        	 sps2.getParticleEmitter().reset();
-        	 sps2.reset();
-        	 
-        	 sps3.clearUpdateHandlers();
-        	 sps3.getParticleEmitter().reset();
-        	 sps3.reset();
-        	 
-        	 sps4.clearUpdateHandlers();
-        	 sps4.getParticleEmitter().reset();
-        	 sps4.reset();
+        	 if (resourcesManager.particlesActivated == true)
+        	 {
+        		 // ------------------------------------------------ PARTICLE SYSTEM/S --------------------------------------------------------------------
+            	 sps.clearUpdateHandlers();
+            	 sps.getParticleEmitter().reset();
+            	 sps.reset();
+            	 
+            	 sps2.clearUpdateHandlers();
+            	 sps2.getParticleEmitter().reset();
+            	 sps2.reset();
+            	 
+            	 sps3.clearUpdateHandlers();
+            	 sps3.getParticleEmitter().reset();
+            	 sps3.reset();
+            	 
+            	 sps4.clearUpdateHandlers();
+            	 sps4.getParticleEmitter().reset();
+            	 sps4.reset();
+        	 }
         	 
         	 System.gc();
     	 }
@@ -793,25 +812,28 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 timeText.clearEntityModifiers();
         	 timeText.clearUpdateHandlers();
         	 
-        	 sps.clearUpdateHandlers();
-        	 sps.getParticleEmitter().reset();
-        	 sps.reset();
-        	 
-        	 sps2.clearUpdateHandlers();
-        	 sps2.getParticleEmitter().reset();
-        	 sps2.reset();
-        	 
-        	 sps3.clearUpdateHandlers();
-        	 sps3.getParticleEmitter().reset();
-        	 sps3.reset();
-        	 
-        	 sps4.clearUpdateHandlers();
-        	 sps4.getParticleEmitter().reset();
-        	 sps4.reset();
-        	 
-        	 sps5.clearUpdateHandlers();
-        	 sps5.getParticleEmitter().reset();
-        	 sps5.reset();
+        	 if (resourcesManager.particlesActivated == true)
+        	 {
+        		 sps.clearUpdateHandlers();
+            	 sps.getParticleEmitter().reset();
+            	 sps.reset();
+            	 
+            	 sps2.clearUpdateHandlers();
+            	 sps2.getParticleEmitter().reset();
+            	 sps2.reset();
+            	 
+            	 sps3.clearUpdateHandlers();
+            	 sps3.getParticleEmitter().reset();
+            	 sps3.reset();
+            	 
+            	 sps4.clearUpdateHandlers();
+            	 sps4.getParticleEmitter().reset();
+            	 sps4.reset();
+            	 
+            	 sps5.clearUpdateHandlers();
+            	 sps5.getParticleEmitter().reset();
+            	 sps5.reset();
+        	 }
         	 
     		 System.gc();
     	 }
@@ -881,17 +903,19 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 nBombs.clearUpdateHandlers();
         	 nBombs.detachSelf();
         	 nBombs.dispose();
-        	 
-        	 // ---------------------------------------- PARTICLES --------------------------------------------------------------------------
-        	 
-        	 eps1.getParticleSystem().clearUpdateHandlers();
-        	 eps1.getParticleSystem().getParticleEmitter().reset();
-        	 eps1.getParticleSystem().reset();
-        	 
-        	 eps2.getParticleSystem().clearUpdateHandlers();
-        	 eps2.getParticleSystem().getParticleEmitter().reset();
-        	 eps2.getParticleSystem().reset();
-        	 
+        	
+        	 if (resourcesManager.particlesActivated)
+        	 {
+        		 // ---------------------------------------- PARTICLES -------------------------------------------------------------------------- 
+            	 eps1.getParticleSystem().clearUpdateHandlers();
+            	 eps1.getParticleSystem().getParticleEmitter().reset();
+            	 eps1.getParticleSystem().reset();
+            	 
+            	 eps2.getParticleSystem().clearUpdateHandlers();
+            	 eps2.getParticleSystem().getParticleEmitter().reset();
+            	 eps2.getParticleSystem().reset();
+        	 }
+ 
         	 System.gc();
     	 }
     }

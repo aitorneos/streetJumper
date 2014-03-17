@@ -32,6 +32,8 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	
 	private final int AR_SEL = 5;
 	private final int LEVEL_SEL = 6;
+	private final int SHADER = 11;
+	private final int PARTICLE = 12;
 	
 	private void createBackground()
 	 {
@@ -52,29 +54,34 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		 menuChildScene = new MenuScene(camera);
 	     menuChildScene.setPosition(-250, 200);
 	     
-	     final Sprite background =  new Sprite(350, 230, resourcesManager.optionsBack, vbom);
+	     //final Sprite background =  new Sprite(350, 230, resourcesManager.optionsBack, vbom);
 	     final IMenuItem player = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PLAYER_SEL, resourcesManager.options_player_selection, vbom), 1.2f, 1);
 	     final IMenuItem arSel = new ScaleMenuItemDecorator(new SpriteMenuItem(AR_SEL, resourcesManager.ARSel, vbom), 1.2f, 1);
 	     final IMenuItem levelSel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL_SEL, resourcesManager.levelLoad, vbom), 1.2f, 1);
+	     final IMenuItem level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_1, vbom), 1, 1);
+	     final IMenuItem shaderSel = new ScaleMenuItemDecorator(new SpriteMenuItem(SHADER, resourcesManager.shaderOption, vbom), 1.2f, 1);
+	     final IMenuItem particleSel = new ScaleMenuItemDecorator(new SpriteMenuItem(PARTICLE, resourcesManager.particleOption, vbom), 1.2f, 1);
 	     
 	     menuChildScene.addMenuItem(player);
 	     menuChildScene.addMenuItem(arSel);
 	     menuChildScene.addMenuItem(levelSel);
+	     menuChildScene.addMenuItem(level1Sel);
+	     menuChildScene.addMenuItem(shaderSel);
+	     menuChildScene.addMenuItem(particleSel);
   
 	     menuChildScene.buildAnimations();
 	     menuChildScene.setBackgroundEnabled(false);
 	     
-	     player.setPosition(player.getX() + 195 , player.getY() - 190);
-	     arSel.setPosition(arSel.getX() + 205 , arSel.getY() - 165);
-	     levelSel.setPosition(levelSel.getX() + 205, levelSel.getY() - 165);
-	     
-	 	final IMenuItem level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_1, vbom), 1, 1);
-     	menuChildScene.addMenuItem(level1Sel);
-     	level1Sel.setPosition(level1Sel.getX() + 900 , level1Sel.getY());
+	     player.setPosition(player.getX() + 90 , player.getY() - 325);
+	     arSel.setPosition(arSel.getX() + 100 , arSel.getY() - 300);
+	     levelSel.setPosition(levelSel.getX() + 100, levelSel.getY() - 300);
+     	 level1Sel.setPosition(level1Sel.getX() + 805 , level1Sel.getY() + 25);
+     	 shaderSel.setPosition(shaderSel.getX() + 100 , shaderSel.getY() - 155);
+     	 particleSel.setPosition(particleSel.getX() + 100 , particleSel.getY() - 135);
  
 	     menuChildScene.setOnMenuItemClickListener(this);
 	     setChildScene(menuChildScene);
-	     attachChild(background);
+	     //attachChild(background);
 	}
 	
 	@Override
@@ -126,7 +133,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		createScene();	    
 		       	     	final IMenuItem player1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER1_SEL, resourcesManager.player1, vbom), 1.2f, 1);
 		       	     	menuChildScene.addMenuItem(player1Sel);
-		       	     	player1Sel.setPosition(player1Sel.getX() + 875 , player1Sel.getY() + 160);
+		       	     	player1Sel.setPosition(player1Sel.getX() + 875 , player1Sel.getY() + 200);
 		        		break;
 		        		
 		        	case 1:
@@ -138,7 +145,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		createScene();	        		
 		       	     	final IMenuItem player2Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER2_SEL, resourcesManager.player2, vbom), 1.2f, 1);
 		       	     	menuChildScene.addMenuItem(player2Sel);
-		       	     	player2Sel.setPosition(player2Sel.getX() + 875 , player2Sel.getY() + 160);
+		       	     	player2Sel.setPosition(player2Sel.getX() + 875 , player2Sel.getY() + 200);
 		        		break;
 		        		
 		        	case 2:
@@ -150,7 +157,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		createScene();	        		
 		       	     	final IMenuItem player3Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER3_SEL, resourcesManager.player3, vbom), 1.2f, 1);
 		       	     	menuChildScene.addMenuItem(player3Sel);
-		       	     	player3Sel.setPosition(player3Sel.getX() + 875 , player3Sel.getY() + 160);
+		       	     	player3Sel.setPosition(player3Sel.getX() + 875 , player3Sel.getY() + 200);
 		        		break;
 		        		
 		        	case 3:
@@ -162,7 +169,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		createScene();      		
 		       	     	final IMenuItem player4Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER4_SEL, resourcesManager.player4, vbom), 1.2f, 1);
 		       	     	menuChildScene.addMenuItem(player4Sel);
-		       	     	player4Sel.setPosition(player4Sel.getX() + 875 , player4Sel.getY() + 160);
+		       	     	player4Sel.setPosition(player4Sel.getX() + 875 , player4Sel.getY() + 200);
 		        		break;
 		        		
 		        	default:
@@ -185,7 +192,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		levelSel = 1;
 		        		final IMenuItem level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_1, vbom), 1, 1);
 		       	     	menuChildScene.addMenuItem(level1Sel);
-		       	     	level1Sel.setPosition(level1Sel.getX() + 900 , level1Sel.getY());
+		       	     	level1Sel.setPosition(level1Sel.getX() + 900 , level1Sel.getY() + 25);
 		        		
 		        		break;
 		        		
@@ -194,7 +201,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		levelSel = 2;
 		        		final IMenuItem level2Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL2_SEL, resourcesManager.level_2, vbom), 1, 1);
 		       	     	menuChildScene.addMenuItem(level2Sel);
-		       	     	level2Sel.setPosition(level2Sel.getX() + 900 , level2Sel.getY());
+		       	     	level2Sel.setPosition(level2Sel.getX() + 900 , level2Sel.getY() + 25);
 		        		
 		        		break;
 		        		
@@ -203,7 +210,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		levelSel = 3;
 		        		final IMenuItem level3Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL3_SEL, resourcesManager.level_3, vbom), 1, 1);
 		       	     	menuChildScene.addMenuItem(level3Sel);
-		       	     	level3Sel.setPosition(level3Sel.getX() + 900 , level3Sel.getY());
+		       	     	level3Sel.setPosition(level3Sel.getX() + 900 , level3Sel.getY() + 25);
 		        		
 		        		break;
 		        		
@@ -212,7 +219,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		levelSel = 0;
 		        		final IMenuItem level4Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL4_SEL, resourcesManager.level_4, vbom), 1, 1);
 		       	     	menuChildScene.addMenuItem(level4Sel);
-		       	     	level4Sel.setPosition(level4Sel.getX() + 900 , level4Sel.getY());
+		       	     	level4Sel.setPosition(level4Sel.getX() + 900 , level4Sel.getY() + 25);
 		        		
 		        		break;
 		        		
@@ -223,6 +230,16 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	        	
 	        	// Assign level selected to resources manager variable
 	        	ResourcesManager.getInstance().setLevelComplete((ResourcesManager.getInstance().getLevelComplete() % 4) + 1);
+	        	
+	        case SHADER:
+	        	
+	        	ResourcesManager.getInstance().shaderActivated = !ResourcesManager.getInstance().shaderActivated;
+	        	return true;
+	        	
+	        case PARTICLE:
+	        	
+	        	ResourcesManager.getInstance().particlesActivated = !ResourcesManager.getInstance().particlesActivated;
+	        	return true;
 	            
 	        default:
 	            return false;

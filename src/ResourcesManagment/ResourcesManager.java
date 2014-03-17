@@ -88,6 +88,8 @@ public class ResourcesManager
 	public ITextureRegion optionsBack;
 	public ITextureRegion menuBack;
 	public ITextureRegion levelLoad;
+	public ITextureRegion particleOption;
+	public ITextureRegion shaderOption;
 	
 	
 	// Level Complete Window
@@ -214,6 +216,8 @@ public class ResourcesManager
     private boolean AR = false;
     public int playerOnlineSelected = 3;
     public boolean controlLoaded = false;
+    public boolean shaderActivated = false;
+    public boolean particlesActivated = false;
 
     
     //---------------------------------------------
@@ -316,6 +320,8 @@ public class ResourcesManager
 		level_2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_2.png");
 		level_3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_3.png");
 		level_4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_4.png");
+		shaderOption = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "shaders.png");
+		particleOption = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "particles.png");
     	
     	try
     	{
@@ -371,7 +377,7 @@ public class ResourcesManager
         mine = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "mine.png");
         
         // --------------------------------------------- PHYSIC SPRITE ---------------------------------------------------------------------
-        waterDrop = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "snowflake.png");
+        waterDrop = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "waterDropTexture.png");
         mineExplosion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "explosion.png");
         stalactitaLeft = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "snowLedgeLeft.png");
         stalactitaRight = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "snowLedgeRight.png");
