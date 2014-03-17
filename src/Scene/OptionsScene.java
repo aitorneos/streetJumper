@@ -8,6 +8,8 @@ import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
+
+import android.graphics.Color;
 import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
 import ResourcesManagment.SceneManager.SceneType;
@@ -191,13 +193,21 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	        	final IMenuItem notSel3 = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
 	        	if (arSel)
 	        	{
+	       	     	yesSel3.setPosition(yesSel3.getX() + 800 , yesSel3.getY() - 50);
+	       	     	notSel3.setPosition(notSel3.getX() + 900 , notSel3.getY() - 50);
+	       	     	notSel3.setColor(Color.RED);
+	       	     	yesSel3.setColor(Color.WHITE);
 	        		menuChildScene.addMenuItem(yesSel3);
-	       	     	yesSel3.setPosition(yesSel3.getX() + 800 , yesSel3.getY() + 75);
+	        		menuChildScene.addMenuItem(notSel3);
 	        	}
 	        	else
 	        	{
+	       	     	notSel3.setPosition(notSel3.getX() + 900 , notSel3.getY() - 50);
+	       	     	yesSel3.setPosition(yesSel3.getX() + 800 , yesSel3.getY() - 50);
+	       	     	yesSel3.setColor(Color.RED);
+	       	     	notSel3.setColor(Color.WHITE);
 	        		menuChildScene.addMenuItem(notSel3);
-	       	     	notSel3.setPosition(notSel3.getX() + 800 , notSel3.getY() + 75);
+	        		menuChildScene.addMenuItem(yesSel3);
 	        	}
     			return true;
 	        			
@@ -258,13 +268,21 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	        	final IMenuItem notSel = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
 	        	if (activated)
 	        	{
-	        		menuChildScene.addMenuItem(yesSel);
 	       	     	yesSel.setPosition(yesSel.getX() + 800 , yesSel.getY() - 50);
+	       	     	notSel.setPosition(notSel.getX() + 900 , notSel.getY() - 50);
+	       	     	notSel.setColor(Color.RED);
+	       	     	yesSel.setColor(Color.WHITE);
+	        		menuChildScene.addMenuItem(yesSel);
+	        		menuChildScene.addMenuItem(notSel);
 	        	}
 	        	else
 	        	{
+	       	     	notSel.setPosition(notSel.getX() + 900 , notSel.getY() - 50);
+	       	     	yesSel.setPosition(yesSel.getX() + 800 , yesSel.getY() - 50);
+	       	     	yesSel.setColor(Color.RED);
+	       	     	notSel.setColor(Color.WHITE);
 	        		menuChildScene.addMenuItem(notSel);
-	       	     	notSel.setPosition(notSel.getX() + 800 , notSel.getY() - 50);
+	        		menuChildScene.addMenuItem(yesSel);
 	        	}
 	        	
 	        	return true;
@@ -277,13 +295,21 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	        	activated2 = !activated2;
 	        	if (activated2)
 	        	{
-	        		menuChildScene.addMenuItem(yesSel2);
 	       	     	yesSel2.setPosition(yesSel2.getX() + 800 , yesSel2.getY() - 125);
+	       	     	notSel2.setPosition(notSel2.getX() + 900 , notSel2.getY() - 125);
+	       	     	notSel2.setColor(Color.RED);
+	       	     	yesSel2.setColor(Color.WHITE);
+	        		menuChildScene.addMenuItem(yesSel2);
+	        		menuChildScene.addMenuItem(notSel2);
 	        	}
 	        	else
 	        	{
+	       	     	notSel2.setPosition(notSel2.getX() + 900 , notSel2.getY() - 125);
+	       	     	yesSel2.setPosition(yesSel2.getX() + 800 , yesSel2.getY() - 125);
+	       	     	yesSel2.setColor(Color.RED);
+	       	     	notSel2.setColor(Color.WHITE);
 	        		menuChildScene.addMenuItem(notSel2);
-	       	     	notSel2.setPosition(notSel2.getX() + 800 , notSel2.getY() - 125);
+	        		menuChildScene.addMenuItem(yesSel2);
 	        	}
 	        	
 	        	return true;
