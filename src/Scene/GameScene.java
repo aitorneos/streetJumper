@@ -1597,8 +1597,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            
 	                            if (player.collidesWith(this) && player.switch1Touched && player.switch2Touched)
 	                            {
-	                            	controlAc = 1;
-	                            	if (score <= 35 && score >= 30)
+	                            	if (score <= 45 && score >= 60)
 	                            	{
 	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
 	                            		player.body.setLinearVelocity(0, 0);
@@ -1623,7 +1622,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	   	        		                }));
 	                            	}
 	                            	
-	                            	else if (score > 50 && score < 65)
+	                            	else if (score > 65 && score < 75)
 	                            	{
 	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
 	                            		player.body.setLinearVelocity(0, 0);

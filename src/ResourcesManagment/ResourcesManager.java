@@ -90,6 +90,8 @@ public class ResourcesManager
 	public ITextureRegion levelLoad;
 	public ITextureRegion particleOption;
 	public ITextureRegion shaderOption;
+	public ITextureRegion yes;
+	public ITextureRegion not;
 	
 	
 	// Level Complete Window
@@ -322,6 +324,8 @@ public class ResourcesManager
 		level_4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_4.png");
 		shaderOption = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "shaders.png");
 		particleOption = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "particles.png");
+		yes = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "yes.png");
+		not = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "not.png");
     	
     	try
     	{
