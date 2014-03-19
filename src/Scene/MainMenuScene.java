@@ -119,10 +119,10 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	        	for (int i = 0; i < 3; ++i)
 	        	{
 	        		ResourcesManager.getInstance().activity.toast("INSTRUCCIONS :\n\n"
-	        				+ "WIFI ACCES\n\n"
-	        				+ "SHOW MULTIPLAYER CONEXION : MENU BUTTON\n\n"
-		        			+ "1. SINGLE PLAYER : PUSH SERVER BUTTON\n\n"
-		        			+ "2.MULTIPLAYER : ONE MOVILE IN SERVER MODE AND OTHER IN CLIENT MODE (INTRODUCE SERVER IP SHOWED IN SERVER MOVILE)\n");
+	        				+ "1. WIFI ACCES\n\n"
+	        				+ "2. SHOW MULTIPLAYER CONEXION : MENU BUTTON\n\n"
+		        			+ "3. SINGLE PLAYER : PUSH SERVER BUTTON\n\n"
+		        			+ "4. MULTIPLAYER : ONE MOVILE IN SERVER MODE AND OTHER IN CLIENT MODE (INTRODUCE SERVER IP SHOWED IN SERVER MOVILE)\n");
 	        	}
 	        	
 	        	return true;

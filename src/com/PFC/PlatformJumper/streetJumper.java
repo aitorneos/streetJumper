@@ -363,7 +363,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                     @Override
                     public void onClick(final DialogInterface pDialog, final int pWhich) 
                     {
-                    	streetJumper.this.finish();
+                    	pDialog.cancel();
                     }
                 })
                 .create();
