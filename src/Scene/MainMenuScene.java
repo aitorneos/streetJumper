@@ -8,7 +8,6 @@ import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.util.GLState;
-
 import ResourcesManagment.ResourcesManager;
 import ResourcesManagment.SceneManager;
 import ResourcesManagment.SceneManager.SceneType;
@@ -25,6 +24,7 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	private final int MENU_PLAY = 0;
 	private final int MENU_OPTIONS = 1;
 	private final int MENU_LOAD = 2;
+	private final int MENU_ONLINE = 3;
 	
 	 @Override
 	    public SceneType getSceneType()
@@ -69,17 +69,20 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	     final IMenuItem playMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PLAY, resourcesManager.play_region, vbom), 1.2f, 1);
 	     final IMenuItem optionsMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_OPTIONS, resourcesManager.options_region, vbom), 1.2f, 1);
 	     final IMenuItem loadMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_LOAD, resourcesManager.load_region, vbom), 1.2f, 1);
+	     final IMenuItem onlineItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_ONLINE, resourcesManager.onlineOptions, vbom), 1.2f, 1);
 	     
 	     menuChildScene.addMenuItem(playMenuItem);
 	     menuChildScene.addMenuItem(optionsMenuItem);
 	     menuChildScene.addMenuItem(loadMenuItem);
+	     menuChildScene.addMenuItem(onlineItem);
 	     
 	     menuChildScene.buildAnimations();
 	     menuChildScene.setBackgroundEnabled(false);
 	     
-	     playMenuItem.setPosition(playMenuItem.getX() + 255 , playMenuItem.getY() - 165);
-	     optionsMenuItem.setPosition(optionsMenuItem.getX() + 255, optionsMenuItem.getY() - 167);
-	     loadMenuItem.setPosition(loadMenuItem.getX() + 255, loadMenuItem.getY() - 170);
+	     playMenuItem.setPosition(playMenuItem.getX() + 255 , playMenuItem.getY() - 200);
+	     optionsMenuItem.setPosition(optionsMenuItem.getX() + 255, optionsMenuItem.getY() - 202);
+	     onlineItem.setPosition(onlineItem.getX() + 255, onlineItem.getY() - 202);
+	     loadMenuItem.setPosition(loadMenuItem.getX() + 255, loadMenuItem.getY() - 205);
 	     
 	    menuChildScene.setOnMenuItemClickListener (this);
 	     
@@ -93,6 +96,7 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem, float pMenuItemLocalX, float pMenuItemLocalY)
 	{
 	    switch(pMenuItem.getID())
@@ -108,6 +112,10 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	        	// Load Configuration menu
 	            SceneManager.getInstance().loadOptionsMenu(engine);
 	            return true;
+	            
+	        case MENU_ONLINE:
+	        	ResourcesManager.getInstance().activity.getDialog();
+	        	return true;
 	            
 	        default:
 	            return false;

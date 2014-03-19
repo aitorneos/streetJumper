@@ -70,6 +70,7 @@ public class ResourcesManager
     public ITextureRegion scene_background_region;
     public ITextureRegion play_region;
     public ITextureRegion options_region;
+    public ITextureRegion onlineOptions;
     public ITextureRegion load_region;
     public ITextureRegion options_player_selection;
     public ITextureRegion options_background_region;
@@ -290,6 +291,7 @@ public class ResourcesManager
     	play_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "play.png");
     	load_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "load.png");
     	options_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "options.png");
+    	onlineOptions = BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuTextureAtlas, activity, "online.png");
     	       
     	try 
     	{

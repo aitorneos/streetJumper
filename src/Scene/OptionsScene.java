@@ -87,7 +87,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	     
 	     player.setPosition(player.getX() + 90 , player.getY() - 325);
 	     arSel.setPosition(arSel.getX() + 100 , arSel.getY() - 300);
-	     levelSel.setPosition(levelSel.getX() + 100, levelSel.getY() - 300);
+	     levelSel.setPosition(levelSel.getX() + 100, levelSel.getY() - 275);
      	 level1Sel.setPosition(level1Sel.getX() + 805 , level1Sel.getY() + 25);
      	 shaderSel.setPosition(shaderSel.getX() + 100 , shaderSel.getY() - 155);
      	 particleSel.setPosition(particleSel.getX() + 100 , particleSel.getY() - 135);

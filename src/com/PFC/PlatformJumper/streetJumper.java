@@ -6,7 +6,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-
 //---------- ANDENGINE KERNEL IMPORTS -------------------------------------------------------------- //
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
@@ -50,7 +49,6 @@ import org.andengine.util.WifiUtils.WifiUtilsException;
 import org.andengine.extension.multiplayer.adt.message.client.ClientMessage;
 import org.andengine.extension.multiplayer.adt.message.client.IClientMessage;
 import org.andengine.util.debug.Debug;
-
 
 //---------- NETWORK IMPORTS  -------------------------------------------------------------- //
 import Network.ConnectionCloseServerMessage;
@@ -153,6 +151,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
      // Methods for/from SuperClass/Interfaces
      // ===========================================================
      
+	@SuppressWarnings("deprecation")
 	/**
 	 Initialize screen options 
 	 **/
@@ -162,7 +161,6 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 		final Display defaultDisplay = getWindow().getWindowManager().getDefaultDisplay();
 	    @SuppressWarnings("deprecation")
 		int CAMERA_WIDTH = defaultDisplay.getWidth();
-	    @SuppressWarnings("deprecation")
 		int CAMERA_HEIGHT = defaultDisplay.getHeight();
 	    
 		camera = new BoundCamera(0, 0, 800, 480);
@@ -179,6 +177,12 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 		this.showDialog(DIALOG_CHOOSE_SERVER_OR_CLIENT_ID);
 	    return engineOptions;
     }
+	
+	@SuppressWarnings("deprecation")
+	public void getDialog()
+	{
+		this.onCreateEngineOptions();
+	}
 	
 	
 	/**
