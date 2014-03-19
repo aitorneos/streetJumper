@@ -114,7 +114,14 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	            return true;
 	            
 	        case MENU_ONLINE:
-	        	ResourcesManager.getInstance().activity.getDialog();
+	        	
+	        	for (int i = 0; i <= 3; ++i)
+	        	{
+	        		ResourcesManager.getInstance().activity.toast("WIFI INSTRUCCIONS :\n\n"
+		        			+ "1. SINGLE PLAYER : PUSH SERVER BUTTON\n\n"
+		        			+ "2.MULTIPLAYER : ONE MOVILE IN SERVER MODE AND OTHER IN CLIENT MODE (INTRODUCE SERVER IP SHOWED IN SERVER MOVILE)\n");
+	        	}
+	        	
 	        	return true;
 	            
 	        default:

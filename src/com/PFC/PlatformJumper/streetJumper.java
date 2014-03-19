@@ -88,6 +88,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	 // ===========================================================
     // Constants
     // ===========================================================
+	public Dialog dialog;
 
 	 public static final String LOCALHOST_IP = "127.0.0.1";
 
@@ -175,13 +176,15 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 		configChooserOptions.setRequestedAlphaSize(8);
 		configChooserOptions.setRequestedDepthSize(16);
 		this.showDialog(DIALOG_CHOOSE_SERVER_OR_CLIENT_ID);
+		dialog = onCreateDialog(DIALOG_CHOOSE_SERVER_OR_CLIENT_ID);
+		dialog.hide();
 	    return engineOptions;
     }
 	
 	@SuppressWarnings("deprecation")
 	public void getDialog()
 	{
-		this.onCreateEngineOptions();
+		dialog.show();
 	}
 	
 	
@@ -359,6 +362,8 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                 .create();
                 
              case DIALOG_CHOOSE_SERVER_OR_CLIENT_ID:
+            	 
+            	streetJumper.this.toast("IF YOU WANT TO PLAY SINGLE PLAYER CLICK SERVER BUTTON");
                 return new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setTitle("Be Server or Client ...")
@@ -394,6 +399,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                     }
                 })
                 .create();
+                
             default:
             	return super.onCreateDialog(pID);
         }
@@ -640,7 +646,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 	    Debug.d(pMessage);
 	}
 	
-	private void toast(final String pMessage) 
+	public void toast(final String pMessage) 
 	{
 	    this.log(pMessage);
 	    this.runOnUiThread(new Runnable()
@@ -648,7 +654,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
             @Override
             public void run()
             {
-                Toast.makeText(streetJumper.this, pMessage, Toast.LENGTH_SHORT).show();
+                Toast.makeText(streetJumper.this, pMessage, Toast.LENGTH_LONG).show();
             }
 	    });
 	}
