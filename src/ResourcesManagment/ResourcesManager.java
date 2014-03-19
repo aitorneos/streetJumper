@@ -2,7 +2,6 @@ package ResourcesManagment;
 
 import java.io.IOException;
 import java.io.InputStream;
-
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.sound.Sound;
@@ -25,9 +24,7 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
 import org.andengine.util.debug.Debug;
-
 import android.graphics.Color;
-
 import com.PFC.PlatformJumper.streetJumper;
 
 
@@ -221,6 +218,7 @@ public class ResourcesManager
     public boolean controlLoaded = false;
     public boolean shaderActivated = false;
     public boolean particlesActivated = false;
+    public boolean showOnline = false;
 
     
     //---------------------------------------------

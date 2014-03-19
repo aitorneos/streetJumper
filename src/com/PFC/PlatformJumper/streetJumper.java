@@ -6,6 +6,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+
 //---------- ANDENGINE KERNEL IMPORTS -------------------------------------------------------------- //
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
@@ -49,6 +50,7 @@ import org.andengine.util.WifiUtils.WifiUtilsException;
 import org.andengine.extension.multiplayer.adt.message.client.ClientMessage;
 import org.andengine.extension.multiplayer.adt.message.client.IClientMessage;
 import org.andengine.util.debug.Debug;
+
 
 //---------- NETWORK IMPORTS  -------------------------------------------------------------- //
 import Network.ConnectionCloseServerMessage;
@@ -175,7 +177,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 		configChooserOptions.setRequestedBlueSize(8);
 		configChooserOptions.setRequestedAlphaSize(8);
 		configChooserOptions.setRequestedDepthSize(16);
-		this.showDialog(DIALOG_CHOOSE_SERVER_OR_CLIENT_ID);
+		//this.showDialog(DIALOG_CHOOSE_SERVER_OR_CLIENT_ID);
 		dialog = onCreateDialog(DIALOG_CHOOSE_SERVER_OR_CLIENT_ID);
 		dialog.hide();
 	    return engineOptions;
@@ -276,7 +278,8 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
     }
     
     
-    @Override
+    @SuppressWarnings("deprecation")
+	@Override
     public boolean onKeyDown(int keyCode, KeyEvent event) 
     {  
         if (keyCode == KeyEvent.KEYCODE_BACK)
@@ -286,16 +289,20 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         
         if (keyCode == KeyEvent.KEYCODE_MENU && event.getAction() == KeyEvent.ACTION_DOWN) 
         {
-            if (this.mEngine.isRunning()) 
+            if (this.mEngine.isRunning() && SceneManager.getInstance().getGameScene() != null) 
             {
             	// Put Pause Text ...
             	this.mEngine.stop();
             	ResourcesManager.getInstance().getSceneMusic().pause();
             }
-            else
+            else if (!this.mEngine.isRunning() && SceneManager.getInstance().getGameScene() != null)
             {
             	this.mEngine.start();
             	ResourcesManager.getInstance().getSceneMusic().play();
+            }
+            else
+            {
+            	this.showDialog(DIALOG_CHOOSE_SERVER_OR_CLIENT_ID);
             }
         }
         return false; 
@@ -362,8 +369,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
                 .create();
                 
              case DIALOG_CHOOSE_SERVER_OR_CLIENT_ID:
-            	 
-            	streetJumper.this.toast("IF YOU WANT TO PLAY SINGLE PLAYER CLICK SERVER BUTTON");
+
                 return new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setTitle("Be Server or Client ...")
