@@ -356,7 +356,22 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	    
 	    else if (ResourcesManager.getInstance().getLevelComplete() == 5)
 	    {
-	    
+	    	// CREATE SCORE TEXT
+		    scoreText = new Text(155, 450, resourcesManager.font, "Score: 0", new TextOptions(HorizontalAlign.LEFT), vbom);
+		    lifeText = new Text(70, 390, resourcesManager.font, "Life:", new TextOptions(HorizontalAlign.LEFT), vbom);
+		    timeText = new Text(660, 40, resourcesManager.font, "TIME:80", new TextOptions(HorizontalAlign.LEFT), vbom);
+		    scoreText.setSkewCenter(0, 0);    
+		    gameHUD.attachChild(scoreText);
+		    gameHUD.attachChild(lifeText);
+		    gameHUD.attachChild(timeText);
+		    
+		    // Put Initial Life (hurts)
+		    hurt1 = new Sprite(165, 390, resourcesManager.hurtHUD, vbom);
+			hurt2 = new Sprite(205, 390, resourcesManager.hurtHUD, vbom);
+			hurt3 = new Sprite(245, 390, resourcesManager.hurtHUD, vbom);
+		    gameHUD.attachChild(hurt1);
+		    gameHUD.attachChild(hurt2);
+		    gameHUD.attachChild(hurt3);
 	    }
 	    
 	    camera.setHUD(gameHUD);
@@ -945,6 +960,42 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 }
  
         	 System.gc();
+    	 }
+    	 
+    	 else if (levelID == 5)
+    	 {
+    		 ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+    		 ResourcesManager.getInstance().unloadGameTextures(levelID);
+        	 ResourcesManager.getInstance().unloadGameSounds();
+
+        	 // code responsible for disposing scene
+        	 // removing all game scene objects.
+        	 
+        	// --------------------------------------- SCENE SPRITES ---------------------------------------------------------------
+
+         	this.clearChildScene();
+         	this.clearTouchAreas();
+         	this.clearScene();
+         	this.detachSelf();
+         	this.dispose();
+         	
+         	 ResourcesManager.getInstance().loadingFont.unload();
+         	 ResourcesManager.getInstance().font.unload();
+    		 
+    		// ------------------------------------------ HUD -----------------------------------------------------------------------
+    		 gameHUD.clearChildScene();
+        	 gameHUD.clearEntityModifiers();
+        	 gameHUD.clearTouchAreas();
+        	 gameHUD.clearUpdateHandlers();
+        	 gameHUD.detachChild(hurt1);
+        	 gameHUD.detachChild(hurt2);
+        	 gameHUD.detachChild(hurt3);
+        	 gameHUD.detachChild(scoreText);
+        	 gameHUD.detachChild(lifeText);
+        	 gameHUD.detachChild(timeText);
+        	 gameHUD.detachChildren();
+        	 gameHUD.detachSelf();
+        	 gameHUD.dispose(); 
     	 }
     }
     

@@ -688,6 +688,7 @@ public class ResourcesManager
         starBronze = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "starBronze.png");
         starGold = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "starGold.png");
         starSilver = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "starSilver.png");
+        hurtHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "heart.png");
         
         // --------------------------- PLAYER SELECTION LOADING-------------------------------------------------------------------------------------------------------
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/Players/");
@@ -809,10 +810,10 @@ public class ResourcesManager
     	FontFactory.setAssetBasePath("font/");
         final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 
-        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "kenvector_future.ttf", 60, true, Color.LTGRAY, 2, Color.WHITE);
+        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "kenvector_future.ttf", 60, true, Color.BLUE, 2, Color.WHITE);
         font.load(); 
         
-        loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "kenvector_future.ttf", 75, true, Color.LTGRAY , 3, Color.DKGRAY);
+        loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "kenvector_future.ttf", 85, true, Color.LTGRAY , 3, Color.DKGRAY);
         loadingFont.load(); 
     }
     // ------------------------------------- LOAD AUDIO (SOUND && MUSIC) ------------------------------------------------------------------
@@ -1314,6 +1315,29 @@ public class ResourcesManager
         	gameTextureAtlas.clearTextureAtlasSources();
         	font.unload();
         	loadingFont.unload();
+        	coin_silver = null;
+        	coin_bronze = null;
+        	coin_gold = null;
+        	cradlePlatform1 = null;
+            cradlePlatform2 = null;
+            cradlePlatform3 = null;
+            cradlePlatform4 = null;
+            cradlePlatform5 = null;
+            expulsor = null;
+            mineral = null;
+            mineral2 = null;
+            mineral3 = null;
+            mushroomTree = null;
+            expulsorParticle = null;
+            bomb = null;
+            bombHUD = null;
+            mineExplosion = null;
+            complete_window_region = null;
+            complete_stars_region = null;
+            hurtHUD = null;
+            switcher = null;
+            key_blue = null;
+            keyHUD = null;
     	}
     	
     }
