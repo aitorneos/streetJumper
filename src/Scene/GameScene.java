@@ -233,7 +233,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_RINO = "RinoEnemy";
 	 
 	 
-	// ---------------------------- LEVEL 4 VARIABLES ---------------------------------------------------------------
+	// ---------------------------- LEVEL 4 VARIABLES -------------------------------------------------------------------------------------------
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE1 = "cradle1";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE2 = "cradle2";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE3 = "cradle3";
@@ -247,6 +247,23 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_BOMB = "bomb";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ENEMY1 = "enemy1";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ENEMY2 = "enemy2";
+	 
+	// ---------------------------- LEVEL 5 VARIABLES ------------------------------------------------------------------------------------------
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GROUND_DIRT = "groundDirt";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GROUND_GRASS = "groundGrass";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GROUND_ICE = "groundIce";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GROUND_ROCK = "groundRock";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GROUND_SNOW = "groundSnow";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MEDAL_BRONZE = "medalBronze";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MEDAL_GOLD = "medalGold";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MEDAL_SILVER = "medalSilver";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_GRASS = "rockGrass";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_GRASS_DOWN = "rockGrassDown";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_SNOW = "rockSnow";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_SNOW_DOWN = "rockSnowDown";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_STAR_BRONZE = "starBronze";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_STAR_GOLD = "starGold";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_STAR_SILVER = "starSilver";
 
 	// ---------------------- METHODS ----------------------------------------------------------------------------------------------------------
 	
@@ -2743,6 +2760,43 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
     		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
         }
         
+        else if (levelID == 5)
+        {
+        	final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
+            final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0, 0.01f, 0.5f);
+            levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(LevelConstants.TAG_LEVEL)
+    	    {
+    	        public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException 
+    	        {
+    	            final int width = SAXUtils.getIntAttributeOrThrow(pAttributes, LevelConstants.TAG_LEVEL_ATTRIBUTE_WIDTH);
+    	            final int height = SAXUtils.getIntAttributeOrThrow(pAttributes, LevelConstants.TAG_LEVEL_ATTRIBUTE_HEIGHT);
+    		        camera.setBounds(0, 0, width, height); // here we set camera bounds
+    		        camera.setBoundsEnabled(true);
+    		
+    		        return GameScene.this;
+    	        }
+            });
+            
+        	levelLoader.registerEntityLoader(new EntityLoader<SimpleLevelEntityLoaderData>(TAG_ENTITY)
+		    {
+		        public IEntity onLoadEntity(final String pEntityName, final IEntity pParent, final Attributes pAttributes, final SimpleLevelEntityLoaderData pSimpleLevelEntityLoaderData) throws IOException
+		        {
+		            final int x = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_X);
+		            final int y = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_Y);
+		            final int width = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_WIDTH);
+		            final int height = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_HEIGHT);
+		            final String type = SAXUtils.getAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_TYPE);
+		            
+		            final Sprite levelObject = null;
+
+		            levelObject.setCullingEnabled(true);
+
+	                return levelObject;
+	            }
+	        });
+        	
+    		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
+        }
     }
     
 	@SuppressWarnings("deprecation")

@@ -143,6 +143,21 @@ public class ResourcesManager
     public ITextureRegion mineral2;
     public ITextureRegion mineral3;
     public ITextureRegion mushroomTree;
+    public ITextureRegion groundDirt;
+    public ITextureRegion groundSnow;
+    public ITextureRegion groundGrass;
+    public ITextureRegion groundIce;
+    public ITextureRegion groundRock;
+    public ITextureRegion medalBronze;
+    public ITextureRegion medalGold;
+    public ITextureRegion medalSilver;
+    public ITextureRegion rockGrass;
+    public ITextureRegion rockGrassDown;
+    public ITextureRegion rockSnow;
+    public ITextureRegion rockSnowDown;
+    public ITextureRegion starBronze;
+    public ITextureRegion starGold;
+    public ITextureRegion starSilver;
     
     // --------------------------------------- COINS ---------------------------------------------------------------
     public ITextureRegion coin_silver;
@@ -624,11 +639,17 @@ public class ResourcesManager
         key_blue = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "key_blue.png");
         keyHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "hud_keyBlue.png");
         
+        // --------------------------- PLAYER SELECTION LOADING-------------------------------------------------------------------------------------------------------
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/Players/");
         if (playerSelected == 0) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player.png", 3, 1);
         if (playerSelected == 1) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player2.png", 3, 1);
         if (playerSelected == 2) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player3.png", 3, 1);
         if (playerSelected == 3) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player4.png", 3, 1);
+        if (controlLoaded == false) playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player.png", 3, 1);
+        if (playerSelected == 0) playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player.png", 3, 1);
+        if (playerSelected == 1) playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player2.png", 3, 1);
+        if (playerSelected == 2) playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player3.png", 3, 1);
+        if (playerSelected == 3) playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player4.png", 3, 1);
         
         try 
         {
@@ -647,8 +668,38 @@ public class ResourcesManager
     	gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 3048, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
         scene_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "background.png");
         
+        // ---------------------------------------- COMPLETE WINDOW ---------------------------------------------------------------------------------
         complete_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "levelCompleteWindow.png");
         complete_stars_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "star.png", 2, 1);
+        
+        // ------------------------------------------- PLATFORMS && TILES ---------------------------------------------------------------------------
+        groundDirt = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "groundDirt.png");
+        groundGrass = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "groundGrass.png");
+        groundIce = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "groundIce.png");
+        groundRock = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "groundRock.png");
+        groundSnow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "groundSnow.png");
+        medalBronze = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "medalBronze.png");
+        medalGold = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "medalGold.png");
+        medalSilver = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "medalSilver.png");
+        rockGrass = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "rockGrass.png");
+        rockGrassDown = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "rockGrassDown.png");
+        rockSnow = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "rockSnow.png");
+        rockSnowDown = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "rockSnowDown.png");
+        starBronze = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "starBronze.png");
+        starGold = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "starGold.png");
+        starSilver = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "starSilver.png");
+        
+        // --------------------------- PLAYER SELECTION LOADING-------------------------------------------------------------------------------------------------------
+        BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/Players/");
+        if (playerSelected == 0) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player.png", 3, 1);
+        if (playerSelected == 1) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player2.png", 3, 1);
+        if (playerSelected == 2) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player3.png", 3, 1);
+        if (playerSelected == 3) player_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player4.png", 3, 1);
+        if (controlLoaded == false) playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player.png", 3, 1);
+        if (playerSelected == 0) playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player.png", 3, 1);
+        if (playerSelected == 1) playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player2.png", 3, 1);
+        if (playerSelected == 2) playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player3.png", 3, 1);
+        if (playerSelected == 3) playerOnline_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "player4.png", 3, 1);
         
         try 
         {
@@ -727,15 +778,6 @@ public class ResourcesManager
         
         loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "BURNSTOW.ttf", 125, true, Color.GRAY, 3, Color.LTGRAY);
         loadingFont.load(); 
-    }
-    
-    private void loadCheapsteFont()
-    {
-    	FontFactory.setAssetBasePath("font/");
-        final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-
-        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "CHEAPSTE.ttf", 150, true, Color.DKGRAY, 6, Color.DKGRAY);
-        font.load(); 
     }
     
     private void loadWalkDaWalkOneFont()
