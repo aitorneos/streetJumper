@@ -11,7 +11,7 @@
 	
 	<entity x="400"  y="175"  width="60"  height="60"  type="rockGrass" />
 	<entity x="600"  y="375"  width="60"  height="60"  type="rockSnowDown" />
-	<entity x="1050"  y="175"  width="60"  height="60"  type="rockGrass" />
+	<entity x="1025"  y="185"  width="60"  height="60"  type="rockGrass" />
 	<entity x="1550"  y="175"  width="60"  height="60"  type="rockIce" />
 	
 	<entity x="200"  y="175"  width="60"  height="60"  type="planeRed" />
@@ -31,10 +31,10 @@
 	<entity x="525"  y="250"  width="60"  height="60"  type="starSilver" />
 	<entity x="525"  y="175"  width="60"  height="60"  type="starGold" />
 	<entity x="525"  y="100"  width="60"  height="60"  type="starSilver" />
-	<entity x="1100"  y="400"  width="60"  height="60"  type="starSilver" />
-	<entity x="1100"  y="325"  width="60"  height="60"  type="starSilver" />
-	<entity x="1100"  y="250"  width="60"  height="60"  type="starBronze" />
-	<entity x="1100"  y="175"  width="60"  height="60"  type="starBronze" />
-	<entity x="1100"  y="100"  width="60"  height="60"  type="starGold" />
+	<entity x="1050"  y="400"  width="60"  height="60"  type="starSilver" />
+	<entity x="1200"  y="325"  width="60"  height="60"  type="starSilver" />
+	<entity x="1200"  y="250"  width="60"  height="60"  type="starBronze" />
+	<entity x="1200"  y="175"  width="60"  height="60"  type="starBronze" />
+	<entity x="1200"  y="100"  width="60"  height="60"  type="starGold" />
 
 </level>
