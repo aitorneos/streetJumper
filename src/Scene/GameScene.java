@@ -3,7 +3,9 @@ package Scene;
 //---------------------------------- JAVA && TEXTURES IMPORTS ------------------------------------------------------
 import java.io.IOException;
 import java.util.Iterator;
+
 import javax.microedition.khronos.opengles.GL10;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.timer.ITimerCallback;
@@ -33,6 +35,7 @@ import org.andengine.util.level.simple.SimpleLevelEntityLoaderData;
 import org.andengine.util.level.simple.SimpleLevelLoader;
 import org.xml.sax.Attributes;
 
+
 //---------------------------------- PARTICLE SYSTEM && NETWORK ------------------------------------------------------
 import particleSystem.FireParticleSystem;
 import particleSystem.expulsorParticleSystem;
@@ -60,6 +63,7 @@ import ResourcesManagment.SceneManager.SceneType;
 import Scene.LevelCompleteWindow.StarsCount;
 import Shader.WaterMaskEffectShader;
 import Timers.playTimer;
+
 
 //---------------------------------- INNER && ANONIMOUS CLASES ------------------------------------------------------
 import com.PFC.PlatformJumper.streetJumper;
@@ -996,6 +1000,25 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	 gameHUD.detachChildren();
         	 gameHUD.detachSelf();
         	 gameHUD.dispose(); 
+        	 
+        	 hurt1.clearEntityModifiers();
+        	 hurt1.detachSelf();
+        	 hurt1.dispose();
+        	 hurt2.clearEntityModifiers();
+        	 hurt2.detachSelf();
+        	 hurt2.dispose();
+        	 hurt3.clearEntityModifiers();
+        	 hurt3.detachSelf();
+        	 hurt3.dispose();
+        	 
+        	 scoreText.clearEntityModifiers();
+        	 scoreText.clearUpdateHandlers();
+        	 lifeText.clearEntityModifiers();
+        	 lifeText.clearUpdateHandlers();
+        	 timeText.clearEntityModifiers();
+        	 timeText.clearUpdateHandlers();
+        	 
+        	 System.gc();
     	 }
     }
     
