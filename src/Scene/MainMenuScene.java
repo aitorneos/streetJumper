@@ -114,8 +114,7 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	            return true;
 	            
 	        case MENU_ONLINE:
-	        	
-	        	ResourcesManager.getInstance().showOnline = !ResourcesManager.getInstance().showOnline;
+
 	        	for (int i = 0; i < 3; ++i)
 	        	{
 	        		ResourcesManager.getInstance().activity.toast("INSTRUCCIONS :\n\n"

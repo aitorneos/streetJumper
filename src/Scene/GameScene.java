@@ -337,6 +337,11 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		    gameHUD.attachChild(hurt3);
 	    }
 	    
+	    else if (ResourcesManager.getInstance().getLevelComplete() == 5)
+	    {
+	    
+	    }
+	    
 	    camera.setHUD(gameHUD);
 	}
 	
@@ -530,6 +535,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		       }
 		     );
 			 engine.registerUpdateHandler(playT);	
+		 }
+		 
+		// -------------------- LEVEL 5 -------------------------------------------------------------------------------------------
+		 else if (ResourcesManager.getInstance().getLevelComplete() == 5)
+		 {
+			 
 		 }
     }
 
@@ -932,7 +943,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
     	{
     		xPos = 650;
     	}
-    	else if (ResourcesManager.getInstance().getLevelComplete() == 2)
+    	else if (ResourcesManager.getInstance().getLevelComplete() == 2 || ResourcesManager.getInstance().getLevelComplete() == 5)
     	{
     		xPos = 1500;
     	}
@@ -953,7 +964,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 
 	     if (ResourcesManager.getInstance().getAR() == false)
 	     {
-	    	 if (ResourcesManager.getInstance().getLevelComplete() == 2 || ResourcesManager.getInstance().getLevelComplete() == 3)this.getBackground().setColor(Color.BLACK);
+	    	 if (ResourcesManager.getInstance().getLevelComplete() > 1)this.getBackground().setColor(Color.BLACK);
 	    	 if (ResourcesManager.getInstance().getLevelComplete() == 1) this.getBackground().setColor(Color.TRANSPARENT);
 			// create RADIAL BLUR SHADER !
 			 /*engine.getShaderProgramManager().loadShaderProgram(RadialBlur.getShaderProgram());
@@ -2337,6 +2348,23 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    levelObject.setSize(width, height);
 	                }
 		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_ONLINE))
+	                {
+	                    playerOnline = new PlayerOnline(x, y, vbom, camera,  physicsWorld)
+	                    {
+	                        @Override
+	                        public void onDie()
+	                        {
+	                            if (!gameOverDisplayed)
+	                    	    {
+	                    	        displayGameOverText(4);
+	                    	    }
+	                        }
+	                    };
+	                    levelObject = playerOnline;
+	                    levelObject.setSize(width, height);
+	                }
+		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE1))
 	                {
 	                    levelObject = new Sprite(x, y, resourcesManager.cradlePlatform1, vbom);
@@ -2600,6 +2628,107 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                     levelObject.setVisible(false);
 	                }
 		            
+	                else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_LEVEL_COMPLETE))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.cradle, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.hasKey && player.hasGreenKey) 
+	                            {
+	                            	this.setVisible(true);
+	                            }
+	                            else
+	                            {
+	                            	this.setVisible(false);
+	                            }
+	                            
+	                            if (player.collidesWith(this) && player.hasKey && player.hasGreenKey)
+	                            {
+	                            	
+	                            	if (score <= 35 && score >= 30)
+	                            	{
+	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+	                            		player.body.setLinearVelocity(0, 0);
+	                            		levelCompleteWindow.display(StarsCount.ONE, GameScene.this, camera);
+	   	                                this.setIgnoreUpdate(true);
+	   	                                ResourcesManager.getInstance().setLevelComplete(4);
+	   	                                
+	   	                                // Clear Scenary 1 Graphics ...
+	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+	   	        		                {                                    
+	   	        		                    @SuppressWarnings("deprecation")
+											public void onTimePassed(final TimerHandler pTimerHandler)
+	   	        		                    {
+	   	        		                        pTimerHandler.reset();
+	   	        		                        
+	   	        		                        detachChild(levelCompleteWindow);
+	   	    	                            	disposeScene(4);
+		   	    	                 			
+	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 5);
+	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
+	   	        		                    }
+	   	        		                }));
+	                            	}
+	                            	
+	                            	else if (score > 35 && score < 45)
+	                            	{
+	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+	                            		player.body.setLinearVelocity(0, 0);
+	                            		levelCompleteWindow.display(StarsCount.TWO, GameScene.this, camera);
+	   	                                this.setIgnoreUpdate(true);
+	   	                                ResourcesManager.getInstance().setLevelComplete(4);
+	   	                                
+	   	                                // Clear Scenary 1 Graphics ...
+	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+	   	        		                {                                    
+	   	        		                    @SuppressWarnings("deprecation")
+											public void onTimePassed(final TimerHandler pTimerHandler)
+	   	        		                    {
+	   	        		                        pTimerHandler.reset();
+	   	        		                        
+	   	        		                        detachChild(levelCompleteWindow);
+	   	    	                            	disposeScene(4);
+		   	    	                 			
+	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 5);
+	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
+	   	        		                    }
+	   	        		                }));
+	                            	}
+	                            	
+	                            	else
+	                            	{
+	                            		ResourcesManager.getInstance().activity.setAccelerometerActivated(false);
+	                            		player.body.setLinearVelocity(0, 0);
+	                            		levelCompleteWindow.display(StarsCount.THREE, GameScene.this, camera);
+	   	                                this.setIgnoreUpdate(true);
+	   	                                ResourcesManager.getInstance().setLevelComplete(4);
+	   	                                
+	   	                                // Clear Scenary 1 Graphics ...
+	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
+	   	        		                {                                    
+	   	        		                    @SuppressWarnings("deprecation")
+											public void onTimePassed(final TimerHandler pTimerHandler)
+	   	        		                    {
+	   	        		                        pTimerHandler.reset();
+	   	        		                        
+	   	        		                        detachChild(levelCompleteWindow);
+	   	    	                            	disposeScene(4);
+		   	    	                 			
+	   	    	                            	SceneManager.getInstance().loadGameScene(engine, 5);
+	   	        		                        engine.unregisterUpdateHandler(pTimerHandler);
+	   	        		                    }
+	   	        		                }));
+	                            	}
+	                            	
+	                            	firstTouch = false;
+	                            }
+	                        }
+	                    };
+	                }
+		            
 		            else
 	                {
 	                    throw new IllegalArgumentException();
@@ -2626,42 +2755,45 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 			
 			// ------------------------ SERVER TO CLIENT ------------------------------------------------------------------------------------------------------------------------
 			
-			// Send Player to be Loaded from SERVER to CLIENT
-			if (ResourcesManager.getInstance().activity.mSocketServer != null)
+			if (resourcesManager.showOnline == true)
 			{
-				final PlayerServer playerServer = (PlayerServer) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_PLAYER);
-				playerServer.set(resourcesManager.playerSelected, player.getX(), player.getY());
-				ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(playerServer);
-				ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerServer);
-			}
-			
-			// Show SERVER player in CLIENT machine
-			if (ResourcesManager.getInstance().activity.mSocketServer != null)
-			{
-				final PlayerSelectedServerMessage playerSelectedServerMessage = (PlayerSelectedServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_PLAYER_SELECTED);
-		        playerSelectedServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, player.getX(), player.getY());
-				ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(playerSelectedServerMessage);
-				ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerSelectedServerMessage);
-			}
-			
-			// ------------------------ CLIENT TO SERVER ------------------------------------------------------------------------------------------------------------------------
+				// Send Player to be Loaded from SERVER to CLIENT
+				if (ResourcesManager.getInstance().activity.mSocketServer != null)
+				{
+					final PlayerServer playerServer = (PlayerServer) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_PLAYER);
+					playerServer.set(resourcesManager.playerSelected, player.getX(), player.getY());
+					ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(playerServer);
+					ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerServer);
+				}
+				
+				// Show SERVER player in CLIENT machine
+				if (ResourcesManager.getInstance().activity.mSocketServer != null)
+				{
+					final PlayerSelectedServerMessage playerSelectedServerMessage = (PlayerSelectedServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_SERVER_PLAYER_SELECTED);
+			        playerSelectedServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, player.getX(), player.getY());
+					ResourcesManager.getInstance().activity.mSocketServer.sendBroadcastServerMessage(playerSelectedServerMessage);
+					ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerSelectedServerMessage);
+				}
+				
+				// ------------------------ CLIENT TO SERVER ------------------------------------------------------------------------------------------------------------------------
 
-			// Send Player to be Loaded from CLIENT to SERVER
-			if (ResourcesManager.getInstance().activity.mSocketServer == null)
-			{
-				final PlayerClient playerClient = (PlayerClient) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_CLIENT_PLAYER);
-				playerClient.set(resourcesManager.playerSelected, player.getX(), player.getY());
-				ResourcesManager.getInstance().activity.mServerConnector.sendClientMessage(playerClient);
-				ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerClient);
-			}
-			
-			// Show CLIENT player in SERVER machine
-			if (ResourcesManager.getInstance().activity.mSocketServer == null)
-			{
-				final PlayerSelectedClientServerMessage playerSelectedClientServerMessage = (PlayerSelectedClientServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_CLIENT_PLAYER_SELECTED_CLIENT);
-				playerSelectedClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, player.getX(), player.getY());
-				ResourcesManager.getInstance().activity.mServerConnector.sendClientMessage(playerSelectedClientServerMessage);
-				ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerSelectedClientServerMessage);
+				// Send Player to be Loaded from CLIENT to SERVER
+				if (ResourcesManager.getInstance().activity.mSocketServer == null)
+				{
+					final PlayerClient playerClient = (PlayerClient) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_CLIENT_PLAYER);
+					playerClient.set(resourcesManager.playerSelected, player.getX(), player.getY());
+					ResourcesManager.getInstance().activity.mServerConnector.sendClientMessage(playerClient);
+					ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerClient);
+				}
+				
+				// Show CLIENT player in SERVER machine
+				if (ResourcesManager.getInstance().activity.mSocketServer == null)
+				{
+					final PlayerSelectedClientServerMessage playerSelectedClientServerMessage = (PlayerSelectedClientServerMessage) ResourcesManager.getInstance().activity.mMessagePool.obtainMessage(streetJumper.FLAG_MESSAGE_CLIENT_PLAYER_SELECTED_CLIENT);
+					playerSelectedClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, player.getX(), player.getY());
+					ResourcesManager.getInstance().activity.mServerConnector.sendClientMessage(playerSelectedClientServerMessage);
+					ResourcesManager.getInstance().activity.mMessagePool.recycleMessage(playerSelectedClientServerMessage);
+				}
 			}
 		}
 		if (pSceneTouchEvent.isActionDown())

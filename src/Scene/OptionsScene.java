@@ -254,12 +254,21 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        		
 		        	case 3:
 		        		
-		        		levelSel = 0;
+		        		levelSel = 4;
 		        		final IMenuItem level4Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL4_SEL, resourcesManager.level_4, vbom), 1, 1);
 		       	     	menuChildScene.addMenuItem(level4Sel);
 		       	     	level4Sel.setPosition(level4Sel.getX() + 900 , level4Sel.getY() + 25);
 		        		
 		        		break;
+		        		
+		        	case 4:
+		        		
+		        		levelSel = 0;
+		        		final IMenuItem level5Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL4_SEL, resourcesManager.level_4, vbom), 1, 1);
+		       	     	menuChildScene.addMenuItem(level5Sel);
+		       	     	level5Sel.setPosition(level5Sel.getX() + 900 , level5Sel.getY() + 25);
+		       	     	
+		       	     	break;
 		        		
 		        	default: 
 		        		break;
@@ -267,7 +276,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	        	}
 	        	
 	        	// Assign level selected to resources manager variable
-	        	ResourcesManager.getInstance().setLevelComplete((ResourcesManager.getInstance().getLevelComplete() % 4) + 1);
+	        	ResourcesManager.getInstance().setLevelComplete((ResourcesManager.getInstance().getLevelComplete() % 5) + 1);
 	        	return true;
 	        	
 	        case SHADER:

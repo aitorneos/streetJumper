@@ -267,6 +267,13 @@ public class ResourcesManager
             loadGameFonts();
             loadGameAudio();
     	}
+    	
+    	else if (resourceLevel == 5)
+    	{
+    		loadGameGraphics_Level5();
+            loadGameFonts();
+            loadGameAudio();
+    	}
     }
     
     
@@ -634,6 +641,26 @@ public class ResourcesManager
         }      
     }
     
+    private void loadGameGraphics_Level5()
+    {
+    	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level5/");
+    	gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 3048, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        scene_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "background.png");
+        
+        complete_window_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "levelCompleteWindow.png");
+        complete_stars_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(gameTextureAtlas, activity, "star.png", 2, 1);
+        
+        try 
+        {
+            this.gameTextureAtlas.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 1, 0));
+            this.gameTextureAtlas.load();
+        } 
+        catch (final TextureAtlasBuilderException e)
+        {
+            Debug.e(e);
+        }      
+    }
+    
     
     // ------------------------------------- LOAD GAME FONTS ------------------------------------------------------------------
     public void loadMenuFonts()
@@ -661,6 +688,11 @@ public class ResourcesManager
 		else if (this.getLevelComplete() == 4)
 		{
 			this.loadBlackbookTwoFont();
+		}
+		
+		else if (this.getLevelComplete() == 5)
+		{
+			this.loadKenFont();
 		}
 	}
     
@@ -727,6 +759,18 @@ public class ResourcesManager
         font.load(); 
         
         loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "Ming in Bling.ttf", 100, true, Color.LTGRAY , 3, Color.DKGRAY);
+        loadingFont.load(); 
+    }
+    
+    private void loadKenFont()
+    {
+    	FontFactory.setAssetBasePath("font/");
+        final ITexture mainFontTexture = new BitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+
+        font = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "kenvector_future.ttf", 60, true, Color.LTGRAY, 2, Color.WHITE);
+        font.load(); 
+        
+        loadingFont = FontFactory.createStrokeFromAsset(activity.getFontManager(), mainFontTexture, activity.getAssets(), "kenvector_future.ttf", 75, true, Color.LTGRAY , 3, Color.DKGRAY);
         loadingFont.load(); 
     }
     // ------------------------------------- LOAD AUDIO (SOUND && MUSIC) ------------------------------------------------------------------
@@ -1096,6 +1140,11 @@ public class ResourcesManager
         	{
         	    e.printStackTrace();
         	}
+    	}
+    	
+    	else if (this.level == 5)
+    	{
+    		
     	}
     }
     

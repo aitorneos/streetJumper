@@ -4,8 +4,10 @@ package com.PFC.PlatformJumper;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.Socket;
-
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 
 //---------- ANDENGINE KERNEL IMPORTS -------------------------------------------------------------- //
 import org.andengine.engine.Engine;
@@ -22,6 +24,8 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.augmentedreality.BaseAugmentedRealityGameActivity;
 import org.andengine.extension.multiplayer.adt.message.IMessage;
+import org.andengine.extension.multiplayer.adt.message.client.ClientMessage;
+import org.andengine.extension.multiplayer.adt.message.client.IClientMessage;
 import org.andengine.extension.multiplayer.adt.message.server.IServerMessage;
 
 //---------- ANDENGINE MULTIPLAYER EXTENSION IMPORTS -------------------------------------------------------------- //
@@ -47,16 +51,13 @@ import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtla
 import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
 import org.andengine.util.WifiUtils;
 import org.andengine.util.WifiUtils.WifiUtilsException;
-import org.andengine.extension.multiplayer.adt.message.client.ClientMessage;
-import org.andengine.extension.multiplayer.adt.message.client.IClientMessage;
 import org.andengine.util.debug.Debug;
-
+import Network.ClientMessageFlags;
 
 //---------- NETWORK IMPORTS  -------------------------------------------------------------- //
 import Network.ConnectionCloseServerMessage;
 import Network.ServerMessageFlags;
 import Players.PlayerOnline;
-import Network.ClientMessageFlags;
 
 //---------- OTHERS -------------------------------------------------------------- //
 import ResourcesManagment.ResourcesManager;
@@ -69,6 +70,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.pm.ConfigurationInfo;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.Display;
 import android.view.KeyEvent;
@@ -229,23 +231,26 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
   			@Override
   	         public void onTick()
   	         {
-  	        	// Move SERVER player in CLIENT machine
-  	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer != null)
-  	         	{
-  	         		final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER);
-  	         		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 3.0f);
-  	         		streetJumper.this.mSocketServer.sendBroadcastServerMessage(movePlayerServerMessage);
-  	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerServerMessage);
-  	         	}
-  	         	
-  	         	// Move Client player in SERVER machine
-  	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer == null)
-  	         	{
-  	         		final MovePlayerClientServerMessage movePlayerClientServerMessage = (MovePlayerClientServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT);
-  	         		movePlayerClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 3.0f);
-  	         		streetJumper.this.mServerConnector.sendClientMessage(movePlayerClientServerMessage);
-  	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerClientServerMessage);
-  	         	}
+  	        	if (ResourcesManager.getInstance().showOnline == true)
+  	        	{
+  	        		// Move SERVER player in CLIENT machine
+  	  	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer != null)
+  	  	         	{
+  	  	         		final movePlayerServerMessage movePlayerServerMessage = (movePlayerServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_SERVER_MOVE_PLAYER);
+  	  	         		movePlayerServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 3.0f);
+  	  	         		streetJumper.this.mSocketServer.sendBroadcastServerMessage(movePlayerServerMessage);
+  	  	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerServerMessage);
+  	  	         	}
+  	  	         	
+  	  	         	// Move Client player in SERVER machine
+  	  	         	if (SceneManager.getInstance().getGameScene() != null && SceneManager.getInstance().getGameScene().firstTouch == true && mSocketServer == null)
+  	  	         	{
+  	  	         		final MovePlayerClientServerMessage movePlayerClientServerMessage = (MovePlayerClientServerMessage) streetJumper.this.mMessagePool.obtainMessage(FLAG_MESSAGE_CLIENT_MOVE_PLAYER_CLIENT);
+  	  	         		movePlayerClientServerMessage.set(ResourcesManager.getInstance().activity.mPlayerIDCounter++, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().x, SceneManager.getInstance().getGameScene().player.body.getLinearVelocity().y, 3.0f);
+  	  	         		streetJumper.this.mServerConnector.sendClientMessage(movePlayerClientServerMessage);
+  	  	         		streetJumper.this.mMessagePool.recycleMessage(movePlayerClientServerMessage);
+  	  	         	}
+  	        	}
   	         }
   	       }
   	     );
@@ -303,6 +308,7 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
             else
             {
             	this.showDialog(DIALOG_CHOOSE_SERVER_OR_CLIENT_ID);
+            	ResourcesManager.getInstance().showOnline = !ResourcesManager.getInstance().showOnline;
             }
         }
         return false; 
@@ -345,32 +351,47 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
 				
              case DIALOG_ENTER_SERVER_IP_ID:
                 final EditText ipEditText = new EditText(this);
-                return new AlertDialog.Builder(this)
-                .setIcon(android.R.drawable.ic_dialog_info)
-                .setTitle("Enter Server-IP ...")
-                .setCancelable(false)
-                .setView(ipEditText)
-                .setPositiveButton("Connect", new OnClickListener() 
-                {
-                    public void onClick(final DialogInterface pDialog, final int pWhich) 
-                    {
-                            streetJumper.this.mServerIP = ipEditText.getText().toString();
-                            streetJumper.this.initClient();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, new OnClickListener() 
-                {
-                    @Override
-                    public void onClick(final DialogInterface pDialog, final int pWhich) 
-                    {
-                    	pDialog.cancel();
-                    }
-                })
-                .create();
+				ArrayList<InetAddress> ar = new ArrayList<InetAddress>();
+				try 
+				{
+					ar = getConnectedDevices(WifiUtils.getWifiIPv4Address(this));
+				} 
+				catch (WifiUtilsException e1) 
+				{
+					e1.printStackTrace();
+				}
+				try {
+					return new AlertDialog.Builder(this)
+					.setIcon(android.R.drawable.ic_dialog_info)
+					.setTitle("Enter Server-IP ...")
+					.setCancelable(false)
+					.setView(ipEditText)
+					.setMessage("The LocalHost IP is:\n" + WifiUtils.getWifiIPv4Address(this) + "\n" + "The server IP to connect for is :" + ar)
+					.setPositiveButton("Connect", new OnClickListener() 
+					{
+					    public void onClick(final DialogInterface pDialog, final int pWhich) 
+					    {
+					            streetJumper.this.mServerIP = ipEditText.getText().toString();
+					            streetJumper.this.initClient();
+					    }
+					})
+					.setNegativeButton(android.R.string.cancel, new OnClickListener() 
+					{
+					    @Override
+					    public void onClick(final DialogInterface pDialog, final int pWhich) 
+					    {
+					    	pDialog.cancel();
+					    }
+					})
+					.create();
+				} catch (WifiUtilsException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
                 
              case DIALOG_CHOOSE_SERVER_OR_CLIENT_ID:
 
-                return new AlertDialog.Builder(this)
+				return new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_info)
                 .setTitle("Be Server or Client ...")
                 .setCancelable(false)
@@ -1080,4 +1101,48 @@ public class streetJumper extends BaseAugmentedRealityGameActivity implements IA
         	streetJumper.this.toast("SERVER: Client disconnected: " + pConnector.getConnection().getSocket().getInetAddress().getHostAddress());
         }
 	}
+	
+	// search Devices connected in a Wifi Network (LAN)
+	public ArrayList<InetAddress> getConnectedDevices(String YourPhoneIPAddress) 
+	{
+        ArrayList<InetAddress> ret = new ArrayList<InetAddress>();
+        int LoopCurrentIP = 0;
+        String ad ;
+
+        String IPAddress = "";
+        String[] myIPArray = YourPhoneIPAddress.split("\\.");
+        InetAddress currentPingAddr;
+
+
+        for (int i = 0; i <= 10; i++) 
+        {
+            try 
+            {
+
+                // build the next IP address
+                currentPingAddr = InetAddress.getByName(myIPArray[0] + "." +
+                        myIPArray[1] + "." +
+                        myIPArray[2] + "." +
+                        Integer.toString(LoopCurrentIP));
+                ad = currentPingAddr.toString();   /////////////////
+                Log.d("MyApp",ad);                 //////////////
+
+                // 50ms Timeout for the "ping"
+                if (currentPingAddr.isReachable(50)) 
+                {
+
+                    ret.add(currentPingAddr);
+                    ad = currentPingAddr.toString();        /////////////////
+                    Log.d("MyApp",ad);                     //////////////
+                }
+            } catch (UnknownHostException ex)
+            {
+            } catch (IOException ex)
+            {
+            }
+
+            LoopCurrentIP++;
+        }
+        return ret;
+    }
 }

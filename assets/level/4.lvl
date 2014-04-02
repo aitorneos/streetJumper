@@ -2,6 +2,7 @@
 <level width="2000" height="480">
 
 	<entity x="85"  y="275"  width="90"  height="90"  type="player" />
+	<entity x="65"  y="275"  width="90"  height="90"  type="playerOnline" />
 	<entity x="1650"  y="250"  width="90"  height="90"  type="enemy1" />
 	<entity x="1450"  y="400"  width="90"  height="90"  type="enemy2" />
 
