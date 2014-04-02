@@ -622,6 +622,7 @@ public class ResourcesManager
         mineExplosion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "explosion.png");
         enemy1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "enemy1.png");
         enemy2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "enemy2.png");
+        cradle = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "cradle.png");
         
         
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level1/");
@@ -1187,7 +1188,20 @@ public class ResourcesManager
     	
     	else if (this.level == 5)
     	{
-    		
+    		// LOAD JUMP SOUND
+        	try 
+        	{    
+        		this.jump = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "jump.ogg");
+        		//this.explosion.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
     	}
     }
     

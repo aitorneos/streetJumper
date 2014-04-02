@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <level width="3000" height="480">
 
+	<entity x="85"  y="275"  width="90"  height="90"  type="player" />
+	<entity x="65"  y="275"  width="90"  height="90"  type="playerOnline" />
+	
+	<entity x="400"  y="50"  width="60"  height="60"  type="groundGrass" />
+
 </level>

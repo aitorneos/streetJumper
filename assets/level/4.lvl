@@ -66,5 +66,6 @@
 	
 	<entity x="1890"  y="441"  width="60"  height="60"  type="keyBlue" />
 	<entity x="810" y="175" width="75" height="75" type="switcher"/>
+	<entity x="85" y="275" width="60" height="60" type="levelComplete"/>
 	
 </level>

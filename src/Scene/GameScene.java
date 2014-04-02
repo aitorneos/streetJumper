@@ -576,7 +576,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		// -------------------- LEVEL 5 -------------------------------------------------------------------------------------------
 		 else if (ResourcesManager.getInstance().getLevelComplete() == 5)
 		 {
-			 
+			 player.setRunning();
+	         ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
+
 		 }
     }
 
@@ -605,6 +607,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
         	{
         		disposeScene(4);
         	}
+    		
+        	else if (ResourcesManager.getInstance().getLevelComplete() == 5)
+        	{
+        		disposeScene(5);
+        	}
+    		
         	SceneManager.getInstance().loadMenuScene(engine);
     	}
     }
@@ -2158,7 +2166,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            if (player.collidesWith(this))
 	                            {
 	                            	player.hasKey = true;
-	                            	player.hasKey = true;
 	                            	final Sprite keyBlue = new Sprite(30, 340, resourcesManager.keyHUD, vbom);
 	                     	    	gameHUD.attachChild(keyBlue);
 	                                this.setVisible(false);
@@ -2180,7 +2187,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            super.onManagedUpdate(pSecondsElapsed);
 	                            if (player.collidesWith(this))
 	                            {
-	                            	player.hasGreenKey = true;
 	                            	player.hasGreenKey = true;
 	                            	final Sprite keyRed = new Sprite(65, 340, resourcesManager.keyGreenHUD, vbom);
 	                     	    	gameHUD.attachChild(keyRed);
@@ -2448,11 +2454,12 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                        {
 	                            if (!gameOverDisplayed)
 	                    	    {
-	                    	        displayGameOverText(4);
+	                            	// Nothing to do here, GAME OVER is only displyed in the server not inthe client .
 	                    	    }
 	                        }
 	                    };
 	                    levelObject = playerOnline;
+	                    levelObject.setVisible(false);
 	                    levelObject.setSize(width, height);
 	                }
 		            
@@ -2655,7 +2662,6 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            if (player.collidesWith(this))
 	                            {
 	                            	player.hasKey = true;
-	                            	player.hasKey = true;
 	                            	final Sprite keyBlue = new Sprite(30, 340, resourcesManager.keyHUD, vbom);
 	                     	    	gameHUD.attachChild(keyBlue);
 	                     	    	
@@ -2663,7 +2669,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                     	    	{
 	                     	    		gameHUD.attachChild(warningText);
 	                     	    		
-	                     	    		// DO flickering while period of time after touching the spikes 
+	                     	    		// DO flickering while period of time after acquire blue key
 	                		       		flicker = new playTimer(0.25f , new playTimer.ITimerCallback()
 	                		       	    {
 	                		            	boolean visible = false;
@@ -2727,7 +2733,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                        protected void onManagedUpdate(float pSecondsElapsed) 
 	                        {
 	                            super.onManagedUpdate(pSecondsElapsed);
-	                            if (player.hasKey && player.hasGreenKey) 
+	                            if (player.hasKey) 
 	                            {
 	                            	this.setVisible(true);
 	                            }
@@ -2736,7 +2742,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            	this.setVisible(false);
 	                            }
 	                            
-	                            if (player.collidesWith(this) && player.hasKey && player.hasGreenKey)
+	                            if (player.collidesWith(this) && player.hasKey && player.switch1Touched == true)
 	                            {
 	                            	
 	                            	if (score <= 35 && score >= 30)
@@ -2834,6 +2840,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
     		levelLoader.loadLevelFromAsset(activity.getAssets(), "level/" + levelID + ".lvl");
         }
         
+        // --------------------------------------------------- LEVEL 5 -----------------------------------------------------------------------------------------------------------------------------------------------
         else if (levelID == 5)
         {
         	final SimpleLevelLoader levelLoader = new SimpleLevelLoader(vbom);
@@ -2861,8 +2868,237 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		            final int height = SAXUtils.getIntAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_HEIGHT);
 		            final String type = SAXUtils.getAttributeOrThrow(pAttributes, TAG_ENTITY_ATTRIBUTE_TYPE);
 		            
-		            final Sprite levelObject = null;
-
+		            final Sprite levelObject;
+		            
+		            if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER))
+	                {
+	                    player = new Player(x, y, vbom, camera,  physicsWorld)
+	                    {
+	                        @Override
+	                        public void onDie()
+	                        {
+	                            if (!gameOverDisplayed)
+	                    	    {
+	                    	        displayGameOverText(4);
+	                    	    }
+	                        }
+	                    };
+	                    levelObject = player;
+	                    levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLAYER_ONLINE))
+	                {
+	                    playerOnline = new PlayerOnline(x, y, vbom, camera,  physicsWorld)
+	                    {
+	                        @Override
+	                        public void onDie()
+	                        {
+	                            if (!gameOverDisplayed)
+	                    	    {
+	                            	// Nothing to do here, GAME OVER is only displyed in the server not inthe client .
+	                    	    }
+	                        }
+	                    };
+	                    levelObject = playerOnline;
+	                    levelObject.setVisible(false);
+	                    levelObject.setSize(width, height);
+	                }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GROUND_DIRT))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.groundDirt, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("groundDirt");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GROUND_GRASS))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.groundGrass, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("groundGrass");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GROUND_ICE))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.groundIce, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("groundIce");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GROUND_ROCK))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.groundRock, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("groundRock");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_GROUND_SNOW))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.groundSnow, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("groundSnow");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_GRASS))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.rockGrass, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("rockGrass");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_GRASS_DOWN))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.rockGrassDown, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("rockGrassDown");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_SNOW))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.rockSnow, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("rockSnow");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_SNOW_DOWN))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.rockSnowDown, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("rockSnowDown");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MEDAL_BRONZE))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.medalBronze, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MEDAL_GOLD))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.medalGold, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MEDAL_SILVER))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.medalSilver, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_STAR_BRONZE))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.starBronze, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                            	addToScore(3);
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_STAR_GOLD))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.starGold, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                            	addToScore(7);
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_STAR_SILVER))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.starSilver, vbom)
+	                    {
+	                        @Override
+	                        protected void onManagedUpdate(float pSecondsElapsed) 
+	                        {
+	                            super.onManagedUpdate(pSecondsElapsed);
+	                            if (player.collidesWith(this))
+	                            {
+	                            	addToScore(5);
+	                                this.setVisible(false);
+	                                this.setIgnoreUpdate(true);
+	                            }
+	                           
+	                        }
+	                    };
+	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+		            }
+		            
+		            else
+	                {
+	                    throw new IllegalArgumentException();
+	                }
+		            
 		            levelObject.setCullingEnabled(true);
 
 	                return levelObject;
