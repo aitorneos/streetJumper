@@ -162,6 +162,7 @@ public class ResourcesManager
     public ITextureRegion planeGreen1;
     public ITextureRegion planeRed1;
     public ITextureRegion planeYellow1;
+    public ITextureRegion rockIce;
     
     // --------------------------------------- COINS ---------------------------------------------------------------
     public ITextureRegion coin_silver;
@@ -698,6 +699,7 @@ public class ResourcesManager
         planeRed1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "planeRed1.png");
         planeGreen1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "planeGreen1.png");
         planeYellow1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "planeYellow1.png");
+        rockIce = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "rockIce.png");
         
         // --------------------------- PLAYER SELECTION LOADING-------------------------------------------------------------------------------------------------------
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/Players/");

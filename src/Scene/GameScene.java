@@ -272,6 +272,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLANE_RED = "planeRed";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLANE_GREEN = "planeGreen";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLANE_YELLOW = "planeYellow";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_ICE = "rockIce";
 
 	// ---------------------- METHODS ----------------------------------------------------------------------------------------------------------
 	
@@ -2982,6 +2983,14 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		            	levelObject = new Sprite(x, y, resourcesManager.rockSnow, vbom);
 	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
 	                    body.setUserData("rockSnow");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_ROCK_ICE))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.rockIce, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("rockIce");
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
 		            }
 		            
