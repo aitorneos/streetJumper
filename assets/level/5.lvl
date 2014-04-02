@@ -4,6 +4,26 @@
 	<entity x="85"  y="275"  width="90"  height="90"  type="player" />
 	<entity x="65"  y="275"  width="90"  height="90"  type="playerOnline" />
 	
-	<entity x="400"  y="50"  width="60"  height="60"  type="groundGrass" />
+	<entity x="400"  y="50"  width="60"  height="60"  type="groundDirt" />
+	<entity x="1200"  y="50"  width="60"  height="60"  type="groundGrass" />
+	<entity x="2000"  y="50"  width="60"  height="60"  type="groundSnow" />
+	
+	<entity x="400"  y="175"  width="60"  height="60"  type="rockGrass" />
+	<entity x="650"  y="375"  width="60"  height="60"  type="rockSnowDown" />
+	<entity x="975"  y="175"  width="60"  height="60"  type="rockGrass" />
+	
+	<entity x="200"  y="175"  width="60"  height="60"  type="planeRed" />
+	<entity x="300"  y="300"  width="60"  height="60"  type="planeGreen" />
+	<entity x="800"  y="200"  width="60"  height="60"  type="planeYellow" />
+	<entity x="900"  y="300"  width="60"  height="60"  type="planeBlue" />
+	
+	<entity x="200"  y="250"  width="60"  height="60"  type="starSilver" />
+	<entity x="275"  y="375"  width="60"  height="60"  type="starBronze" />
+	<entity x="800"  y="275"  width="60"  height="60"  type="starGold" />
+	<entity x="875"  y="375"  width="60"  height="60"  type="starSilver" />
+	<entity x="600"  y="100"  width="60"  height="60"  type="starSilver" />
+	<entity x="675"  y="100"  width="60"  height="60"  type="starSilver" />
+	<entity x="750"  y="100"  width="60"  height="60"  type="starGold" />
+	<entity x="825"  y="100"  width="60"  height="60"  type="starGold" />
 
 </level>

@@ -158,6 +158,10 @@ public class ResourcesManager
     public ITextureRegion starBronze;
     public ITextureRegion starGold;
     public ITextureRegion starSilver;
+    public ITextureRegion planeBlue1;
+    public ITextureRegion planeGreen1;
+    public ITextureRegion planeRed1;
+    public ITextureRegion planeYellow1;
     
     // --------------------------------------- COINS ---------------------------------------------------------------
     public ITextureRegion coin_silver;
@@ -690,6 +694,10 @@ public class ResourcesManager
         starGold = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "starGold.png");
         starSilver = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "starSilver.png");
         hurtHUD = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "heart.png");
+        planeBlue1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "planeBlue1.png");
+        planeRed1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "planeRed1.png");
+        planeGreen1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "planeGreen1.png");
+        planeYellow1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "planeYellow1.png");
         
         // --------------------------- PLAYER SELECTION LOADING-------------------------------------------------------------------------------------------------------
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/Players/");
@@ -1193,6 +1201,21 @@ public class ResourcesManager
         	{    
         		this.jump = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "jump.ogg");
         		//this.explosion.setLoaded(true);
+        	} 
+        	catch (IllegalStateException e) 
+        	{   
+        		e.printStackTrace();
+        	} 
+        	catch (IOException e) 
+        	{   
+        		e.printStackTrace();
+        	}
+        	
+        	// LOAD COIN COLLISION SOUND EFFECT
+        	try 
+        	{    
+        		this.coin = SoundFactory.createSoundFromAsset(engine.getSoundManager(), activity.getApplicationContext(), "moneda.ogg");
+        		//this.coin.setLoaded(true);
         	} 
         	catch (IllegalStateException e) 
         	{   

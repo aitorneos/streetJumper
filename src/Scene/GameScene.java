@@ -268,6 +268,10 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_STAR_BRONZE = "starBronze";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_STAR_GOLD = "starGold";
 	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_STAR_SILVER = "starSilver";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLANE_BLUE = "planeBlue";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLANE_RED = "planeRed";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLANE_GREEN = "planeGreen";
+	 private static final Object TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLANE_YELLOW = "planeYellow";
 
 	// ---------------------- METHODS ----------------------------------------------------------------------------------------------------------
 	
@@ -370,9 +374,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		    gameHUD.attachChild(timeText);
 		    
 		    // Put Initial Life (hurts)
-		    hurt1 = new Sprite(165, 390, resourcesManager.hurtHUD, vbom);
-			hurt2 = new Sprite(205, 390, resourcesManager.hurtHUD, vbom);
-			hurt3 = new Sprite(245, 390, resourcesManager.hurtHUD, vbom);
+		    hurt1 = new Sprite(185, 390, resourcesManager.hurtHUD, vbom);
+			hurt2 = new Sprite(225, 390, resourcesManager.hurtHUD, vbom);
+			hurt3 = new Sprite(265, 390, resourcesManager.hurtHUD, vbom);
 		    gameHUD.attachChild(hurt1);
 		    gameHUD.attachChild(hurt2);
 		    gameHUD.attachChild(hurt3);
@@ -578,6 +582,18 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		 {
 			 player.setRunning();
 	         ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
+	         // Create and initialize timer options an update
+			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
+		     {
+		         @Override
+		         public void onTick()
+		         {
+		            if (player.time > 0) player.time = player.time - 1;
+		            timeText.setText("Time: " + player.time);
+		         }
+		       }
+		     );
+			 engine.registerUpdateHandler(playT);	
 
 		 }
     }
@@ -2977,6 +2993,38 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
 		            }
 		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLANE_BLUE))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.planeBlue1, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("planeBlue");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLANE_RED))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.planeRed1, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("planaRed");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLANE_GREEN))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.planeGreen1, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("planeGreen");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_PLANE_YELLOW))
+		            {
+		            	levelObject = new Sprite(x, y, resourcesManager.planeYellow1, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("planeYellow");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+		            }
+		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MEDAL_BRONZE))
 		            {
 		            	levelObject = new Sprite(x, y, resourcesManager.medalBronze, vbom)
@@ -3045,6 +3093,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            if (player.collidesWith(this))
 	                            {
 	                            	addToScore(3);
+	                            	ResourcesManager.getInstance().getCoinSound().play();
 	                                this.setVisible(false);
 	                                this.setIgnoreUpdate(true);
 	                            }
@@ -3065,6 +3114,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            if (player.collidesWith(this))
 	                            {
 	                            	addToScore(7);
+	                            	ResourcesManager.getInstance().getCoinSound().play();
 	                                this.setVisible(false);
 	                                this.setIgnoreUpdate(true);
 	                            }
@@ -3085,6 +3135,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            if (player.collidesWith(this))
 	                            {
 	                            	addToScore(5);
+	                            	ResourcesManager.getInstance().getCoinSound().play();
 	                                this.setVisible(false);
 	                                this.setIgnoreUpdate(true);
 	                            }
