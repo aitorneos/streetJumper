@@ -24,10 +24,16 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	private boolean activated2 = false;
 	private boolean arSel = false;
 	
-	IMenuItem player1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(1, resourcesManager.player1, vbom), 1.2f, 1);;
-	IMenuItem player2Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(2, resourcesManager.player2, vbom), 1.2f, 1);;
-	IMenuItem player3Sel= new ScaleMenuItemDecorator(new SpriteMenuItem(3, resourcesManager.player3, vbom), 1.2f, 1);;
-	IMenuItem player4Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(4, resourcesManager.player4, vbom), 1.2f, 1);;
+	IMenuItem player1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(1, resourcesManager.player1, vbom), 1.2f, 1);
+	IMenuItem player2Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(2, resourcesManager.player2, vbom), 1.2f, 1);
+	IMenuItem player3Sel= new ScaleMenuItemDecorator(new SpriteMenuItem(3, resourcesManager.player3, vbom), 1.2f, 1);
+	IMenuItem player4Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(4, resourcesManager.player4, vbom), 1.2f, 1);
+	IMenuItem yesSel3;
+	IMenuItem notSel3;
+	IMenuItem yesSel;
+	IMenuItem notSel;
+	IMenuItem yesSel2;
+	IMenuItem notSel2;
 	
 	private final int MENU_PLAYER_SEL = 0;
 	private final int PLAYER1_SEL = 1;
@@ -39,6 +45,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	private final int LEVEL2_SEL = 8;
 	private final int LEVEL3_SEL = 9;
 	private final int LEVEL4_SEL = 10;
+	IMenuItem level1Sel;
 	
 	private final int AR_SEL = 5;
 	private final int LEVEL_SEL = 6;
@@ -62,7 +69,6 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	
 	private void createMenuChildScene()
 	{
-		
 		 menuChildScene = new MenuScene(camera);
 	     menuChildScene.setPosition(-250, 200);
 	     
@@ -70,7 +76,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	     final IMenuItem player = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PLAYER_SEL, resourcesManager.options_player_selection, vbom), 1.2f, 1);
 	     final IMenuItem arSel = new ScaleMenuItemDecorator(new SpriteMenuItem(AR_SEL, resourcesManager.ARSel, vbom), 1.2f, 1);
 	     final IMenuItem levelSel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL_SEL, resourcesManager.levelLoad, vbom), 1.2f, 1);
-	     final IMenuItem level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_1, vbom), 1, 1);
+	     level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_1, vbom), 1, 1);
 	     final IMenuItem shaderSel = new ScaleMenuItemDecorator(new SpriteMenuItem(SHADER, resourcesManager.shaderOption, vbom), 1.2f, 1);
 	     final IMenuItem particleSel = new ScaleMenuItemDecorator(new SpriteMenuItem(PARTICLE, resourcesManager.particleOption, vbom), 1.2f, 1);
 	     
@@ -88,13 +94,56 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	     player.setPosition(player.getX() + 90 , player.getY() - 325);
 	     arSel.setPosition(arSel.getX() + 100 , arSel.getY() - 300);
 	     levelSel.setPosition(levelSel.getX() + 100, levelSel.getY() - 275);
-     	 level1Sel.setPosition(level1Sel.getX() + 805 , level1Sel.getY() + 25);
+	     level1Sel.setPosition(level1Sel.getX() + 805 , level1Sel.getY() + 25);
      	 shaderSel.setPosition(shaderSel.getX() + 100 , shaderSel.getY() - 155);
      	 particleSel.setPosition(particleSel.getX() + 100 , particleSel.getY() - 135);
  
 	     menuChildScene.setOnMenuItemClickListener(this);
 	     setChildScene(menuChildScene);
 	     //attachChild(background);
+	     
+	    //Player
+	    menuChildScene.clearChildScene();
+ 		menuChildScene.reset();
+	 	player1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER1_SEL, resourcesManager.player1, vbom), 1.2f, 1);
+	 	menuChildScene.addMenuItem(player1Sel);
+	 	player1Sel.setPosition(player1Sel.getX() + 875 , player1Sel.getY() + 200);
+	 	
+	 	// AR
+    	yesSel3 = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
+    	notSel3 = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
+     	yesSel3.setPosition(yesSel3.getX() + 850 , yesSel3.getY() + 125);
+     	notSel3.setPosition(notSel3.getX() + 950 , notSel3.getY() + 125);
+     	notSel3.setColor(Color.RED);
+     	yesSel3.setColor(Color.WHITE);
+		menuChildScene.addMenuItem(yesSel3);
+		menuChildScene.addMenuItem(notSel3);
+		
+		//Level
+		level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_1, vbom), 1, 1);
+		menuChildScene.addMenuItem(level1Sel);
+	    level1Sel.setPosition(level1Sel.getX() + 900 , level1Sel.getY() + 25);
+	    
+	    // Shader
+	    yesSel = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
+    	notSel = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
+     	yesSel.setPosition(yesSel.getX() + 850 , yesSel.getY() - 75);
+     	notSel.setPosition(notSel.getX() + 950 , notSel.getY() - 75);
+     	notSel.setColor(Color.RED);
+     	yesSel.setColor(Color.WHITE);
+		menuChildScene.addMenuItem(yesSel);
+		menuChildScene.addMenuItem(notSel);
+		
+		//Particles
+		yesSel2 = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
+    	notSel2 = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
+    	activated2 = !activated2;
+     	yesSel2.setPosition(yesSel2.getX() + 850 , yesSel2.getY() - 130);
+     	notSel2.setPosition(notSel2.getX() + 950 , notSel2.getY() - 130);
+     	notSel2.setColor(Color.RED);
+     	yesSel2.setColor(Color.WHITE);
+		menuChildScene.addMenuItem(yesSel2);
+		menuChildScene.addMenuItem(notSel2);	
 	}
 	
 	@Override
@@ -198,8 +247,8 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	        	
     			ResourcesManager.getInstance().setAR(!ResourcesManager.getInstance().getAR());
     			arSel = !arSel;
-	        	final IMenuItem yesSel3 = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
-	        	final IMenuItem notSel3 = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
+	        	yesSel3 = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
+	        	notSel3 = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
 	        	if (arSel)
 	        	{
 	       	     	yesSel3.setPosition(yesSel3.getX() + 850 , yesSel3.getY() + 125);
@@ -283,8 +332,8 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	        	
 	        	ResourcesManager.getInstance().shaderActivated = !ResourcesManager.getInstance().shaderActivated;
 	        	activated = !activated;
-	        	final IMenuItem yesSel = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
-	        	final IMenuItem notSel = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
+	        	yesSel = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
+	        	notSel = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
 	        	if (activated)
 	        	{
 	       	     	yesSel.setPosition(yesSel.getX() + 850 , yesSel.getY() - 75);
@@ -309,8 +358,8 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	        case PARTICLE:
 	        	
 	        	ResourcesManager.getInstance().particlesActivated = !ResourcesManager.getInstance().particlesActivated;
-	        	final IMenuItem yesSel2 = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
-	        	final IMenuItem notSel2 = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
+	        	yesSel2 = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
+	        	notSel2 = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
 	        	activated2 = !activated2;
 	        	if (activated2)
 	        	{

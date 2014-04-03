@@ -81,6 +81,7 @@ public class ResourcesManager
 	public ITextureRegion level_2;
 	public ITextureRegion level_3;
 	public ITextureRegion level_4;
+	public ITextureRegion level_5;
 	public ITiledTextureRegion playerSecondary;
 	public ITextureRegion ARSel;
 	public ITextureRegion optionsBack;
@@ -349,6 +350,7 @@ public class ResourcesManager
 		level_2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_2.png");
 		level_3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_3.png");
 		level_4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_4.png");
+		//level_5 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_5.png");
 		shaderOption = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "shaders.png");
 		particleOption = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "particles.png");
 		yes = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "yes.png");
