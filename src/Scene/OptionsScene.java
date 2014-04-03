@@ -18,7 +18,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 {
 	
 	private MenuScene menuChildScene;
-	private int player_sel = 0;
+	private int player_sel = 1;
 	private int levelSel = 1;
 	private boolean activated = false;
 	private boolean activated2 = false;
@@ -74,16 +74,16 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	     
 	     //final Sprite background =  new Sprite(350, 230, resourcesManager.optionsBack, vbom);
 	     final IMenuItem player = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PLAYER_SEL, resourcesManager.options_player_selection, vbom), 1.2f, 1);
-	     final IMenuItem arSel = new ScaleMenuItemDecorator(new SpriteMenuItem(AR_SEL, resourcesManager.ARSel, vbom), 1.2f, 1);
-	     final IMenuItem levelSel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL_SEL, resourcesManager.levelLoad, vbom), 1.2f, 1);
+	     final IMenuItem arealSel = new ScaleMenuItemDecorator(new SpriteMenuItem(AR_SEL, resourcesManager.ARSel, vbom), 1.2f, 1);
+	     final IMenuItem levelSelection = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL_SEL, resourcesManager.levelLoad, vbom), 1.2f, 1);
 	     level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_1, vbom), 1, 1);
 	     final IMenuItem shaderSel = new ScaleMenuItemDecorator(new SpriteMenuItem(SHADER, resourcesManager.shaderOption, vbom), 1.2f, 1);
 	     final IMenuItem particleSel = new ScaleMenuItemDecorator(new SpriteMenuItem(PARTICLE, resourcesManager.particleOption, vbom), 1.2f, 1);
 	     
 	     
 	     menuChildScene.addMenuItem(player);
-	     menuChildScene.addMenuItem(arSel);
-	     menuChildScene.addMenuItem(levelSel);
+	     menuChildScene.addMenuItem(arealSel);
+	     menuChildScene.addMenuItem(levelSelection);
 	     menuChildScene.addMenuItem(level1Sel);
 	     menuChildScene.addMenuItem(shaderSel);
 	     menuChildScene.addMenuItem(particleSel);
@@ -92,8 +92,8 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	     menuChildScene.setBackgroundEnabled(false);
 	     
 	     player.setPosition(player.getX() + 90 , player.getY() - 325);
-	     arSel.setPosition(arSel.getX() + 100 , arSel.getY() - 300);
-	     levelSel.setPosition(levelSel.getX() + 100, levelSel.getY() - 275);
+	     arealSel.setPosition(arealSel.getX() + 100 , arealSel.getY() - 300);
+	     levelSelection.setPosition(levelSelection.getX() + 100, levelSelection.getY() - 275);
 	     level1Sel.setPosition(level1Sel.getX() + 805 , level1Sel.getY() + 25);
      	 shaderSel.setPosition(shaderSel.getX() + 100 , shaderSel.getY() - 155);
      	 particleSel.setPosition(particleSel.getX() + 100 , particleSel.getY() - 135);
@@ -105,45 +105,85 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	    //Player
 	    menuChildScene.clearChildScene();
  		menuChildScene.reset();
+ 		player_sel++;
 	 	player1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER1_SEL, resourcesManager.player1, vbom), 1.2f, 1);
 	 	menuChildScene.addMenuItem(player1Sel);
 	 	player1Sel.setPosition(player1Sel.getX() + 875 , player1Sel.getY() + 200);
 	 	
 	 	// AR
-    	yesSel3 = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
+	 	ResourcesManager.getInstance().setAR(!ResourcesManager.getInstance().getAR());
+	 	yesSel3 = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
     	notSel3 = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
-     	yesSel3.setPosition(yesSel3.getX() + 850 , yesSel3.getY() + 125);
-     	notSel3.setPosition(notSel3.getX() + 950 , notSel3.getY() + 125);
-     	notSel3.setColor(Color.RED);
-     	yesSel3.setColor(Color.WHITE);
-		menuChildScene.addMenuItem(yesSel3);
-		menuChildScene.addMenuItem(notSel3);
+	 	if (arSel)
+    	{
+   	     	yesSel3.setPosition(yesSel3.getX() + 850 , yesSel3.getY() + 125);
+   	     	notSel3.setPosition(notSel3.getX() + 950 , notSel3.getY() + 125);
+   	     	notSel3.setColor(Color.RED);
+   	     	yesSel3.setColor(Color.WHITE);
+    		menuChildScene.addMenuItem(yesSel3);
+    		menuChildScene.addMenuItem(notSel3);
+    	}
+    	else
+    	{
+   	     	notSel3.setPosition(notSel3.getX() + 950 , notSel3.getY() + 125);
+   	     	yesSel3.setPosition(yesSel3.getX() + 850 , yesSel3.getY() + 125);
+   	     	yesSel3.setColor(Color.RED);
+   	     	notSel3.setColor(Color.WHITE);
+    		menuChildScene.addMenuItem(notSel3);
+    		menuChildScene.addMenuItem(yesSel3);
+    	}
 		
 		//Level
+		levelSel++;
 		level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_1, vbom), 1, 1);
 		menuChildScene.addMenuItem(level1Sel);
 	    level1Sel.setPosition(level1Sel.getX() + 900 , level1Sel.getY() + 25);
 	    
 	    // Shader
+	    ResourcesManager.getInstance().shaderActivated = !ResourcesManager.getInstance().shaderActivated;
 	    yesSel = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
     	notSel = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
-     	yesSel.setPosition(yesSel.getX() + 850 , yesSel.getY() - 75);
-     	notSel.setPosition(notSel.getX() + 950 , notSel.getY() - 75);
-     	notSel.setColor(Color.RED);
-     	yesSel.setColor(Color.WHITE);
-		menuChildScene.addMenuItem(yesSel);
-		menuChildScene.addMenuItem(notSel);
+    	if (activated)
+    	{
+   	     	yesSel.setPosition(yesSel.getX() + 850 , yesSel.getY() - 75);
+   	     	notSel.setPosition(notSel.getX() + 950 , notSel.getY() - 75);
+   	     	notSel.setColor(Color.RED);
+   	     	yesSel.setColor(Color.WHITE);
+    		menuChildScene.addMenuItem(yesSel);
+    		menuChildScene.addMenuItem(notSel);
+    	}
+    	else
+    	{
+   	     	notSel.setPosition(notSel.getX() + 950 , notSel.getY() - 75);
+   	     	yesSel.setPosition(yesSel.getX() + 850 , yesSel.getY() - 75);
+   	     	yesSel.setColor(Color.RED);
+   	     	notSel.setColor(Color.WHITE);
+    		menuChildScene.addMenuItem(notSel);
+    		menuChildScene.addMenuItem(yesSel);
+    	}
 		
 		//Particles
+		ResourcesManager.getInstance().particlesActivated = !ResourcesManager.getInstance().particlesActivated;
 		yesSel2 = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
     	notSel2 = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
-    	activated2 = !activated2;
-     	yesSel2.setPosition(yesSel2.getX() + 850 , yesSel2.getY() - 130);
-     	notSel2.setPosition(notSel2.getX() + 950 , notSel2.getY() - 130);
-     	notSel2.setColor(Color.RED);
-     	yesSel2.setColor(Color.WHITE);
-		menuChildScene.addMenuItem(yesSel2);
-		menuChildScene.addMenuItem(notSel2);	
+		if (activated2)
+    	{
+   	     	yesSel2.setPosition(yesSel2.getX() + 850 , yesSel2.getY() - 130);
+   	     	notSel2.setPosition(notSel2.getX() + 950 , notSel2.getY() - 130);
+   	     	notSel2.setColor(Color.RED);
+   	     	yesSel2.setColor(Color.WHITE);
+    		menuChildScene.addMenuItem(yesSel2);
+    		menuChildScene.addMenuItem(notSel2);
+    	}
+    	else
+    	{
+   	     	notSel2.setPosition(notSel2.getX() + 950 , notSel2.getY() - 130);
+   	     	yesSel2.setPosition(yesSel2.getX() + 850 , yesSel2.getY() - 130);
+   	     	yesSel2.setColor(Color.RED);
+   	     	notSel2.setColor(Color.WHITE);
+    		menuChildScene.addMenuItem(notSel2);
+    		menuChildScene.addMenuItem(yesSel2);
+    	}	
 	}
 	
 	@Override
