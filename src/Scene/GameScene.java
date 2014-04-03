@@ -3051,6 +3051,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                        }
 	                    };
 	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                    levelObject.setSize(40, 40);
 		            }
 		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MEDAL_GOLD))
@@ -3101,7 +3102,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            super.onManagedUpdate(pSecondsElapsed);
 	                            if (player.collidesWith(this))
 	                            {
-	                            	addToScore(3);
+	                            	addToScore(1);
 	                            	ResourcesManager.getInstance().getCoinSound().play();
 	                                this.setVisible(false);
 	                                this.setIgnoreUpdate(true);
@@ -3122,7 +3123,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            super.onManagedUpdate(pSecondsElapsed);
 	                            if (player.collidesWith(this))
 	                            {
-	                            	addToScore(7);
+	                            	addToScore(5);
 	                            	ResourcesManager.getInstance().getCoinSound().play();
 	                                this.setVisible(false);
 	                                this.setIgnoreUpdate(true);
@@ -3143,7 +3144,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            super.onManagedUpdate(pSecondsElapsed);
 	                            if (player.collidesWith(this))
 	                            {
-	                            	addToScore(5);
+	                            	addToScore(2);
 	                            	ResourcesManager.getInstance().getCoinSound().play();
 	                                this.setVisible(false);
 	                                this.setIgnoreUpdate(true);
