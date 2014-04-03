@@ -333,7 +333,7 @@ public class ResourcesManager
     public void loadOptionsGraphics()
     {
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/menu/");
-    	optionsTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
+    	optionsTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 2048, 2048, TextureOptions.BILINEAR);
     	options_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "options_menu.png");
     	options_player_selection = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "player_selection.png");
     	levelLoad = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "levelLoader.png");
@@ -350,7 +350,7 @@ public class ResourcesManager
 		level_2 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_2.png");
 		level_3 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_3.png");
 		level_4 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_4.png");
-		//level_5 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_5.png");
+		level_5 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "level_5.png");
 		shaderOption = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "shaders.png");
 		particleOption = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "particles.png");
 		yes = BitmapTextureAtlasTextureRegionFactory.createFromAsset(optionsTextureAtlas, activity, "yes.png");

@@ -45,6 +45,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	private final int LEVEL2_SEL = 8;
 	private final int LEVEL3_SEL = 9;
 	private final int LEVEL4_SEL = 10;
+	private final int LEVEL5_SEL = 15;
 	IMenuItem level1Sel;
 	
 	private final int AR_SEL = 5;
@@ -105,10 +106,13 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	    //Player
 	    menuChildScene.clearChildScene();
  		menuChildScene.reset();
- 		player_sel++;
-	 	player1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER1_SEL, resourcesManager.player1, vbom), 1.2f, 1);
+	 	if (player_sel == 0) player1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER1_SEL, resourcesManager.player1, vbom), 1.2f, 1);
+	 	if (player_sel == 1) player1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER1_SEL, resourcesManager.player2, vbom), 1.2f, 1);
+	 	if (player_sel == 2) player1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER1_SEL, resourcesManager.player3, vbom), 1.2f, 1);
+	 	if (player_sel == 3) player1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(PLAYER1_SEL, resourcesManager.player4, vbom), 1.2f, 1);
 	 	menuChildScene.addMenuItem(player1Sel);
 	 	player1Sel.setPosition(player1Sel.getX() + 875 , player1Sel.getY() + 200);
+	 	player_sel++;
 	 	
 	 	// AR
 	 	ResourcesManager.getInstance().setAR(!ResourcesManager.getInstance().getAR());
@@ -134,10 +138,14 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
     	}
 		
 		//Level
-		levelSel++;
-		level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_1, vbom), 1, 1);
+		if (levelSel == 0) level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_1, vbom), 1, 1);
+		if (levelSel == 1) level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_2, vbom), 1, 1);
+		if (levelSel == 2) level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_3, vbom), 1, 1);
+		if (levelSel == 3) level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_4, vbom), 1, 1);
+		if (levelSel == 4) level1Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL1_SEL, resourcesManager.level_5, vbom), 1, 1);
 		menuChildScene.addMenuItem(level1Sel);
 	    level1Sel.setPosition(level1Sel.getX() + 900 , level1Sel.getY() + 25);
+	    levelSel++;
 	    
 	    // Shader
 	    ResourcesManager.getInstance().shaderActivated = !ResourcesManager.getInstance().shaderActivated;
@@ -353,7 +361,7 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 		        	case 4:
 		        		
 		        		levelSel = 0;
-		        		final IMenuItem level5Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL4_SEL, resourcesManager.level_4, vbom), 1, 1);
+		        		final IMenuItem level5Sel = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL5_SEL, resourcesManager.level_5, vbom), 1, 1);
 		       	     	menuChildScene.addMenuItem(level5Sel);
 		       	     	level5Sel.setPosition(level5Sel.getX() + 900 , level5Sel.getY() + 25);
 		       	     	
