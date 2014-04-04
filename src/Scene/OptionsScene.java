@@ -106,7 +106,6 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	 	player1Sel.setPosition(player1Sel.getX() + 875 , player1Sel.getY() + 200);
 	 	
 	 	// AR
-	 	ResourcesManager.getInstance().setAR(!ResourcesManager.getInstance().getAR());
 	 	yesSel3 = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
     	notSel3 = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
 	 	if (ResourcesManager.getInstance().arSel)
