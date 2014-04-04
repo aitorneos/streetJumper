@@ -137,7 +137,6 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
 	    level1Sel.setPosition(level1Sel.getX() + 900 , level1Sel.getY() + 25);
 	    
 	    // Shader
-	    ResourcesManager.getInstance().shaderActivated = !ResourcesManager.getInstance().shaderActivated;
 	    yesSel = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
     	notSel = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
     	if (ResourcesManager.getInstance().activated)
@@ -160,7 +159,6 @@ public class OptionsScene extends BaseScene implements IOnMenuItemClickListener
     	}
 		
 		//Particles
-		ResourcesManager.getInstance().particlesActivated = !ResourcesManager.getInstance().particlesActivated;
 		yesSel2 = new ScaleMenuItemDecorator(new SpriteMenuItem(YES, resourcesManager.yes, vbom), 1, 1);
     	notSel2 = new ScaleMenuItemDecorator(new SpriteMenuItem(NOT, resourcesManager.not, vbom), 1, 1);
 		if (ResourcesManager.getInstance().activated2)
