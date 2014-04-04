@@ -233,13 +233,18 @@ public class ResourcesManager
     public int playerSelected = 0;
     public float playerVelocity = 0;
     
-    // Augmented Reality or Normal MODE selection
+    // Control variables
     private boolean AR = false;
     public int playerOnlineSelected = 3;
     public boolean controlLoaded = false;
     public boolean shaderActivated = false;
     public boolean particlesActivated = false;
     public boolean showOnline = false;
+	public int player_sel = 0;
+	public int levelSel = 0;
+	public boolean activated = false;
+	public boolean activated2 = false;
+	public boolean arSel = false;
 
     
     //---------------------------------------------
