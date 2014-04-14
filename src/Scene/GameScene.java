@@ -366,8 +366,8 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	    else if (ResourcesManager.getInstance().getLevelComplete() == 5)
 	    {
 	    	// CREATE SCORE TEXT
-		    scoreText = new Text(155, 450, resourcesManager.font, "Score: 0", new TextOptions(HorizontalAlign.LEFT), vbom);
-		    lifeText = new Text(70, 390, resourcesManager.font, "Life:", new TextOptions(HorizontalAlign.LEFT), vbom);
+		    scoreText = new Text(165, 450, resourcesManager.font, "Score: 0", new TextOptions(HorizontalAlign.LEFT), vbom);
+		    lifeText = new Text(80, 390, resourcesManager.font, "Life:", new TextOptions(HorizontalAlign.LEFT), vbom);
 		    timeText = new Text(660, 40, resourcesManager.font, "TIME:80", new TextOptions(HorizontalAlign.LEFT), vbom);
 		    scoreText.setSkewCenter(0, 0);    
 		    gameHUD.attachChild(scoreText);
@@ -582,6 +582,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		 else if (ResourcesManager.getInstance().getLevelComplete() == 5)
 		 {
 			 player.setRunning();
+			 resourcesManager.getSceneMusic().play();
 	         ResourcesManager.getInstance().activity.setAccelerometerActivated(true);
 	         // Create and initialize timer options an update
 			 playT = new playTimer(1.0f, new playTimer.ITimerCallback()
@@ -3071,6 +3072,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                        }
 	                    };
 	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                    levelObject.setSize(40, 40);
 		            }
 		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MEDAL_SILVER))
@@ -3090,6 +3092,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                        }
 	                    };
 	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
+	                    levelObject.setSize(40, 40);
 		            }
 		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_STAR_BRONZE))

@@ -14,6 +14,9 @@
 	<entity x="1000"  y="185"  width="60"  height="60"  type="rockGrass" />
 	<entity x="1500"  y="190"  width="60"  height="60"  type="rockSnow" />
 	<entity x="1800"  y="375"  width="60"  height="60"  type="rockGrassDown" />
+	<entity x="2150"  y="145"  width="60"  height="60"  type="rockSnow" />
+	<entity x="2500"  y="375"  width="60"  height="60"  type="rockGrassDown" />
+	<entity x="2800"  y="170"  width="60"  height="60"  type="rockGrass" />
 	
 	<entity x="200"  y="175"  width="60"  height="60"  type="planeRed" />
 	<entity x="300"  y="300"  width="60"  height="60"  type="planeGreen" />
@@ -23,6 +26,9 @@
 	<entity x="1200"  y="200"  width="60"  height="60"  type="planeYellow" />
 	<entity x="1190"  y="400"  width="60"  height="60"  type="planeBlue" />
 	<entity x="1390"  y="325"  width="60"  height="60"  type="planeGreen" />
+	<entity x="2000"  y="200"  width="60"  height="60"  type="planeRed" />
+	<entity x="2200"  y="300"  width="60"  height="60"  type="planeBlue" />
+	<entity x="2400"  y="400"  width="60"  height="60"  type="planeGreen" />
 	
 	<entity x="200"  y="250"  width="60"  height="60"  type="starSilver" />
 	<entity x="300"  y="375"  width="60"  height="60"  type="starBronze" />
@@ -54,5 +60,24 @@
 	<entity x="1900"  y="125"  width="60"  height="60"  type="starSilver" />
 	<entity x="1900"  y="200"  width="60"  height="60"  type="starSilver" />
 	<entity x="1900"  y="275"  width="60"  height="60"  type="starSilver" />
+	<entity x="2000"  y="260"  width="60"  height="60"  type="starBronze" />
+	<entity x="2200"  y="385"  width="60"  height="60"  type="starGold" />
+	<entity x="2400"  y="460"  width="60"  height="60"  type="medalGold" />
+	<entity x="2250"  y="100"  width="60"  height="60"  type="starBronze" />
+	<entity x="2325"  y="100"  width="60"  height="60"  type="starBronze" />
+	<entity x="2400"  y="100"  width="60"  height="60"  type="starBronze" />
+	<entity x="2475"  y="100"  width="60"  height="60"  type="starBronze" />
+	<entity x="2550"  y="100"  width="60"  height="60"  type="starBronze" />
+	<entity x="2625"  y="100"  width="60"  height="60"  type="starBronze" />
+	<entity x="2700"  y="100"  width="60"  height="60"  type="starBronze" />
+	<entity x="2775"  y="100"  width="60"  height="60"  type="starBronze" />
+	<entity x="2250"  y="200"  width="60"  height="60"  type="starSilver" />
+	<entity x="2325"  y="200"  width="60"  height="60"  type="starSilver" />
+	<entity x="2400"  y="200"  width="60"  height="60"  type="starSilver" />
+	<entity x="2475"  y="200"  width="60"  height="60"  type="starSilver" />
+	<entity x="2550"  y="200"  width="60"  height="60"  type="starSilver" />
+	<entity x="2625"  y="200"  width="60"  height="60"  type="starSilver" />
+	<entity x="2700"  y="200"  width="60"  height="60"  type="starSilver" />
+	<entity x="2775"  y="200"  width="60"  height="60"  type="starSilver" />
 
 </level>

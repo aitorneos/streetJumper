@@ -469,7 +469,7 @@ public class ResourcesManager
     private void loadGameGraphics_Level2()
     {
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level2/");
-    	gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 3048, 2048, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+    	gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 3200, 2048, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
         scene_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "level_2.png");
         
      // --------------------------- HUD LOADING-------------------------------------------------------------------------------------------------------
@@ -678,7 +678,7 @@ public class ResourcesManager
     private void loadGameGraphics_Level5()
     {
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level5/");
-    	gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 3048, 1024, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+    	gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 3200, 2048, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
         scene_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "background.png");
         
         // ---------------------------------------- COMPLETE WINDOW ---------------------------------------------------------------------------------
@@ -1205,6 +1205,25 @@ public class ResourcesManager
     	
     	else if (this.level == 5)
     	{
+    		
+    		// LOAD GAME SCENE BACKGROUND MUSIC
+        	try 
+        	{
+				this.backgroundMusic = MusicFactory.createMusicFromAsset(engine.getMusicManager(), activity.getApplicationContext(),"POL-brave-worm-short.ogg");
+			} 
+        	catch (IllegalStateException e) 
+        	{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+        	catch (IOException e) 
+        	{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	    this.backgroundMusic.setVolume(0.25f, 0.25f);
+    	    this.backgroundMusic.setLooping(true);
+    	    
     		// LOAD JUMP SOUND
         	try 
         	{    
@@ -1415,6 +1434,12 @@ public class ResourcesManager
     	else if (this.level == 4)
     	{
     		this.backgroundMusic.stop();
+    	}
+    	
+    	else if (this.level == 5)
+    	{
+    		this.backgroundMusic.stop();
+    		this.coin.stop();
     	}
     }
 
