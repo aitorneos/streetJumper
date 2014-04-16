@@ -2,6 +2,7 @@ package ResourcesManagment;
 
 import java.io.IOException;
 import java.io.InputStream;
+
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.sound.Sound;
@@ -24,7 +25,10 @@ import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.adt.io.in.IInputStreamOpener;
 import org.andengine.util.debug.Debug;
+
 import android.graphics.Color;
+import android.util.DisplayMetrics;
+
 import com.PFC.PlatformJumper.streetJumper;
 
 
@@ -469,7 +473,21 @@ public class ResourcesManager
     private void loadGameGraphics_Level2()
     {
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level2/");
-    	gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 3200, 2048, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+    	DisplayMetrics metrics = new DisplayMetrics();
+    	activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+    	int width = metrics.widthPixels;
+    	int height = metrics.heightPixels;
+
+    	if (width >= 700 || height >= 1200)
+    	{
+    	   //code for big screen (like tablet)
+    		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 5000, 5000, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+    	}
+    	else
+    	{
+    	   //code for small screen (like smartphone)
+    		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 3048, 3048, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+    	}
         scene_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "level_2.png");
         
      // --------------------------- HUD LOADING-------------------------------------------------------------------------------------------------------
@@ -678,7 +696,21 @@ public class ResourcesManager
     private void loadGameGraphics_Level5()
     {
     	BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/level5/");
-    	gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 3200, 2048, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+    	DisplayMetrics metrics = new DisplayMetrics();
+    	activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+    	int width = metrics.widthPixels;
+    	int height = metrics.heightPixels;
+
+    	if (width > 700 || height > 1200)
+    	{
+    	   //code for big screen (like tablet)
+    		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 5000, 5000, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+    	}
+    	else
+    	{
+    	   //code for small screen (like smartphone)
+    		gameTextureAtlas = new BuildableBitmapTextureAtlas(activity.getTextureManager(), 3048, 3048, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+    	}
         scene_background_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "background.png");
         
         // ---------------------------------------- COMPLETE WINDOW ---------------------------------------------------------------------------------
@@ -707,6 +739,7 @@ public class ResourcesManager
         planeGreen1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "planeGreen1.png");
         planeYellow1 = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "planeYellow1.png");
         rockIce = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "rockIce.png");
+        cradle = BitmapTextureAtlasTextureRegionFactory.createFromAsset(gameTextureAtlas, activity, "cradle.png");
         
         // --------------------------- PLAYER SELECTION LOADING-------------------------------------------------------------------------------------------------------
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/game/Players/");

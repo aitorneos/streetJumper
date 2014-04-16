@@ -29,6 +29,8 @@
 	<entity x="2000"  y="200"  width="60"  height="60"  type="planeRed" />
 	<entity x="2200"  y="300"  width="60"  height="60"  type="planeBlue" />
 	<entity x="2400"  y="400"  width="60"  height="60"  type="planeGreen" />
+	<entity x="2650"  y="250"  width="60"  height="60"  type="planeYellow" />
+	<entity x="2800"  y="350"  width="60"  height="60"  type="planeYellow" />
 	
 	<entity x="200"  y="250"  width="60"  height="60"  type="starSilver" />
 	<entity x="300"  y="375"  width="60"  height="60"  type="starBronze" />
@@ -79,5 +81,6 @@
 	<entity x="2625"  y="200"  width="60"  height="60"  type="starSilver" />
 	<entity x="2700"  y="200"  width="60"  height="60"  type="starSilver" />
 	<entity x="2775"  y="200"  width="60"  height="60"  type="starSilver" />
+	<entity x="2950"  y="275"  width="60"  height="60"  type="medalSilver" />
 
 </level>

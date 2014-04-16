@@ -5,6 +5,7 @@
 	<entity x="65"  y="275"  width="90"  height="90"  type="playerOnline" />
 	<entity x="1650"  y="250"  width="90"  height="90"  type="enemy1" />
 	<entity x="1450"  y="400"  width="90"  height="90"  type="enemy2" />
+	<entity x="85" y="275" width="60" height="60" type="levelComplete"/>
 
 	<entity x="375"  y="100"  width="60"  height="60"  type="cradle4" />
 	<entity x="404"  y="261"  width="60"  height="60"  type="mineral" />
@@ -66,6 +67,5 @@
 	
 	<entity x="1890"  y="441"  width="60"  height="60"  type="keyBlue" />
 	<entity x="810" y="175" width="75" height="75" type="switcher"/>
-	<entity x="85" y="275" width="60" height="60" type="levelComplete"/>
 	
 </level>

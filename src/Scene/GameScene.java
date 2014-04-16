@@ -367,7 +367,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	    {
 	    	// CREATE SCORE TEXT
 		    scoreText = new Text(165, 450, resourcesManager.font, "Score: 0", new TextOptions(HorizontalAlign.LEFT), vbom);
-		    lifeText = new Text(80, 390, resourcesManager.font, "Life:", new TextOptions(HorizontalAlign.LEFT), vbom);
+		    lifeText = new Text(90, 390, resourcesManager.font, "Life:", new TextOptions(HorizontalAlign.LEFT), vbom);
 		    timeText = new Text(660, 40, resourcesManager.font, "TIME:80", new TextOptions(HorizontalAlign.LEFT), vbom);
 		    scoreText.setSkewCenter(0, 0);    
 		    gameHUD.attachChild(scoreText);
@@ -375,9 +375,9 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		    gameHUD.attachChild(timeText);
 		    
 		    // Put Initial Life (hurts)
-		    hurt1 = new Sprite(185, 390, resourcesManager.hurtHUD, vbom);
-			hurt2 = new Sprite(225, 390, resourcesManager.hurtHUD, vbom);
-			hurt3 = new Sprite(265, 390, resourcesManager.hurtHUD, vbom);
+		    hurt1 = new Sprite(195, 390, resourcesManager.hurtHUD, vbom);
+			hurt2 = new Sprite(235, 390, resourcesManager.hurtHUD, vbom);
+			hurt3 = new Sprite(275, 390, resourcesManager.hurtHUD, vbom);
 		    gameHUD.attachChild(hurt1);
 		    gameHUD.attachChild(hurt2);
 		    gameHUD.attachChild(hurt3);
@@ -2569,6 +2569,15 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 		            	levelObject = nomo;
 		            }
 		            
+		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_CRADLE))
+	                {
+	                    levelObject = new Sprite(x, y, resourcesManager.cradle, vbom);
+	                    final Body body = PhysicsFactory.createBoxBody(physicsWorld, levelObject, BodyType.StaticBody, FIXTURE_DEF);
+	                    body.setUserData("cradle");
+	                    physicsWorld.registerPhysicsConnector(new PhysicsConnector(levelObject, body, true, false));
+	                    //levelObject.setSize(width, height);
+	                }
+		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_MUSHROOM_TREE))
 		            {
 		            	levelObject = new Sprite(x, y, resourcesManager.mushroomTree, vbom);
@@ -2751,7 +2760,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                        protected void onManagedUpdate(float pSecondsElapsed) 
 	                        {
 	                            super.onManagedUpdate(pSecondsElapsed);
-	                            if (player.hasKey) 
+	                            if (player.hasKey && player.switch1Touched == true) 
 	                            {
 	                            	this.setVisible(true);
 	                            }
@@ -2769,7 +2778,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.ONE, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
-	   	                                ResourcesManager.getInstance().setLevelComplete(4);
+	   	                                ResourcesManager.getInstance().setLevelComplete(5);
 	   	                                
 	   	                                // Clear Scenary 1 Graphics ...
 	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
@@ -2794,7 +2803,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.TWO, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
-	   	                                ResourcesManager.getInstance().setLevelComplete(4);
+	   	                                ResourcesManager.getInstance().setLevelComplete(5);
 	   	                                
 	   	                                // Clear Scenary 1 Graphics ...
 	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
@@ -2819,7 +2828,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                            		player.body.setLinearVelocity(0, 0);
 	                            		levelCompleteWindow.display(StarsCount.THREE, GameScene.this, camera);
 	   	                                this.setIgnoreUpdate(true);
-	   	                                ResourcesManager.getInstance().setLevelComplete(4);
+	   	                                ResourcesManager.getInstance().setLevelComplete(5);
 	   	                                
 	   	                                // Clear Scenary 1 Graphics ...
 	   	                                engine.registerUpdateHandler(new TimerHandler(3.0f, new ITimerCallback()
@@ -3092,7 +3101,7 @@ public class GameScene extends BaseScene implements IOnSceneTouchListener, Serve
 	                        }
 	                    };
 	                    levelObject.registerEntityModifier(new LoopEntityModifier(new ScaleModifier(1, 1, 1.3f)));
-	                    levelObject.setSize(40, 40);
+	                    //levelObject.setSize(40, 40);
 		            }
 		            
 		            else if (type.equals(TAG_ENTITY_ATTRIBUTE_TYPE_VALUE_STAR_BRONZE))
